@@ -5,7 +5,7 @@ const [data, setData] = useState([])
 
 useEffect(() => {
   const get = async() => {
-    const response = await fetch("http://localhost:5000/")
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com")
     const data  = await response.json()
     setData(data)
   }
