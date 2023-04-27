@@ -2,7 +2,9 @@ const mongoose = require("mongoose");
 
 const sellerSchema = new mongoose.Schema(
   {
-    user_id: String,
+    user_id: {
+      type: mongoose.Schema.Types.ObjectId
+    },
     business_name: {
       type: String,
     },
@@ -25,13 +27,18 @@ const sellerSchema = new mongoose.Schema(
     currency: {
       type: String
     },
-    reviews: {
-      type: Number,
-      default: 0,
+    rates:[
+      {
+        rate: {
+          type: Number,
+          default: 0,
     },
-    rates: {
-      type: Number,
-    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId
+    } 
+      }
+
+        ],
     category: {
       type: String,
     },
