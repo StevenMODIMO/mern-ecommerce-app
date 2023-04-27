@@ -4,7 +4,8 @@ const validator = require("validator")
 
 const userSchema = new mongoose.Schema({
 	email: String,
-	password: String
+	password: String,
+	role: String
 })
 
 userSchema.statics.signup = async function(email, password) {
@@ -53,4 +54,4 @@ userSchema.statics.login = async function(email, password) {
 	return user
 }
 
-module.exports = mongoose.model("User", userSchema)
+module.exports = mongoose.model("Auth", userSchema)
