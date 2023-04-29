@@ -1,6 +1,17 @@
 const router = require("express").Router()
 const requireAuth = require("../middleware/requireAuth")
-const { registerSeller, registerBuyer, newProduct, getProducts, deleteProducts, placeOrder, cancelOrder, addWishList, rateProduct } = require("../controllers/appControllers")
+const { registerSeller,
+ registerBuyer,
+  newProduct,
+   getProducts,
+    deleteProducts,
+     placeOrder,
+      cancelOrder,
+       addWishList,
+        rateProduct,
+        removeWishList,
+        getOrders
+    } = require("../controllers/appControllers")
 
 
 router.use(requireAuth)
@@ -22,6 +33,10 @@ router.delete("/remove-order/:id", cancelOrder)
 router.post("/add-wishlist", addWishList)
 
 router.post("/rates", rateProduct)
+
+router.delete("/remove-wishlist/:id", removeWishList)
+
+router.get("/business-orders/:name", getOrders)
 
 
 module.exports = router

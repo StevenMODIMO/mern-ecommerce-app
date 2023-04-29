@@ -1,23 +1,9 @@
+require("dotenv").config()
 const Seller = require("../models/sellerModel")
 const Buyer = require("../models/buyerModel")
 const User = require("../models/authModel")
 const mongoose = require("mongoose")
-
-// File Controllers
-
-
-const multer = require("multer")
-const path = require("path")
-
-const storage = multer.diskStorage({
-	destination: function(req, file, cb) {
-		cb(null, 'images')
-	},
-	filename: function(req, file, cb) {
-		cb(null, file.originalname)
-	}
-})
-
+const stripe = require("stripe")(process.env.STRIPE_KEY)
 
 
 // Admin Controllers
@@ -91,7 +77,17 @@ const deleteProducts = async (req, res) => {
 }
 
 
-const getOrders = async (req, res) => {}
+const getOrders = async (req, res) => {
+	const { name } = req.params
+	try {
+		const business_orders = await Buyer.find({"orders.business_name": name})
+		res.status(200).json(business_orders)
+	} catch(error) {
+		res.status(400).json(error)
+	}
+}
+
+const getCompletedOrders = async (req, res) => {}
 
 
 
@@ -112,15 +108,15 @@ const registerBuyer = async (req, res) => {
 
 const placeOrder = async (req, res) => {
 	const user_id = req.user
-	const { product_name, description, price, quantity, currency, category } = req.body
+	const { business_name ,product_name, description, price, quantity, currency, category } = req.body
 	try{
 		const newProduct = await Buyer.findOneAndUpdate({ user_id: user_id}, { $push: { orders: {
+			business_name: business_name,
 			product_name: product_name,
 			description: description,
 			price: price,
 			quantity: quantity
 		}}}, { new: true })
-		const sellerOrder = await Seller.findOneAndUpdate()
 		res.status(200).json(newProduct)
 	} catch(error) {
 		res.status(400).json(error)
@@ -161,6 +157,23 @@ const addWishList = async (req, res) => {
 	}
 }
 
+const removeWishList = async (req, res) => {
+	const user_id = req.user
+	const { id } = req.params
+	try {
+		const remove = await Buyer.findOneAndUpdate({ user_id: user_id}, { $pull: {
+			wishlist: {
+				_id: id
+			}
+		}})
+		res.status(200).json(remove)
+	} catch(error) {
+		res.status(400).json(error)
+	}
+}
+
+const getPlacedOrders = async (req, res) => {}
+
 
 const rateProduct = async (req, res) => {
 	const { product_id } = req.body
@@ -179,7 +192,7 @@ const rateProduct = async (req, res) => {
 	} 
 }
 
-  
+
 
 module.exports = { 
 	registerSeller, 
@@ -190,5 +203,7 @@ module.exports = {
     placeOrder,
     cancelOrder,
     addWishList, 
-    rateProduct 
-}  
+    rateProduct,
+    removeWishList,
+    getOrders
+}
