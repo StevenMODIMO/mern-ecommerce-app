@@ -3,6 +3,9 @@ import { useAuth } from "./context/AuthContext"
 import Navbar from "./components/Navbar"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
+import Home from "./pages/Home"
+import Profile from "./pages/Profile"
+import Dashboard from "./pages/Dashboard"
 
 function App() {
   const { user } = useAuth()
@@ -11,9 +14,11 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
-          <Route path="/" />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={user && <Profile />} />
+          <Route path="/dashboard" element={user && <Dashboard />} />
+          <Route path="/signup" element={!user && <Signup />} />
+          <Route path="/login" element={!user && <Login />} />
         </Routes>
       </BrowserRouter>
     </div>

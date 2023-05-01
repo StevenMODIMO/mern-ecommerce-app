@@ -1,30 +1,82 @@
 import { useState } from "react"
-import { NavLink } from 'react-router-dom'
+import { NavLink } from "react-router-dom"
 import Logo from "../assets/TRONIC-CART.svg"
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io"
 import { useAuth } from "../context/AuthContext"
 import { motion } from "framer-motion"
+import { AiFillHome, AiOutlineUserAdd, AiOutlineLogin, AiOutlineShoppingCart, AiOutlineLogout } from "react-icons/ai"
+import { MdDashboard } from "react-icons/md"
+import { BiUser } from 'react-icons/bi'
 
 export default function Navbar() {
 	const [open, setOpen] = useState(false)
-	const { user } = useAuth()
+	const { user, dispatch } = useAuth()
 	const openNav = () => setOpen(!open)
 	const closeNavbar = () => setOpen(false)
+	const closePanel = () => setOpen(false);
+
+	const logout = () => {
+    localStorage.removeItem("user");
+    dispatch({ type: "LOGOUT" });
+  };
+
+   const logoutEffect = () => {
+    logout();
+    closePanel();
+  };
+
 	return (
 		<div>
-			<div className="">
+			<div className="md:flex justify-between">
 				<div className="flex justify-between m-1">
-					<NavLink to="/">
+					<NavLink to="/" onClick={closeNavbar}>
 						<img className="mt-2" src={Logo} alt="logo" />
 					</NavLink>
-					<motion.div onClick={openNav}>
+					<motion.div onClick={openNav} className="md:hidden">
 						{!open ? <IoIosArrowDropdown className="text-3xl mt-1" /> : <IoIosArrowDropup className="text-3xl mt-1" />}
 					</motion.div>
 				</div>
-				<nav className={!open ? "-ml-40 transition-all duration-250 flex flex-col" : "m-0 transition-all duration-250 flex flex-col"}>
-					<NavLink to="/signup" onClick={closeNavbar}>Signup</NavLink>
-					<NavLink to="/login" onClick={closeNavbar}>Login</NavLink>
-				</nav>
+				<motion.nav className={!open ? "hidden md:flex gap-10 mr-5" : "flex flex-col items-center gap-3 mt-10"}>
+				
+					{!user ?
+					<>
+					<div className="flex flex-col items-center gap-2 md:flex-row gap-3">
+						<AiFillHome />
+					     <NavLink to="/" onClick={closeNavbar} className="mt-2">Home</NavLink>
+					</div>
+					<div className="flex flex-col items-center gap-2 md:flex-row">
+						<AiOutlineUserAdd />
+					     <NavLink to="/signup" onClick={closeNavbar} className="mt-2">Signup</NavLink>
+					</div>
+					<div className="flex flex-col items-center gap-2 md:flex-row">
+						<AiOutlineLogin />
+					     <NavLink to="/login" onClick={closeNavbar} className="mt-2">Login</NavLink>
+					</div>
+					</>
+					:
+					<>
+					<div className="flex flex-col items-center gap-2 md:flex-row">
+						<AiFillHome />
+					     <NavLink to="/" onClick={closeNavbar} className="mt-2">Home</NavLink>
+					</div>
+					<div className="flex flex-col items-center gap-2 md:flex-row">
+						<MdDashboard />
+                        <NavLink to="/dashboard" onClick={closeNavbar} className="mt-2">Dashboard</NavLink>
+					</div>
+                    <div className="flex flex-col items-center gap-2 md:flex-row">
+                         <BiUser />
+					<NavLink to="/profile" onClick={closeNavbar} className="mt-2">Profile</NavLink>
+                    </div>
+                    {user.role == "Buyer" && <div className="flex flex-col items-center m-3 md:flex-row">
+                                             <AiOutlineShoppingCart />                    
+                                        </div>}
+                    <div className="flex flex-col items-center gap-2 md:flex-row">
+                         <AiOutlineLogout />
+					<NavLink to="/profile" onClick={logoutEffect} className="mt-2">Logout</NavLink>
+                    </div>
+					</>
+				}
+				</motion.nav>
 			</div>
 		</div>
 		)
