@@ -12,17 +12,20 @@ const stripe = require("stripe")(process.env.STRIPE_KEY)
 const registerSeller = async (req, res) => {
 	const { business_name, address } = req.body
 	const user_id = new mongoose.Types.ObjectId(req.user)
-	try {
-		if(!business_name || !address) {
+
+	if(!business_name || !address) {
 			return res.status(400).json({error: "All fields must be filled."})
 		}
 		const exists = await Seller.findOne({business_name})
 		if(exists) {
 			return res.status(400).json({error: "Name already taken"})
 		}
+
+	try {
+		
 		const updateUser = await User.findOneAndUpdate({ _id: user_id}, { role: "Seller"}, { new: true})
 		const newSeller = await Seller.create({ user_id: user_id, business_name: business_name, address: address })
-		res.status(200).json("Created new Business " + newSeller)
+		res.status(200).json(updateUser.role)
 	} catch(error) {
 		res.status(400).json(error)
 	}
@@ -99,7 +102,7 @@ const registerBuyer = async (req, res) => {
 	try {
 		const updateUser = await User.findOneAndUpdate({ _id: user_id}, { role: "Buyer"}, { new: true})
 		const newUser = await Buyer.create({ user_id: user_id })
-		res.status(200).json(newUser)
+		res.status(200).json(updateUser.role)
 	} catch(error) {
 		res.status(400).json(error)
 	}

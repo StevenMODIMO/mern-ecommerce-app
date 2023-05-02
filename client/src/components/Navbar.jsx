@@ -42,7 +42,7 @@ export default function Navbar() {
 					<>
 					<div className="flex flex-col items-center gap-2 md:flex-row gap-3">
 						<AiFillHome />
-					     <NavLink to="/" onClick={closeNavbar} className="mt-2">Home</NavLink>
+					     <NavLink to="/landing" onClick={closeNavbar} className="mt-2">Home</NavLink>
 					</div>
 					<div className="flex flex-col items-center gap-2 md:flex-row">
 						<AiOutlineUserAdd />
@@ -59,16 +59,18 @@ export default function Navbar() {
 						<AiFillHome />
 					     <NavLink to="/" onClick={closeNavbar} className="mt-2">Home</NavLink>
 					</div>
-					<div className="flex flex-col items-center gap-2 md:flex-row">
-						<MdDashboard />
-                        <NavLink to="/dashboard" onClick={closeNavbar} className="mt-2">Dashboard</NavLink>
-					</div>
+					{user.role == "Seller" && <div className="flex flex-col items-center gap-2 md:flex-row">
+											<MdDashboard />
+					                        <NavLink to="/dashboard" onClick={closeNavbar} className="mt-2">Dashboard</NavLink>
+										</div>}
                     <div className="flex flex-col items-center gap-2 md:flex-row">
                          <BiUser />
-					<NavLink to="/profile" onClick={closeNavbar} className="mt-2">Profile</NavLink>
+					<NavLink to="/profile" onClick={closeNavbar} className="mt-2">{user.name}</NavLink>
                     </div>
                     {user.role == "Buyer" && <div className="flex flex-col items-center m-3 md:flex-row">
-                                             <AiOutlineShoppingCart />                    
+                                             <NavLink to="/cart">
+                                             <AiOutlineShoppingCart />
+                                             </NavLink>                    
                                         </div>}
                     <div className="flex flex-col items-center gap-2 md:flex-row">
                          <AiOutlineLogout />
