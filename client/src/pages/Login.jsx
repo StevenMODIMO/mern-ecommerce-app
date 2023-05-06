@@ -38,14 +38,14 @@ import { useNavigate } from "react-router-dom"
 		}
 	}
 	return (
-		<div>
+		<div className="bg-gradient-to-t from-indigo-50 h-screen">
 		  <header className="text-center m-2 underline">Login To Countinue</header>
-		  <form onSubmit={handleSubmission} onFocus={() => setError(null)} className="flex flex-col items-center justify-center gap-3 bg-gradient-to-t from-indigo-50 p-1 m-1 rounded h-80">
+		  <form onSubmit={handleSubmission} onFocus={() => setError(null)} className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded h-80 md:">
 		  	<input type="text" value={email} onChange={(e) => setEmail(e.target.value)} className="border-2 border-blue-200 outline-none rounded p-1" placeholder="email address" />
 		  	<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="border-2 border-blue-200 outline-none rounded p-1" placeholder="password" />
 		  	<button className="border-2 border-blue-200 p-1 rounded bg-blue-200">Login</button>
+		  	{error && <div className="bg-red-300 text-center text-base m-2 p-3 rounded">{error}</div>}
 		  </form>
-		  {error && <div className="bg-red-300 text-center m-2 rounded bg-gradient-to-r from-indigo-50">{error}</div>}
 		</div>
 		)
 }

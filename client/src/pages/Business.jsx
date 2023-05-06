@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
+import { BiArrowBack } from "react-icons/bi"
 
 export default function Business() {
 	const [address, setAddress] = useState("")
@@ -36,18 +37,25 @@ export default function Business() {
 			value.role = json
 			const updated = JSON.stringify(value)
 			localStorage.setItem("user", updated)
-			navigate("/")
+			navigate("/dashboard")
 		}
 	}
 	return (
-		<div>
-            <div>Welcome To Business Page</div>
-            <form onSubmit={handleSubmission} onFocus={() => setError(null)} className="flex flex-col items-center justify-center gap-3 bg-gradient-to-t from-indigo-50 p-1 m-1 rounded h-80">
-            <input type="text" value={business_name} onChange={(e) => setBusinessName(e.target.value)} className="border-2 border-blue-200 outline-none rounded p-1" placeholder="business name" />
-		    <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="border-2 border-blue-200 outline-none rounded p-1" placeholder="address" />
-		  	<button className="border-2 border-blue-200 p-1 rounded bg-blue-200">Register Business</button>
+		<div className="flex flex-col gap-10">
+            <header className="flex flex-col items-center mt-10">
+                <div className="bg-green-400 p-1  rounded text-black w-fit flex gap-3" onClick={() => navigate("/")}>
+                    <BiArrowBack className="mt-1" />
+                	<button>Go Back</button>
+                </div>
+            	<div className="text-xl">Register Your Business Now</div>
+            </header>
+            <form onSubmit={handleSubmission} onFocus={() => setError(null)} className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded">
+            <input type="text" value={business_name} onChange={(e) => setBusinessName(e.target.value)} className="border-2 border-green-400 outline-none rounded p-1" placeholder="business name" />
+		    <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} className="border-2 border-green-400 outline-none rounded p-1" placeholder="address" />
+		  	<button className="bg-green-500 p-1 rounded">Register Business</button>
+		  	{error && <div className="bg-red-300 text-center text-base m-2 p-3 rounded">{error}</div>}
 		  </form>
-		  {error && <div className="bg-red-300 text-center m-2 rounded bg-gradient-to-r from-indigo-50">{error}</div>}
+		  
         </div>
 		)
 }

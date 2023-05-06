@@ -1,10 +1,13 @@
-
+import { useState, useEffect } from "react"
 import { useAuth } from "../context/AuthContext"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Navigate } from "react-router-dom"
+import { TbBusinessplan} from "react-icons/tb"
+import { BiPurchaseTag } from "react-icons/bi"
 
 export default function Home() {
 	const { user } = useAuth()
 	const navigate = useNavigate()
+	const [currentUser, setCurrentUser] = useState(user)
 	const sendBusinessPage = () => navigate("/register-business")
 	const registerBuyer = async() => {
 		const response = await fetch("http://localhost:5000/api/app/buyer", {
@@ -22,23 +25,39 @@ export default function Home() {
 			value.role = json
 			const updated = JSON.stringify(value)
 			localStorage.setItem("user", updated)
+			setCurrentUser(value)
+			navigate("/")
 		}
 
 		if(!response.ok) {
 			console.log(json.error)
 		}
 	}
+
+	useEffect(() => {
+		setCurrentUser(user)
+	}, [user])
+
+
 	return (
     <div>
-       {user.role == "None" ? <div>
-              	<header className="text-2xl underline">Choose A Role</header>
-              	    <main className="w-screen">
-              		    <div onClick={registerBuyer} className="bg-green-400 text-black mx-auto rounded p-1 m-1 text-center">I Want To Buy</div>
-              		    <div onClick={sendBusinessPage} className="bg-green-400 text-black mx-auto rounded p-1 m-1 text-center">I want To Sell</div>
-              	    </main>
-               </div>: <div>
-              	<header className="text-2xl underline">Welcome to Tronic Cart</header>
-               </div>}
+       	{currentUser.role === "None" &&
+       		<>
+       		<div className="flex flex-col items-center mt-20">
+          	<header className="text-2xl underline text-center">Choose A Role</header>
+          	<main className="w-screen">
+          		    <div onClick={registerBuyer} className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"><BiPurchaseTag /> I Want To Buy</div>
+          		    <div onClick={sendBusinessPage} className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"><TbBusinessplan /> 	I want To Sell</div>
+          	</main>
+         </div>
+         </>}
+         {currentUser.role === "Buyer" &&
+         <>
+         	<div>Start Buying</div>
+         </>
+      }
+
+      {currentUser.role === "Seller" && <Navigate to="/dashboard" />}
     </div>
 		)
 }

@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { NavLink } from "react-router-dom"
-import Logo from "../assets/TRONIC-CART.svg"
+import Logo from "../assets/TRONIC_MALL.svg"
 import { IoIosArrowDropdown, IoIosArrowDropup } from "react-icons/io"
 import { useAuth } from "../context/AuthContext"
 import { motion } from "framer-motion"
@@ -16,70 +16,83 @@ export default function Navbar() {
 	const closePanel = () => setOpen(false);
 
 	const logout = () => {
-    localStorage.removeItem("user");
-    dispatch({ type: "LOGOUT" });
-  };
-
-   const logoutEffect = () => {
-    logout();
-    closePanel();
-  };
+	    localStorage.removeItem("user");
+	    dispatch({ type: "LOGOUT" });
+	  };
+	
+	   const logoutEffect = () => {
+	    logout();
+	    closePanel();
+	  }; 
 
 	return (
-		<div>
-			<div className="md:flex justify-between">
-				<div className="flex justify-between m-1">
-					<NavLink to="/" onClick={closeNavbar}>
-						<img className="mt-2" src={Logo} alt="logo" />
-					</NavLink>
-					<motion.div onClick={openNav} className="md:hidden">
-						{!open ? <IoIosArrowDropdown className="text-3xl mt-1" /> : <IoIosArrowDropup className="text-3xl mt-1" />}
-					</motion.div>
+		<div className="md:flex justify-between">
+			<header className="flex justify-between m-1">
+				<img src={Logo} alt="app-logo" />
+				<div onClick={openNav} className="text-3xl md:hidden">
+					{open ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
 				</div>
-				<motion.nav className={!open ? "hidden md:flex gap-10 mr-5" : "flex flex-col items-center gap-3 mt-10"}>
-				
-					{!user ?
-					<>
-					<div className="flex flex-col items-center gap-2 md:flex-row gap-3">
-						<AiFillHome />
-					     <NavLink to="/landing" onClick={closeNavbar} className="mt-2">Home</NavLink>
-					</div>
-					<div className="flex flex-col items-center gap-2 md:flex-row">
-						<AiOutlineUserAdd />
-					     <NavLink to="/signup" onClick={closeNavbar} className="mt-2">Signup</NavLink>
-					</div>
-					<div className="flex flex-col items-center gap-2 md:flex-row">
-						<AiOutlineLogin />
-					     <NavLink to="/login" onClick={closeNavbar} className="mt-2">Login</NavLink>
-					</div>
-					</>
-					:
-					<>
-					<div className="flex flex-col items-center gap-2 md:flex-row">
-						<AiFillHome />
-					     <NavLink to="/" onClick={closeNavbar} className="mt-2">Home</NavLink>
-					</div>
-					{user.role == "Seller" && <div className="flex flex-col items-center gap-2 md:flex-row">
-											<MdDashboard />
-					                        <NavLink to="/dashboard" onClick={closeNavbar} className="mt-2">Dashboard</NavLink>
-										</div>}
-                    <div className="flex flex-col items-center gap-2 md:flex-row">
-                         <BiUser />
-					<NavLink to="/profile" onClick={closeNavbar} className="mt-2">{user.name}</NavLink>
-                    </div>
-                    {user.role == "Buyer" && <div className="flex flex-col items-center m-3 md:flex-row">
-                                             <NavLink to="/cart">
-                                             <AiOutlineShoppingCart />
-                                             </NavLink>                    
-                                        </div>}
-                    <div className="flex flex-col items-center gap-2 md:flex-row">
-                         <AiOutlineLogout />
-					<NavLink to="/profile" onClick={logoutEffect} className="mt-2">Logout</NavLink>
-                    </div>
-					</>
-				}
-				</motion.nav>
-			</div>
+			</header>
+			<main>
+			     <nav className="flex gap-3">
+			     {!user ? 
+			     	<>
+			     	<div className="flex">
+			     	<AiFillHome />
+			     		<NavLink to="/landing">Landing</NavLink>
+			     	</div>
+			     	<div className="flex">
+			     	<AiOutlineUserAdd />
+			     		<NavLink to="/signup">Signup</NavLink>
+			     	</div>
+			     	<div className="flex">
+			     	<AiOutlineLogin />
+			     		<NavLink to="/login">Login</NavLink>
+			     	</div>
+			     	</>
+			     : <>
+			          {user.role === "Buyer" &&
+			          	<>
+			          	<div className="flex">
+			               <AiFillHome />
+			          	<NavLink to="/">Home</NavLink>
+			          </div>
+			          <div className="flex">
+			          <AiOutlineShoppingCart />
+			          	<NavLink to="/cart">Cart</NavLink>
+			          </div>
+			          </>
+			     }
+			           {user.role === "Seller" &&
+			           	<>
+			           	<div className="flex">
+			          <MdDashboard />
+			          	<NavLink to="/dashboard">Dashboard</NavLink>
+			          </div>
+			          </>
+			          }
+			          {user.role === "Buyer" && (
+                          <div className="flex">
+                            <BiUser />
+                            <NavLink to="/profile">{user.name}</NavLink>
+                          </div>
+                        )}
+                        
+                        {user.role === "Seller" && (
+                          <div className="flex">
+                            <BiUser />
+                            <NavLink to="/profile">{user.name}</NavLink>
+                          </div>
+                        )}
+
+			     	<div onClick={logoutEffect} className="cursor-pointer flex">
+			     	     <AiOutlineLogout />
+			     		<div>Logout</div>
+			     	</div>
+			     	</>
+			     }
+			     </nav>
+			</main>
 		</div>
 		)
 }
