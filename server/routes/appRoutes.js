@@ -5,6 +5,7 @@ const {
   registerBuyer,
   newProduct,
   getProducts,
+  getImage,
   deleteProducts,
   placeOrder,
   cancelOrder,
@@ -15,7 +16,16 @@ const {
 } = require("../controllers/appControllers");
 
 const multer = require("multer");
-const upload = multer({ dest: "images/" });
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, "images/")
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+const upload = multer({ storage: storage })
 
 router.use(requireAuth);
 
@@ -26,6 +36,8 @@ router.post("/buyer", registerBuyer);
 router.post("/new-product", upload.single("image"), newProduct);
 
 router.get("/products", getProducts);
+
+router.get("/images/:filename", getImage)
 
 router.delete("/:id", deleteProducts);
 

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const sellerSchema = new mongoose.Schema(
   {
     user_id: {
-      type: mongoose.Schema.Types.ObjectId
+      type: mongoose.Schema.Types.ObjectId,
     },
     business_name: {
       type: String,
@@ -11,41 +11,45 @@ const sellerSchema = new mongoose.Schema(
     address: {
       type: String,
     },
-    products: [{
-     product_name: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-    price: {
-      type: Number,
-    },
-    quantity: {
-      type: Number
-    },
-    currency: {
-      type: String
-    },
-    rates:[
+    products: [
       {
-        rate: {
+        imagePath: {
+          type: String,
+        },
+        product_name: {
+          type: String,
+        },
+        description: {
+          type: String,
+        },
+        price: {
           type: Number,
-          default: 0,
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId
-    } 
-      }
-
+        },
+        quantity: {
+          type: Number,
+        },
+        currency: {
+          type: String,
+        },
+        rates: [
+          {
+            rate: {
+              type: Number,
+              default: 0,
+            },
+            user: {
+              type: mongoose.Schema.Types.ObjectId,
+            },
+          },
         ],
-    category: {
-      type: String,
-    },
-    available: {
-      type: Boolean,
-    }
-  }]
+        category: {
+          type: String,
+        },
+        available: {
+          type: Boolean,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

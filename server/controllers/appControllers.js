@@ -4,7 +4,7 @@ const Buyer = require("../models/buyerModel")
 const User = require("../models/authModel")
 const mongoose = require("mongoose")
 const stripe = require("stripe")(process.env.STRIPE_KEY)
-
+const path = require("path")
 
 // Admin Controllers
 
@@ -35,12 +35,14 @@ const registerSeller = async (req, res) => {
 const newProduct = async (req, res) => {
 	const user_id = req.user
 	const { product_name, description, price, quantity, currency, category } = req.body
-	if(!product_name || !description || !price || !quantity || !currency || !category) {
+	if(!req.file || !product_name || !description || !price || !quantity || !currency || !category) {
 		return res.status(400).json({error: "All fields must be filled."})
 	}
-
+	const imagePath = path.normalize(req.file.path).replace(/\\/g, "/")
+	
 	try{
 		const newProduct = await Seller.findOneAndUpdate({ user_id: user_id}, { $push: { products: {
+			imagePath: imagePath,
 			product_name: product_name,
 			description: description,
 			price: price,
@@ -52,6 +54,7 @@ const newProduct = async (req, res) => {
 	} catch(error) {
 		res.status(400).json(error)
 	}
+	
 }
 
 
@@ -60,6 +63,16 @@ const getProducts = async (req, res) => {
 	try {
 		const products = await Seller.findOne({user_id})
 		res.status(200).json(products)
+	} catch(error) {
+		res.status(400).json(error)
+	}
+}
+
+const getImage = async (req, res) => {
+	try {
+		const image = path.join(__dirname, "images", req.params.filename)
+		
+		res.sendFile(image)
 	} catch(error) {
 		res.status(400).json(error)
 	}
@@ -89,10 +102,6 @@ const getOrders = async (req, res) => {
 		res.status(400).json(error)
 	}
 }
-
-const getCompletedOrders = async (req, res) => {}
-
-
 
 // User Controllers
 
@@ -125,9 +134,6 @@ const placeOrder = async (req, res) => {
 		res.status(400).json(error)
 	}
 }
-
-
-const completeOrder = async (req, res) => {}
 
 
 const cancelOrder = async (req, res) => {
@@ -175,9 +181,6 @@ const removeWishList = async (req, res) => {
 	}
 }
 
-const getPlacedOrders = async (req, res) => {}
-
-
 const rateProduct = async (req, res) => {
 	const { product_id } = req.body
 	const user_id = req.user
@@ -202,6 +205,7 @@ module.exports = {
     registerBuyer, 
     newProduct, 
     getProducts, 
+	getImage,
     deleteProducts,
     placeOrder,
     cancelOrder,
