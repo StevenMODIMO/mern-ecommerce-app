@@ -10,7 +10,6 @@ export default function Dashboard() {
   const [quantity, setQuantity] = useState("");
   const [currency, setCurrency] = useState("Select an option");
   const [category, setCategory] = useState("");
-  const [imageUrl, setImageUrl] = useState()
 
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
@@ -71,13 +70,15 @@ export default function Dashboard() {
       setCategory("");
       setQuantity("");
       setImage("");
-      setProducts([...products, json.product].sort((a, b) => a.category.localeCompare(b.category)));
+      setProducts(
+        [...products, json.product].sort((a, b) =>
+          a.category.localeCompare(b.category)
+        )
+      );
     }
   };
 
-  useEffect(() => {
-
-  })
+  useEffect(() => {});
 
   const deleteProduct = async (id) => {
     await fetch(`http://localhost:5000/api/app/${id}`, {
@@ -91,12 +92,39 @@ export default function Dashboard() {
     setProducts(newProducts);
   };
 
-
   return (
     <div>
       <header>
         <div className="text-2xl underline">Dashboard</div>
       </header>
+
+      <main>
+        <div>
+          {products.map((product) => {
+            return (
+              <div key={product._id}>
+                <img
+                  className="w-40 h-40"
+                  src={`http://localhost:5000/${product.imagePath}`}
+                  alt={product.imagePath}
+                />
+                <div>{product.product_name}</div>
+                <div>{product.quantity}</div>
+                <div>{product.price}</div>
+                <div>{product.currency}</div>
+                <div>{product._id}</div>
+                <button
+                  onClick={() => deleteProduct(product._id)}
+                  className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
+                >
+                  Delete Product
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </main>
+
       <main>
         <form
           onSubmit={handleSubmission}
@@ -174,29 +202,6 @@ export default function Dashboard() {
             {error}
           </div>
         )}
-      </main>
-
-      <main>
-        <div>
-          {products.map((product) => {
-            return (
-              <div key={product._id}>
-                <img src={`http://localhost:5000/api/app/${product.imagePath}`} alt={product._id} />
-                <div>{product.product_name}</div>
-                <div>{product.quantity}</div>
-                <div>{product.price}</div>
-                <div>{product.currency}</div>
-                <div>{product._id}</div>
-                <button
-                  onClick={() => deleteProduct(product._id)}
-                  className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
-                >
-                  Delete Product
-                </button>
-              </div>
-            );
-          })}
-        </div>
       </main>
     </div>
   );

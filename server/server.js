@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoutes = require("./routes/authRoutes");
 const appRoutes = require("./routes/appRoutes")
+const path = require("path")
 
 app.use(cors());
 app.use(express.json());
@@ -14,6 +15,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/images/:filename", async (req, res) => {
+  const imagePath = path.join(__dirname, "images", req.params.filename)
+  res.sendFile(imagePath)
+})
 app.use("/api/auth", authRoutes);
 app.use("/api/app", appRoutes)
 

@@ -67,16 +67,15 @@ const getProducts = async (req, res) => {
 		res.status(400).json(error)
 	}
 }
-
 const getImage = async (req, res) => {
-	try {
-		const image = path.join(__dirname, "images", req.params.filename)
-		
-		res.sendFile(image)
-	} catch(error) {
-		res.status(400).json(error)
-	}
+  try {
+    const image = path.join(__dirname, '..', 'images', req.params.filename);
+    res.sendFile(image);
+  } catch (error) {
+    res.status(400).json(error);
+  }
 }
+
   
 
 const deleteProducts = async (req, res) => {

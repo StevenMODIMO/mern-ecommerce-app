@@ -18,6 +18,7 @@
     "mongoose": "^7.0.3",
     "multer": "^1.4.5-lts.1",
     "stripe": "^12.3.0",
+    "uuid": "^9.0.0",
     "validator": "^13.9.0"
   }
 }
