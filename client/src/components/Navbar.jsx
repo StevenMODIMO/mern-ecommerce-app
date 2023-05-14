@@ -32,8 +32,8 @@ export default function Navbar() {
   };
 
   return (
-    <div className="lg:flex">
-      <header className="flex justify-between m-1">
+    <div className="lg:flex justify-between lg:bg-gray-800/100">
+      <header className="flex justify-between m-1 lg:m-5">
         <img src={Logo} alt="app-logo" />
         <div onClick={openNav} className="lg:hidden">
           {open ? <IoIosArrowDropup /> : <IoIosArrowDropdown />}
@@ -43,62 +43,94 @@ export default function Navbar() {
         <nav
           className={
             open
-              ? "absolute left-0 bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5 lg:relative"
-              : "absolute -left-full bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5"
+              ? "absolute left-0 bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5"
+              : "absolute -left-full bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5 lg:relative lg:left-0 lg:h-0 lg:flex-row lg:gap-5 lg:mr-10 lg:mt-5"
           }
         >
           {!user ? (
-            <div>
-              <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+            <div className="lg:flex gap-5">
+              <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                 <AiFillHome />
-                <NavLink to="/landing" onClick={closeNavbar}>Landing</NavLink>
+                <NavLink to="/landing" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Landing</NavLink>
               </div>
-              <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+              <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                 <AiOutlineUserAdd />
-                <NavLink to="/signup" onClick={closeNavbar}>Signup</NavLink>
+                <NavLink to="/signup" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Signup</NavLink>
               </div>
-              <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+              <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                 <AiOutlineLogin />
-                <NavLink to="/login" onClick={closeNavbar}>Login</NavLink>
+                <NavLink to="/login" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Login</NavLink>
               </div>
             </div>
           ) : (
             <>
               {user.role === "Buyer" && (
                 <>
-                  <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+                  <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                     <AiFillHome />
-                    <NavLink to="/" onClick={closeNavbar}>Home</NavLink>
+                    <NavLink to="/" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Home</NavLink>
                   </div>
-                  <div className="flex gap-2 ml-24 mt-5 md:ml-80">
+                  <div className="flex gap-2 ml-24 mt-5 md:ml-80 lg:ml-0 lg:mt-0">
                     <AiOutlineShoppingCart />
-                    <NavLink to="/cart" onClick={closeNavbar}>Cart</NavLink>
+                    <NavLink to="/cart" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Cart</NavLink>
                   </div>
                 </>
               )}
               {user.role === "Seller" && (
                 <>
-                  <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+                  <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                     <MdDashboard className="mt-1" />
-                    <NavLink to="/dashboard" onClick={closeNavbar}>Dashboard</NavLink>
+                    <NavLink to="/dashboard" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>Dashboard</NavLink>
                   </div>
                 </>
               )}
               {user.role === "Buyer" && (
-                <div className="flex gap-2 ml-24 mt-5 md:ml-80">
+                <div className="flex gap-2 ml-24 mt-5 md:ml-80 lg:ml-0 lg:mt-0">
                   <BiUser className="mt-1" />
-                  <NavLink to="/profile" onClick={closeNavbar}>{user.name}</NavLink>
+                  <NavLink to="/profile" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>{user.name}</NavLink>
                 </div>
               )}
 
               {user.role === "Seller" && (
-                <div className="flex gap-2 ml-24 mt-14 md:ml-80">
+                <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
                   <BiUser className="mt-1" />
-                  <NavLink to="/profile" onClick={closeNavbar}>{user.name}</NavLink>
+                  <NavLink to="/profile" className={({ isActive }) =>
+                      isActive
+                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
+                        : "border-none"
+                    } onClick={closeNavbar}>{user.name}</NavLink>
                 </div>
               )}
 
-              <div onClick={logoutEffect} className={user.role == "Buyer" ? "flex gap-2 ml-24 mt-5 md:ml-80" : "flex gap-2 ml-24 mt-10 md:ml-80"}>
+              <div onClick={logoutEffect} className={user.role == "Buyer" ? "flex gap-2 ml-24 mt-5 md:ml-80 lg:ml-0 lg:mt-0 cursor-pointer" : "flex gap-2 ml-24 mt-10 md:ml-80 lg:ml-0 lg:mt-0 cursor-pointer"}>
                 <AiOutlineLogout className="mt-1" />
                 <div>Logout</div>
               </div>
