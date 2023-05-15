@@ -93,30 +93,33 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <header>
-        <div>Dashboard</div>
-      </header>
-
+    <div className="w-screen">
       <main>
         <div>
           {products.map((product) => {
             return (
-              <div key={product._id}>
+              <div key={product._id} className="shadow m-10">
                 <img
+                className="h-48 w-80"
                   src={`http://localhost:5000/${product.imagePath}`}
                   alt={product.imagePath}
                 />
+                <section className="text-sm">
                 <div>{product.product_name}</div>
                 <div>{product.quantity}</div>
                 <div>{product.price}</div>
                 <div>{product.currency}</div>
                 <div>{product._id}</div>
+                </section>
+                <section className="flex justify-between text-xs">
                 <button
+                className="p-2 bg-red-500 rounded m-2"
                   onClick={() => deleteProduct(product._id)}
                 >
                   Delete Product
                 </button>
+                <button className="p-2 bg-green-500 rounded m-2">Edit Info</button>
+                </section>
               </div>
             );
           })}
