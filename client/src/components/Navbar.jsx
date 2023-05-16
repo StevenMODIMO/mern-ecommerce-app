@@ -43,8 +43,8 @@ export default function Navbar() {
         <nav
           className={
             open
-              ? "absolute left-0 bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5"
-              : "absolute -left-full bg-black w-full h-96 text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5 lg:relative lg:left-0 lg:h-0 lg:flex-row lg:gap-5 lg:mr-10 lg:mt-5"
+              ? "absolute left-0 bg-black w-full h-full text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5"
+              : "absolute -left-full bg-black w-full h-full text-green-500 transition-all duration-700 ease-in-out rounded mt-2 flex flex-col gap-5 lg:relative lg:left-0 lg:h-0 lg:flex-row lg:gap-5 lg:mr-10 lg:mt-5"
           }
         >
           {!user ? (

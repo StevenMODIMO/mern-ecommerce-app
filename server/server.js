@@ -15,6 +15,10 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get("/", (req, res) => {
+  res.send("MERN Ecommerce")
+})
+
 app.get("/images/:filename", async (req, res) => {
   const imagePath = path.join(__dirname, "images", req.params.filename)
   res.sendFile(imagePath)

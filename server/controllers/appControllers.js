@@ -67,6 +67,21 @@ const getProducts = async (req, res) => {
 		res.status(400).json(error)
 	}
 }
+
+const getProductById = async(req, res) => {
+	const user_id = req.user
+	try {
+		const { id } = req.params
+		const updated = await Seller.findOne({ user_id: user_id})
+		updated.products.filter(product => {
+			if(product._id == id) {
+				res.status(200).json(product)
+			}
+		})
+	} catch(error) {
+		res.staus(400).json(error)
+	}
+}
 const getImage = async (req, res) => {
   try {
     const image = path.join(__dirname, '..', 'images', req.params.filename);
@@ -204,6 +219,7 @@ module.exports = {
     registerBuyer, 
     newProduct, 
     getProducts, 
+	getProductById,
 	getImage,
     deleteProducts,
     placeOrder,

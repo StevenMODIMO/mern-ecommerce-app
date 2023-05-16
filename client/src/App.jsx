@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import Profile from "./pages/Profile"
 import Dashboard from "./pages/Dashboard"
+import Edit from "./pages/Edit"
 import Cart from "./pages/Cart"
 import Landing from "./pages/Landing"
 import Business from "./pages/Business"
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={user ? <Home /> : <Navigate to="/landing" />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/landing" />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/landing" />} />
+          <Route path="/edit/:id" element={user ? <Edit /> : <Navigate to="/landing" /> } />
           <Route path="/cart" element={user ? <Cart /> : <Navigate to="/landing" />} />
           <Route path="/register-business" element={user ? <Business /> : <Navigate to="/" />} />
         </Routes>

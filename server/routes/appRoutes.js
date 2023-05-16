@@ -5,6 +5,7 @@ const {
   registerBuyer,
   newProduct,
   getProducts,
+  getProductById,
   getImage,
   deleteProducts,
   placeOrder,
@@ -36,6 +37,8 @@ router.post("/buyer", registerBuyer);
 router.post("/new-product", upload.single("image"), newProduct);
 
 router.get("/products", getProducts);
+
+router.get("/product/:id", getProductById)
 
 router.get("/images/:filename", getImage)
 
