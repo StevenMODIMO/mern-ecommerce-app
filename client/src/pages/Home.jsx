@@ -9,6 +9,9 @@ export default function Home() {
 	const navigate = useNavigate()
 	const [currentUser, setCurrentUser] = useState(user)
 	const sendBusinessPage = () => navigate("/register-business")
+	const [products, setProducts] = useState([])
+
+
 	const registerBuyer = async() => {
 		const response = await fetch("http://localhost:5000/api/app/buyer", {
 			method: "POST",
@@ -37,6 +40,24 @@ export default function Home() {
 	useEffect(() => {
 		setCurrentUser(user)
 	}, [user])
+
+	useEffect(() => {
+		const getProducts = async () => {
+			const response = await fetch("http://localhost:5000/api/app", {
+				headers: {
+					Authorization: `Bearer ${user.token}`
+				}
+			})
+
+			const json = await response.json()
+
+			if(response.ok) {
+				console.log(json)
+			}
+		}
+
+		getProducts()
+	})
 
 
 	return (

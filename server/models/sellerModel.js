@@ -45,9 +45,6 @@ const sellerSchema = new mongoose.Schema(
         category: {
           type: String,
         },
-        available: {
-          type: Boolean,
-        },
       },
     ],
   },
