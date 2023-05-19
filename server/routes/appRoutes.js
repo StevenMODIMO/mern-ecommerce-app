@@ -4,12 +4,13 @@ const {
   getAllProducts,
   registerSeller,
   registerBuyer,
+  getSingleProduct,
   newProduct,
   getProducts,
   getProductById,
   getImage,
   deleteProducts,
-  placeOrder,
+  addToCart,
   cancelOrder,
   addWishList,
   rateProduct,
@@ -37,6 +38,8 @@ router.post("/seller", registerSeller);
 
 router.post("/buyer", registerBuyer);
 
+router.get("/order/:id", getSingleProduct)
+
 router.post("/new-product", upload.single("image"), newProduct);
 
 router.get("/products", getProducts);
@@ -47,7 +50,7 @@ router.get("/images/:filename", getImage)
 
 router.delete("/:id", deleteProducts);
 
-router.post("/order", placeOrder);
+router.post("/cart", addToCart);
 
 router.delete("/remove-order/:id", cancelOrder);
 

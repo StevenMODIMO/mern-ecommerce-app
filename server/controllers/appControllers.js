@@ -83,6 +83,7 @@ const newProduct = async (req, res) => {
       { new: true }
     );
     const product = await Product.create({
+      from: newProduct.business_name,
       imagePath: imagePath,
       product_name: product_name,
       description: description,
@@ -118,7 +119,7 @@ const getProductById = async (req, res) => {
       }
     });
   } catch (error) {
-    res.staus(400).json(error);
+    res.status(400).json(error);
   }
 };
 const getImage = async (req, res) => {
@@ -177,7 +178,17 @@ const registerBuyer = async (req, res) => {
   }
 };
 
-const placeOrder = async (req, res) => {
+const getSingleProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const doc = await Product.findOne({_id:id});
+    res.status(200).json(doc)
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+const addToCart = async (req, res) => {
   const user_id = req.user;
   const {
     business_name,
@@ -185,8 +196,6 @@ const placeOrder = async (req, res) => {
     description,
     price,
     quantity,
-    currency,
-    category,
   } = req.body;
   try {
     const newProduct = await Buyer.findOneAndUpdate(
@@ -296,12 +305,13 @@ module.exports = {
   getAllProducts,
   registerSeller,
   registerBuyer,
+  getSingleProduct,
   newProduct,
   getProducts,
   getProductById,
   getImage,
   deleteProducts,
-  placeOrder,
+  addToCart,
   cancelOrder,
   addWishList,
   rateProduct,
