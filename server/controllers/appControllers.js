@@ -191,18 +191,24 @@ const getSingleProduct = async (req, res) => {
 const addToCart = async (req, res) => {
   const user_id = req.user;
   const {
+    imagePath,
     business_name,
     product_name,
     description,
     price,
     quantity,
   } = req.body;
+
+  if(!quantity) {
+    return res.status(400).json({error: "All fields must be filled."})
+  }
   try {
     const newProduct = await Buyer.findOneAndUpdate(
       { user_id: user_id },
       {
         $push: {
           orders: {
+            imagePath: imagePath,
             business_name: business_name,
             product_name: product_name,
             description: description,
@@ -218,6 +224,17 @@ const addToCart = async (req, res) => {
     res.status(400).json(error);
   }
 };
+
+const getCartProducts = async (req, res) => {
+  const user_id = req.user
+  try {
+    const orders = await Buyer.findOne({ user_id: user_id })
+    const userOrders = orders.orders
+    res.status(200).json(userOrders)
+  } catch(error) {
+    res.status(400).json(error)
+  }
+}
 
 const cancelOrder = async (req, res) => {
   const { id } = req.params;
@@ -241,14 +258,18 @@ const cancelOrder = async (req, res) => {
 
 const addWishList = async (req, res) => {
   const user_id = req.user;
-  const { product_name, description, price, quantity, currency, category } =
+  const { product_name, description, price, quantity, imagePath } =
     req.body;
+    if(!quantity) {
+      return res.status(400).json({error: "All fields must be filled."})
+    }
   try {
     const newProduct = await Buyer.findOneAndUpdate(
       { user_id: user_id },
       {
         $push: {
           wishlist: {
+            imagePath: imagePath,
             product_name: product_name,
             description: description,
             price: price,
@@ -263,6 +284,17 @@ const addWishList = async (req, res) => {
     res.status(400).json(error);
   }
 };
+
+const getWishlistProducts = async (req, res) => {
+  const user_id = req.user
+  try {
+    const wishList = await Buyer.findOne({ user_id: user_id })
+    const userWishList = wishList.wishlist
+    res.status(200).json(userWishList)
+  } catch(error) {
+    res.status(400).json(error)
+  }
+}
 
 const removeWishList = async (req, res) => {
   const user_id = req.user;
@@ -312,9 +344,11 @@ module.exports = {
   getImage,
   deleteProducts,
   addToCart,
+  getCartProducts,
   cancelOrder,
   addWishList,
   rateProduct,
+  getWishlistProducts,
   removeWishList,
   getOrders,
 };

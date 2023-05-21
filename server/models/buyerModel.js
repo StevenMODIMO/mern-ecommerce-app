@@ -5,7 +5,7 @@ const buyerSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId
     },
 	orders: [{
-		business_name: String,
+		imagePath: String,
 		product_name: String,
 		description: String,
 		price: Number,
@@ -17,6 +17,7 @@ const buyerSchema = new mongoose.Schema({
 		}
 	}],
 	wishlist: [{
+		imagePath: String,
 		product_name: String,
 		price: Number,
 		quantity: Number

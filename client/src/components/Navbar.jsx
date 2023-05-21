@@ -92,7 +92,7 @@ export default function Navbar() {
                       isActive
                         ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
                         : "border-none"
-                    } onClick={closeNavbar}>Cart</NavLink>
+                    } onClick={closeNavbar}>Dashboard</NavLink>
                   </div>
                 </>
               )}
@@ -107,27 +107,6 @@ export default function Navbar() {
                     } onClick={closeNavbar}>Dashboard</NavLink>
                   </div>
                 </>
-              )}
-              {user.role === "Buyer" && (
-                <div className="flex gap-2 ml-24 mt-5 md:ml-80 lg:ml-0 lg:mt-0">
-                  <BiUser className="mt-1" />
-                  <NavLink to="/profile" className={({ isActive }) =>
-                      isActive
-                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
-                        : "border-none"
-                    } onClick={closeNavbar}>{user.name}</NavLink>
-                </div>
-              )}
-
-              {user.role === "Seller" && (
-                <div className="flex gap-2 ml-24 mt-14 md:ml-80 lg:ml-0 lg:mt-0">
-                  <BiUser className="mt-1" />
-                  <NavLink to="/profile" className={({ isActive }) =>
-                      isActive
-                        ? "border-b-4 border-green-500 transition duration-500 ease-in-out"
-                        : "border-none"
-                    } onClick={closeNavbar}>{user.name}</NavLink>
-                </div>
               )}
 
               <div onClick={logoutEffect} className={user.role == "Buyer" ? "flex gap-2 ml-24 mt-5 md:ml-80 lg:ml-0 lg:mt-0 cursor-pointer" : "flex gap-2 ml-24 mt-10 md:ml-80 lg:ml-0 lg:mt-0 cursor-pointer"}>

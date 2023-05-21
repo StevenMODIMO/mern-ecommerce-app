@@ -11,9 +11,11 @@ const {
   getImage,
   deleteProducts,
   addToCart,
+  getCartProducts,
   cancelOrder,
   addWishList,
   rateProduct,
+  getWishlistProducts,
   removeWishList,
   getOrders,
 } = require("../controllers/appControllers");
@@ -52,11 +54,15 @@ router.delete("/:id", deleteProducts);
 
 router.post("/cart", addToCart);
 
+router.get("/orders", getCartProducts)
+
 router.delete("/remove-order/:id", cancelOrder);
 
 router.post("/add-wishlist", addWishList);
 
 router.post("/rates", rateProduct);
+
+router.get("/get-wishlist", getWishlistProducts)
 
 router.delete("/remove-wishlist/:id", removeWishList);
 
