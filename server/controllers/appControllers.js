@@ -11,8 +11,8 @@ const path = require("path");
 
 const getAllProducts = async (req, res) => {
   try {
-    const docs = await Product.find()
-	res.status(200).json(docs)
+    const docs = await Product.find();
+    res.status(200).json(docs);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -83,6 +83,7 @@ const newProduct = async (req, res) => {
       { new: true }
     );
     const product = await Product.create({
+      product_id: newProduct._id,
       from: newProduct.business_name,
       imagePath: imagePath,
       product_name: product_name,
@@ -143,7 +144,12 @@ const deleteProducts = async (req, res) => {
             _id: id,
           },
         },
-      }
+      },
+      { new: true }
+    );
+    const deleteFromProduct = await Product.findOneAndDelete(
+      { product_id: deletedProduct._id },
+      { new: true }
     );
     res.status(200).json(deletedProduct);
   } catch (error) {
@@ -181,8 +187,8 @@ const registerBuyer = async (req, res) => {
 const getSingleProduct = async (req, res) => {
   try {
     const { id } = req.params;
-    const doc = await Product.findOne({_id:id});
-    res.status(200).json(doc)
+    const doc = await Product.findOne({ _id: id });
+    res.status(200).json(doc);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -196,11 +202,12 @@ const addToCart = async (req, res) => {
     product_name,
     description,
     price,
+    currency,
     quantity,
   } = req.body;
 
-  if(!quantity) {
-    return res.status(400).json({error: "All fields must be filled."})
+  if (!quantity) {
+    return res.status(400).json({ error: "All fields must be filled." });
   }
   try {
     const newProduct = await Buyer.findOneAndUpdate(
@@ -213,6 +220,7 @@ const addToCart = async (req, res) => {
             product_name: product_name,
             description: description,
             price: price,
+            currency: currency,
             quantity: quantity,
           },
         },
@@ -226,15 +234,15 @@ const addToCart = async (req, res) => {
 };
 
 const getCartProducts = async (req, res) => {
-  const user_id = req.user
+  const user_id = req.user;
   try {
-    const orders = await Buyer.findOne({ user_id: user_id })
-    const userOrders = orders.orders
-    res.status(200).json(userOrders)
-  } catch(error) {
-    res.status(400).json(error)
+    const orders = await Buyer.findOne({ user_id: user_id });
+    const userOrders = orders.orders;
+    res.status(200).json(userOrders);
+  } catch (error) {
+    res.status(400).json(error);
   }
-}
+};
 
 const cancelOrder = async (req, res) => {
   const { id } = req.params;
@@ -258,11 +266,11 @@ const cancelOrder = async (req, res) => {
 
 const addWishList = async (req, res) => {
   const user_id = req.user;
-  const { product_name, description, price, quantity, imagePath } =
+  const { product_name, description, price, currency, quantity, imagePath } =
     req.body;
-    if(!quantity) {
-      return res.status(400).json({error: "All fields must be filled."})
-    }
+  if (!quantity) {
+    return res.status(400).json({ error: "All fields must be filled." });
+  }
   try {
     const newProduct = await Buyer.findOneAndUpdate(
       { user_id: user_id },
@@ -273,6 +281,7 @@ const addWishList = async (req, res) => {
             product_name: product_name,
             description: description,
             price: price,
+            currency: currency,
             quantity: quantity,
           },
         },
@@ -286,15 +295,15 @@ const addWishList = async (req, res) => {
 };
 
 const getWishlistProducts = async (req, res) => {
-  const user_id = req.user
+  const user_id = req.user;
   try {
-    const wishList = await Buyer.findOne({ user_id: user_id })
-    const userWishList = wishList.wishlist
-    res.status(200).json(userWishList)
-  } catch(error) {
-    res.status(400).json(error)
+    const wishList = await Buyer.findOne({ user_id: user_id });
+    const userWishList = wishList.wishlist;
+    res.status(200).json(userWishList);
+  } catch (error) {
+    res.status(400).json(error);
   }
-}
+};
 
 const removeWishList = async (req, res) => {
   const user_id = req.user;

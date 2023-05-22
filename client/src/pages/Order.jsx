@@ -45,6 +45,7 @@ export default function Order() {
         product_name: product.product_name,
         description: product.description,
         price: product.price,
+        currency: product.currency,
         quantity: quantity,
       }),
     });

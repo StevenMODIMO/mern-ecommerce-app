@@ -44,6 +44,7 @@ export default function WishList() {
         product_name: product.product_name,
         description: product.description,
         price: product.price,
+        currency: product.currency,
         quantity: quantity,
       }),
     });

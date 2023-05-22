@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { NavLink } from "react-router-dom";
 import { AiFillFileAdd } from "react-icons/ai";
 import { MdOutlineSend } from "react-icons/md";
-import { TiTick} from "react-icons/ti"
+import { TiTick } from "react-icons/ti";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -74,11 +74,6 @@ export default function Dashboard() {
       setCategory("");
       setQuantity("");
       setImage("");
-      setProducts(
-        [...products, json.product].sort((a, b) =>
-          a.category.localeCompare(b.category)
-        )
-      );
     }
   };
 
@@ -102,9 +97,12 @@ export default function Dashboard() {
         <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {products.map((product) => {
             return (
-              <div key={product._id} className="shadow mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0">
+              <div
+                key={product._id}
+                className="shadow mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0"
+              >
                 <img
-                className="w-36"
+                  className="w-36"
                   src={`http://localhost:5000/${product.imagePath}`}
                   alt={product.imagePath}
                 />
@@ -123,7 +121,11 @@ export default function Dashboard() {
                     </div>
                     <div className="text-lg">{product.price}</div>
                   </section>
-                  <div className="bg-gray-800/10 p-1 rounded">
+                  <section className="bg-gray-900/10 mt-2 rounded p-1">
+                    <div className="underline text-lg">Info:</div>
+                    <div>{product.description}</div>
+                  </section>
+                  <div className="bg-gray-800/10 p-1 rounded mt-2">
                     {product._id}
                   </div>
                 </section>
