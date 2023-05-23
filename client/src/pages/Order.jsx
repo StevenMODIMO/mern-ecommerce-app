@@ -14,7 +14,7 @@ export default function Order() {
       const id = params.id.toString();
       const response = await fetch(
         `http://localhost:5000/api/app/order/${id}`,
-        {
+        { 
           headers: {
             Authorization: `Bearer ${user.token}`,
           },
@@ -24,7 +24,6 @@ export default function Order() {
 
       if (response.ok) {
         setProduct(json);
-        console.log(json)
       }
     };
 

@@ -12,6 +12,8 @@ import Landing from "./pages/Landing"
 import Business from "./pages/Business"
 import Order from "./pages/Order"
 import WishList from "./pages/WishList"
+import WishToCart from "./pages/WishToCart"
+import Payment from "./pages/Payment"
 
 function App() {
   const { user } = useAuth()
@@ -30,6 +32,8 @@ function App() {
           <Route path="/cart" element={user ? <UserDashboard /> : <Navigate to="/landing" />} />
           <Route path="/order/:id" element={user ? <Order /> : <Navigate to="/landing" />} />
           <Route path="/wishlist/:id" element={user ? <WishList /> : <Navigate to="/landing" />} />
+          <Route path="/cart/:id" element={user ? <WishToCart /> : <Navigate to="/landing" />} />
+          <Route path="/payment" element={user ? <Payment /> : <Navigate to="/landing" />} />
           <Route path="/register-business" element={user ? <Business /> : <Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

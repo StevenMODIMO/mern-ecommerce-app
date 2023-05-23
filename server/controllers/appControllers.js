@@ -99,6 +99,47 @@ const newProduct = async (req, res) => {
   }
 };
 
+const editProduct = async (req, res) => {
+  const user_id = req.user;
+  const { product_name, description, price, quantity, currency, category } =
+    req.body;
+  if (
+    !req.file ||
+    !product_name ||
+    !description ||
+    !price ||
+    !quantity ||
+    !currency ||
+    !category
+  ) {
+    return res.status(400).json({ error: "All fields must be filled." });
+  }
+  const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
+
+  try {
+    const editedProduct = await Seller.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $push: {
+          products: {
+            imagePath: imagePath,
+            product_name: product_name,
+            description: description,
+            price: price,
+            quantity: quantity,
+            currency: currency,
+            category: category,
+          },
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(editedProduct)
+  } catch(error) {
+    res.status(400).json(error)
+  }
+}
+
 const getProducts = async (req, res) => {
   const user_id = req.user;
   try {
@@ -196,15 +237,8 @@ const getSingleProduct = async (req, res) => {
 
 const addToCart = async (req, res) => {
   const user_id = req.user;
-  const {
-    imagePath,
-    business_name,
-    product_name,
-    description,
-    price,
-    currency,
-    quantity,
-  } = req.body;
+  const { imagePath, product_name, description, price, currency, quantity } =
+    req.body;
 
   if (!quantity) {
     return res.status(400).json({ error: "All fields must be filled." });
@@ -214,9 +248,8 @@ const addToCart = async (req, res) => {
       { user_id: user_id },
       {
         $push: {
-          orders: {
+          cart: {
             imagePath: imagePath,
-            business_name: business_name,
             product_name: product_name,
             description: description,
             price: price,
@@ -226,6 +259,17 @@ const addToCart = async (req, res) => {
         },
       },
       { new: true }
+    )
+    
+    const remove = await Buyer.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $pull: {
+          wishlist: {
+            _id: newProduct._id,
+          },
+        },
+      }
     );
     res.status(200).json(newProduct);
   } catch (error) {
@@ -252,7 +296,7 @@ const removeFromCart = async (req, res) => {
       { user_id: user_id },
       {
         $pull: {
-          orders: {
+          cart: {
             _id: id,
           },
         },
@@ -305,6 +349,22 @@ const getWishlistProducts = async (req, res) => {
   }
 };
 
+const getSingleWishListProduct = async (req, res) => {
+  const user_id = req.user;
+  const { id } = req.params;
+  try {
+    const wishList = await Buyer.findOne({ user_id: user_id });
+    const userWishList = wishList.wishlist;
+    userWishList.filter((uw) => {
+      if (uw._id == id) {
+        res.status(200).json(uw);
+      }
+    });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 const removeWishList = async (req, res) => {
   const user_id = req.user;
   const { id } = req.params;
@@ -348,6 +408,7 @@ module.exports = {
   registerBuyer,
   getSingleProduct,
   newProduct,
+  editProduct,
   getProducts,
   getProductById,
   getImage,
@@ -358,6 +419,7 @@ module.exports = {
   addWishList,
   rateProduct,
   getWishlistProducts,
+  getSingleWishListProduct,
   removeWishList,
   getOrders,
 };

@@ -6,6 +6,7 @@ const {
   registerBuyer,
   getSingleProduct,
   newProduct,
+  editProduct,
   getProducts,
   getProductById,
   getImage,
@@ -16,6 +17,7 @@ const {
   addWishList,
   rateProduct,
   getWishlistProducts,
+  getSingleWishListProduct,
   removeWishList,
   getOrders,
 } = require("../controllers/appControllers");
@@ -44,6 +46,8 @@ router.get("/order/:id", getSingleProduct)
 
 router.post("/new-product", upload.single("image"), newProduct);
 
+router.post("/edit-product", editProduct)
+
 router.get("/products", getProducts);
 
 router.get("/product/:id", getProductById)
@@ -63,6 +67,8 @@ router.post("/add-wishlist", addWishList);
 router.post("/rates", rateProduct);
 
 router.get("/get-wishlist", getWishlistProducts)
+
+router.get("/get-wishlist/:id", getSingleWishListProduct)
 
 router.delete("/remove-wishlist/:id", removeWishList);
 

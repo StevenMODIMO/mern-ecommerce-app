@@ -4,7 +4,7 @@ const buyerSchema = new mongoose.Schema({
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
   },
-  orders: [
+  cart: [
     {
       imagePath: String,
       product_name: String,
