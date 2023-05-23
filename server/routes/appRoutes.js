@@ -12,7 +12,7 @@ const {
   deleteProducts,
   addToCart,
   getCartProducts,
-  cancelOrder,
+  removeFromCart,
   addWishList,
   rateProduct,
   getWishlistProducts,
@@ -56,7 +56,7 @@ router.post("/cart", addToCart);
 
 router.get("/orders", getCartProducts)
 
-router.delete("/remove-order/:id", cancelOrder);
+router.delete("/remove-from-cart/:id", removeFromCart);
 
 router.post("/add-wishlist", addWishList);
 

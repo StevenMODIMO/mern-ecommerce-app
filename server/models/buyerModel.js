@@ -23,6 +23,7 @@ const buyerSchema = new mongoose.Schema({
     {
       imagePath: String,
       product_name: String,
+      description: String,
       price: Number,
       currency: String,
       quantity: Number,

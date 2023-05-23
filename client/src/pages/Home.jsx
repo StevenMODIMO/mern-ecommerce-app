@@ -5,6 +5,7 @@ import { TbBusinessplan } from "react-icons/tb";
 import { BiPurchaseTag } from "react-icons/bi";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { TbJewishStar } from "react-icons/tb";
+import { BsFillBuildingsFill } from "react-icons/bs"
 import { NavLink } from "react-router-dom";
 
 export default function Home() {
@@ -113,10 +114,14 @@ export default function Home() {
                     </div>
                     <div className="text-lg">{prod.price}</div>
                   </section>
-				  <section className="bg-gray-900/10 mt-2 rounded p-1">
-				  <div className="underline text-lg">Info:</div>
-					<div>{prod.description}</div>
-				  </section>
+                  <section className="flex gap-1 bg-gray-800/10 p-1 rounded mt-2 w-fit">
+                  <BsFillBuildingsFill className="mt-1" />
+                  <div className="text-sm">By {prod.from}</div>
+                  </section>
+                  <section className="bg-gray-900/10 mt-2 rounded p-1">
+                    <div className="underline text-lg">Info:</div>
+                    <div>{prod.description}</div>
+                  </section>
                   <div className="bg-gray-800/10 p-1 rounded mt-2">
                     id: {prod._id}
                   </div>

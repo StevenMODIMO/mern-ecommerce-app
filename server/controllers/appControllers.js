@@ -244,7 +244,7 @@ const getCartProducts = async (req, res) => {
   }
 };
 
-const cancelOrder = async (req, res) => {
+const removeFromCart = async (req, res) => {
   const { id } = req.params;
   const user_id = req.user;
   try {
@@ -354,7 +354,7 @@ module.exports = {
   deleteProducts,
   addToCart,
   getCartProducts,
-  cancelOrder,
+  removeFromCart,
   addWishList,
   rateProduct,
   getWishlistProducts,
