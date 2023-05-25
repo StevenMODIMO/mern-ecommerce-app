@@ -196,7 +196,7 @@ const deleteProducts = async (req, res) => {
       { new: true }
     );
     const deleteFromProduct = await Product.findOneAndDelete(
-      { product_id: deletedProduct._id },
+      { product_id: id },
       { new: true }
     );
     res.status(200).json(deletedProduct);
@@ -256,6 +256,7 @@ const addToCart = async (req, res) => {
       {
         $push: {
           cart: {
+            from: business_name,
             imagePath: imagePath,
             product_name: product_name,
             description: description,
@@ -443,7 +444,8 @@ const intitiatePayment = async (req, res) => {
     currency,
     quantity,
     imagePath,
-    prevID
+    prevID,
+    business_name
   } = req.body;
   if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvc) {
     return res.status(400).json({ error: "All fields must be filled." });
@@ -488,6 +490,24 @@ const intitiatePayment = async (req, res) => {
         },
       }
     );
+
+    const sendToSellerInvoice = await Seller.findOneAndUpdate(
+      {business_name: business_name},
+      {
+        $push: {
+          orders: {
+            imagePath: imagePath,
+            product_name: product_name,
+            description: description,
+            price: price,
+            currency: currency,
+            quantity: quantity,
+          }
+        }
+      }
+    )
+
+
     res.status(200).json({ valid: true });
   } catch (error) {
     res.status(400).json( error);

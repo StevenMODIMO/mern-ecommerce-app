@@ -6,6 +6,7 @@ const buyerSchema = new mongoose.Schema({
   },
   cart: [
     {
+      from: String,
       imagePath: String,
       product_name: String,
       description: String,
@@ -33,8 +34,20 @@ const buyerSchema = new mongoose.Schema({
       price: Number,
       currency: String,
       quantity: Number,
-      prevID: String
-    },
+      prevID: String,
+      completed: {
+        type: Boolean,
+        default: true
+      },
+      shipped: {
+        type: Boolean,
+        default: false
+      },
+      createdAt: {
+        type: Date,
+        default: Date.now
+      }
+    }
   ],
 });
 

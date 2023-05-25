@@ -7,6 +7,7 @@ import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { TbJewishStar } from "react-icons/tb";
 import { BsFillBuildingsFill } from "react-icons/bs"
 import { NavLink } from "react-router-dom";
+import Rates from "../components/Rates"
 
 export default function Home() {
   const { user } = useAuth();
@@ -138,8 +139,10 @@ export default function Home() {
                       <TbJewishStar className="mt-1" />
                       <NavLink to={`/wishlist/${prod._id}`}>Wishlist</NavLink>
                     </div>
-                    
                   </section>
+                    <div>
+                    <Rates rates={prod.rates} />
+                    </div>
                 </main>
               );
             })}

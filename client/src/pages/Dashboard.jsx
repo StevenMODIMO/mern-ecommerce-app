@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { AiFillFileAdd } from "react-icons/ai";
 import { MdOutlineSend } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
+import Rates from "../components/Rates";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -14,10 +15,10 @@ export default function Dashboard() {
   const [quantity, setQuantity] = useState("");
   const [currency, setCurrency] = useState("Select an option");
   const [category, setCategory] = useState("");
+  const [rates, setRates] = useState([]);
 
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     const getProducts = async () => {
       const response = await fetch("http://localhost:5000/api/app/products", {
@@ -30,6 +31,7 @@ export default function Dashboard() {
 
       if (response.ok) {
         setProducts(json.products);
+        setRates(json.rates);
       }
 
       if (!response.ok) {
@@ -96,6 +98,9 @@ export default function Dashboard() {
       <main className="lg:w-full">
         <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {products.map((product) => {
+            const productRates = rates.filter(
+              (rate) => rate.product_id === product._id
+            )
             return (
               <div
                 key={product._id}
@@ -143,6 +148,7 @@ export default function Dashboard() {
                     Edit Info
                   </NavLink>
                 </section>
+                <Rates rates={productRates} />
               </div>
             );
           })}

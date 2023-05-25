@@ -55,7 +55,8 @@ export default function Payment() {
         currency: order.currency,
         quantity: order.quantity,
         imagePath: order.imagePath,
-        prevID: order._id
+        prevID: order._id,
+        business_name: order.from
       }),
     });
 

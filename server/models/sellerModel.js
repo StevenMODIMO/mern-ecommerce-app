@@ -42,6 +42,20 @@ const sellerSchema = new mongoose.Schema(
         rate: {
           type: Number,
           default: 0,
+        },
+      },
+    ],
+    orders: [
+      {
+        imagePath: String,
+        product_name: String,
+        description: String,
+        price: String,
+        currency: String,
+        quantity: String,
+        shipped: {
+          type: Boolean,
+          default: false
         }
       },
     ],
