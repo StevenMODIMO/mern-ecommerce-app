@@ -55,7 +55,7 @@ export default function Home() {
       const json = await response.json();
 
       if (response.ok) {
-        setProducts(json);
+        setProducts(json)
       }
     };
 
@@ -125,6 +125,10 @@ export default function Home() {
                   <div className="bg-gray-800/10 p-1 rounded mt-2">
                     id: {prod._id}
                   </div>
+                  <div>
+                  </div>
+                  <div className="text-xl">
+                  </div>
                   <section className="flex justify-between mt-2">
                     <div className="flex text-lg gap-1 p-1 bg-green-400 rounded">
                       <MdOutlineAddShoppingCart className="mt-1" />
@@ -134,6 +138,7 @@ export default function Home() {
                       <TbJewishStar className="mt-1" />
                       <NavLink to={`/wishlist/${prod._id}`}>Wishlist</NavLink>
                     </div>
+                    
                   </section>
                 </main>
               );

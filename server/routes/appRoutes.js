@@ -16,7 +16,6 @@ const {
   getCartProduct,
   removeFromCart,
   addWishList,
-  rateProduct,
   getWishlistProducts,
   getSingleWishListProduct,
   removeWishList,
@@ -62,13 +61,11 @@ router.post("/cart", addToCart);
 
 router.get("/orders", getCartProducts)
 
-router.get("item/:id", getCartProduct)
+router.get("/item/:id", getCartProduct)
 
 router.delete("/remove-from-cart/:id", removeFromCart);
 
 router.post("/add-wishlist", addWishList);
-
-router.post("/rates", rateProduct);
 
 router.get("/get-wishlist", getWishlistProducts)
 

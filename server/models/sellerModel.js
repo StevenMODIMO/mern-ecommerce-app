@@ -31,20 +31,18 @@ const sellerSchema = new mongoose.Schema(
         currency: {
           type: String,
         },
-        rates: [
-          {
-            rate: {
-              type: Number,
-              default: 0,
-            },
-            user: {
-              type: mongoose.Schema.Types.ObjectId,
-            },
-          },
-        ],
         category: {
           type: String,
         },
+      },
+    ],
+    rates: [
+      {
+        product_id: { type: String },
+        rate: {
+          type: Number,
+          default: 0,
+        }
       },
     ],
   },

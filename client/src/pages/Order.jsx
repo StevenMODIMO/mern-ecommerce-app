@@ -7,6 +7,7 @@ export default function Order() {
   const { user } = useAuth();
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState("");
+  const [rate, setRate] = useState(0)
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -46,6 +47,9 @@ export default function Order() {
         price: product.price,
         currency: product.currency,
         quantity: quantity,
+        rate: rate,
+        product_id: product.product_id,
+        business_name: product.from,
       }),
     });
 
@@ -53,12 +57,14 @@ export default function Order() {
 
     if (!response.ok) {
       setQuantity("");
+      setRate("")
       setError(json.error);
     }
 
     if (response.ok) {
       setError(null);
       setQuantity("");
+      setRate("")
     }
   };
   return (
@@ -104,6 +110,22 @@ export default function Order() {
             className="border-2 border-green-500/50 outline-none p-1"
             placeholder="Quantity of product e.g 4"
           />
+          <label>Rate this product</label>
+          <div>
+          {[...Array(5)].map((star, index) => {        
+  index += 1
+  return (         
+    <button
+            type="button"
+            key={index}
+            className={index <= rate >= 1 ? "text-yellow-500" : "text-black"}
+            onClick={() => setRate(index)}
+          >
+            <span className="star">&#9733;</span>
+          </button>        
+  );
+})}
+          </div>
           <main className="flex justify-center mt-3 gap-1 bg-green-500/50 p-1 rounded">
             <button>Add to Cart</button>
           </main>
@@ -114,6 +136,8 @@ export default function Order() {
           )}
         </form>
       </main>
+
+
     </div>
   );
 }

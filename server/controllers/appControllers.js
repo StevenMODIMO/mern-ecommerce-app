@@ -65,25 +65,32 @@ const newProduct = async (req, res) => {
   const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
 
   try {
+    const newItem =  {
+      imagePath: imagePath,
+      product_name: product_name,
+      description: description,
+      price: price,
+      quantity: quantity,
+      currency: currency,
+      category: category,
+    }
     const newProduct = await Seller.findOneAndUpdate(
       { user_id: user_id },
       {
         $push: {
-          products: {
-            imagePath: imagePath,
-            product_name: product_name,
-            description: description,
-            price: price,
-            quantity: quantity,
-            currency: currency,
-            category: category,
-          },
+          products: newItem,
         },
       },
       { new: true }
     );
+    const newID = {pid: ""}
+    const n = newProduct.products.filter(p => {
+      if(p.product_name == newItem.product_name) {
+        newID.pid = p.id
+      }
+    })
     const product = await Product.create({
-      product_id: newProduct._id,
+      product_id: newID.pid,
       from: newProduct.business_name,
       imagePath: imagePath,
       product_name: product_name,
@@ -237,7 +244,7 @@ const getSingleProduct = async (req, res) => {
 
 const addToCart = async (req, res) => {
   const user_id = req.user;
-  const { imagePath, product_name, description, price, currency, quantity } =
+  const { imagePath, product_name, description, price, currency, quantity,rate, product_id, business_name } =
     req.body;
 
   if (!quantity) {
@@ -260,6 +267,26 @@ const addToCart = async (req, res) => {
       },
       { new: true }
     );
+
+    const rateProduct = await Product.findOneAndUpdate(
+      {product_id: product_id},
+      {
+        $push: {
+        rates: {
+          rate: rate,
+          user: user_id
+        }
+      }}
+    )
+
+    const rateToSeller = await Seller.findOneAndUpdate({business_name: business_name}, {
+      $push: {
+        rates: {
+          product_id: product_id,
+          rate: rate
+        }
+      }
+    })
 
     const remove = await Buyer.findOneAndUpdate(
       { user_id: user_id },
@@ -289,20 +316,20 @@ const getCartProducts = async (req, res) => {
 };
 
 const getCartProduct = async (req, res) => {
-  const user_id = req.user
-  const { id } = req.params
+  const user_id = req.user;
+  const { id } = req.params;
   try {
     const orders = await Buyer.findOne({ user_id: user_id });
-    const userOrders = orders.cart
-    userOrders.filter(order => {
-      if(order._id == id) {
-        res.status(200).json(order)
+    const cart = orders.cart;
+    cart.filter((order) => {
+      if (order._id == id) {
+        res.status(200).json(order);
       }
-    })
-  } catch(error) {
-    res.status(400).json(error)
+    });
+  } catch (error) {
+    res.status(400).json(error.message);
   }
-}
+};
 
 const removeFromCart = async (req, res) => {
   const { id } = req.params;
@@ -401,27 +428,25 @@ const removeWishList = async (req, res) => {
   }
 };
 
-const rateProduct = async (req, res) => {
-  const { product_id } = req.body;
-  const user_id = req.user;
-  const { business_id } = req.body;
-  const { rate } = req.body;
-  try {
-    const result = await Seller.findOneAndUpdate(
-      { _id: business_id, "products._id": product_id },
-      { $push: { "products.$.rates": { rate: rate, user: user_id } } },
-      { new: true }
-    );
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
+
 
 const intitiatePayment = async (req, res) => {
-  const { cardNumber, cardExpMonth, cardExpYear, cardCvc } = req.body;
-  if( !cardNumber || !cardExpMonth || !cardExpYear || !cardCvc ) {
-    return res.status(400).json({error: "All fields must be filled."})
+  const user_id = req.user;
+  const {
+    cardNumber,
+    cardExpMonth,
+    cardExpYear,
+    cardCvc,
+    product_name,
+    description,
+    price,
+    currency,
+    quantity,
+    imagePath,
+    prevID
+  } = req.body;
+  if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvc) {
+    return res.status(400).json({ error: "All fields must be filled." });
   }
   try {
     const payment = await stripe.paymentMethods.create({
@@ -430,12 +455,42 @@ const intitiatePayment = async (req, res) => {
         number: cardNumber,
         exp_month: cardExpMonth,
         exp_year: cardExpYear,
-        cvc: cardCvc
+        cvc: cardCvc,
+      },
+    });
+
+    const sendToInvoice = await Buyer.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $push: {
+          invoices: {
+            cardNumber: cardNumber,
+            imagePath: imagePath,
+            product_name: product_name,
+            description: description,
+            price: price,
+            currency: currency,
+            quantity: quantity,
+            prevID: prevID
+          },
+        },
+      },
+      { new: true }
+    );
+
+    const remove = await Buyer.findOneAndUpdate(
+      { user_id: user_id },
+      {
+        $pull: {
+          cart: {
+            prevID: sendToInvoice.prevID,
+          },
+        },
       }
-    })
-    res.status(200).json({valid: true})
+    );
+    res.status(200).json({ valid: true });
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json( error);
   }
 };
 
@@ -455,10 +510,9 @@ module.exports = {
   getCartProduct,
   removeFromCart,
   addWishList,
-  rateProduct,
   getWishlistProducts,
   getSingleWishListProduct,
   removeWishList,
   getOrders,
-  intitiatePayment
+  intitiatePayment,
 };

@@ -12,11 +12,6 @@ const buyerSchema = new mongoose.Schema({
       price: Number,
       currency: String,
       quantity: Number,
-      address: String,
-      completed: {
-        type: Boolean,
-        default: false,
-      },
     },
   ],
   wishlist: [
@@ -27,6 +22,18 @@ const buyerSchema = new mongoose.Schema({
       price: Number,
       currency: String,
       quantity: Number,
+    },
+  ],
+  invoices: [
+    {
+      cardNumber: String,
+      imagePath: String,
+      product_name: String,
+      description: String,
+      price: Number,
+      currency: String,
+      quantity: Number,
+      prevID: String
     },
   ],
 });
