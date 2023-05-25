@@ -13,6 +13,7 @@ const {
   deleteProducts,
   addToCart,
   getCartProducts,
+  getCartProduct,
   removeFromCart,
   addWishList,
   rateProduct,
@@ -20,6 +21,7 @@ const {
   getSingleWishListProduct,
   removeWishList,
   getOrders,
+  intitiatePayment
 } = require("../controllers/appControllers");
 
 const multer = require("multer");
@@ -60,6 +62,8 @@ router.post("/cart", addToCart);
 
 router.get("/orders", getCartProducts)
 
+router.get("item/:id", getCartProduct)
+
 router.delete("/remove-from-cart/:id", removeFromCart);
 
 router.post("/add-wishlist", addWishList);
@@ -73,5 +77,7 @@ router.get("/get-wishlist/:id", getSingleWishListProduct)
 router.delete("/remove-wishlist/:id", removeWishList);
 
 router.get("/business-orders/:name", getOrders);
+
+router.post("/pay", intitiatePayment)
 
 module.exports = router;

@@ -163,7 +163,7 @@ export default function UserDashboard() {
                       <button>Remove from cart</button>
                     </section>
                     <section className="text-lg flex gap-1 justify-center bg-green-500 p-1 rounded">
-                      <button>Complete Order</button>
+                      <NavLink to={`/payment/${order._id}`}>Complete Order</NavLink>
                     </section>
                   </div>
                 );

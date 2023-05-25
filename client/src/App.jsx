@@ -33,7 +33,7 @@ function App() {
           <Route path="/order/:id" element={user ? <Order /> : <Navigate to="/landing" />} />
           <Route path="/wishlist/:id" element={user ? <WishList /> : <Navigate to="/landing" />} />
           <Route path="/cart/:id" element={user ? <WishToCart /> : <Navigate to="/landing" />} />
-          <Route path="/payment" element={user ? <Payment /> : <Navigate to="/landing" />} />
+          <Route path="/payment/:id" element={user ? <Payment /> : <Navigate to="/landing" />} />
           <Route path="/register-business" element={user ? <Business /> : <Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

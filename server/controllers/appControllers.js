@@ -4,7 +4,7 @@ const Buyer = require("../models/buyerModel");
 const Product = require("../models/productModel");
 const User = require("../models/authModel");
 const mongoose = require("mongoose");
-const stripe = require("stripe")(process.env.STRIPE_KEY);
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const path = require("path");
 
 // Admin Controllers
@@ -134,11 +134,11 @@ const editProduct = async (req, res) => {
       },
       { new: true }
     );
-    res.status(200).json(editedProduct)
-  } catch(error) {
-    res.status(400).json(error)
+    res.status(200).json(editedProduct);
+  } catch (error) {
+    res.status(400).json(error);
   }
-}
+};
 
 const getProducts = async (req, res) => {
   const user_id = req.user;
@@ -259,8 +259,8 @@ const addToCart = async (req, res) => {
         },
       },
       { new: true }
-    )
-    
+    );
+
     const remove = await Buyer.findOneAndUpdate(
       { user_id: user_id },
       {
@@ -281,12 +281,28 @@ const getCartProducts = async (req, res) => {
   const user_id = req.user;
   try {
     const orders = await Buyer.findOne({ user_id: user_id });
-    const userOrders = orders.orders;
+    const userOrders = orders.cart;
     res.status(200).json(userOrders);
   } catch (error) {
     res.status(400).json(error);
   }
 };
+
+const getCartProduct = async (req, res) => {
+  const user_id = req.user
+  const { id } = req.params
+  try {
+    const orders = await Buyer.findOne({ user_id: user_id });
+    const userOrders = orders.cart
+    userOrders.filter(order => {
+      if(order._id == id) {
+        res.status(200).json(order)
+      }
+    })
+  } catch(error) {
+    res.status(400).json(error)
+  }
+}
 
 const removeFromCart = async (req, res) => {
   const { id } = req.params;
@@ -402,6 +418,27 @@ const rateProduct = async (req, res) => {
   }
 };
 
+const intitiatePayment = async (req, res) => {
+  const { cardNumber, cardExpMonth, cardExpYear, cardCvc } = req.body;
+  if( !cardNumber || !cardExpMonth || !cardExpYear || !cardCvc ) {
+    return res.status(400).json({error: "All fields must be filled."})
+  }
+  try {
+    const payment = await stripe.paymentMethods.create({
+      type: "card",
+      card: {
+        number: cardNumber,
+        exp_month: cardExpMonth,
+        exp_year: cardExpYear,
+        cvc: cardCvc
+      }
+    })
+    res.status(200).json({valid: true})
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 module.exports = {
   getAllProducts,
   registerSeller,
@@ -415,6 +452,7 @@ module.exports = {
   deleteProducts,
   addToCart,
   getCartProducts,
+  getCartProduct,
   removeFromCart,
   addWishList,
   rateProduct,
@@ -422,4 +460,5 @@ module.exports = {
   getSingleWishListProduct,
   removeWishList,
   getOrders,
+  intitiatePayment
 };
