@@ -6,6 +6,7 @@ const User = require("../models/authModel");
 const mongoose = require("mongoose");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const path = require("path");
+const { ObjectId } = require("mongodb")
 
 // Admin Controllers
 
@@ -445,6 +446,8 @@ const intitiatePayment = async (req, res) => {
     quantity,
     imagePath,
     prevID,
+    address,
+    from,
     business_name
   } = req.body;
   if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvc) {
@@ -485,7 +488,7 @@ const intitiatePayment = async (req, res) => {
       {
         $pull: {
           cart: {
-            prevID: sendToInvoice.prevID,
+            _id: new ObjectId(prevID),
           },
         },
       }
@@ -496,12 +499,14 @@ const intitiatePayment = async (req, res) => {
       {
         $push: {
           orders: {
+            from: from,
             imagePath: imagePath,
             product_name: product_name,
             description: description,
             price: price,
             currency: currency,
             quantity: quantity,
+            address: address,
           }
         }
       }
@@ -513,6 +518,25 @@ const intitiatePayment = async (req, res) => {
     res.status(400).json( error);
   }
 };
+
+const generateBuyerInvoice = async (req, res) => {
+  const user_id = req.user
+  
+  try {
+    const invoice = await Buyer.findOne({ user_id: user_id})
+    const invoices = invoice.invoices
+    res.status(200).json(invoices)
+  } catch(error) {
+    res.status(400).json(error)
+  }
+}
+
+const generateSellerInvoice = async (req, res) => {
+  const user_id = req.user
+  const invoice = await Seller.findOne({ user_id: user_id})
+  const invoices = invoice.orders
+  res.status(200).json(invoices)
+}
 
 module.exports = {
   getAllProducts,
@@ -535,4 +559,6 @@ module.exports = {
   removeWishList,
   getOrders,
   intitiatePayment,
+  generateBuyerInvoice,
+  generateSellerInvoice
 };

@@ -8,6 +8,7 @@ export default function Payment() {
   const [cardExpMonth, setExpMonth] = useState("");
   const [cardExpYear, setExpYear] = useState("");
   const [cardCvc, setCvc] = useState("");
+  const [address, setAddress] = useState("")
   const [error, setError] = useState(null);
   const params = useParams();
   const { user } = useAuth();
@@ -56,7 +57,9 @@ export default function Payment() {
         quantity: order.quantity,
         imagePath: order.imagePath,
         prevID: order._id,
-        business_name: order.from
+        business_name: order.from,
+        address: address,
+        from: user.email
       }),
     });
 
@@ -68,6 +71,7 @@ export default function Payment() {
       setExpMonth("");
       setExpYear("");
       setCvc("");
+      setAddress("")
       setError(null);
     }
 
@@ -76,6 +80,7 @@ export default function Payment() {
       setExpMonth("");
       setExpYear("");
       setCvc("");
+      setAddress("")
       setError(json.error);
     }
   };
@@ -145,6 +150,13 @@ export default function Payment() {
             <input
               value={cardCvc}
               onChange={(e) => setCvc(e.target.value)}
+              type="text"
+              className="border-2 border-green-500/50 outline-none p-1"
+            />
+            <label>Shipping Address</label>
+            <input
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
               type="text"
               className="border-2 border-green-500/50 outline-none p-1"
             />

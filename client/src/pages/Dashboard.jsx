@@ -92,9 +92,25 @@ export default function Dashboard() {
     const newProducts = products.filter((product) => product._id !== id);
     setProducts(newProducts);
   };
+  
+
+  const getInvoice = async () => {
+    const response = await fetch("http://localhost:5000/api/app/seller-invoice", {
+      headers: {
+        Authorization: `Bearer ${user.token}`
+      }
+    })
+
+    const json = await response.json()
+
+    if(response.ok) {
+      console.log(json)
+    }
+}
 
   return (
     <div className="lg:flex gap-20">
+      <button onClick={getInvoice} className="bg-green-600">Generate Invoice</button>
       <main className="lg:w-full">
         <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {products.map((product) => {
@@ -141,12 +157,6 @@ export default function Dashboard() {
                   >
                     Delete Product
                   </button>
-                  <NavLink
-                    to={`/edit/${product._id}`}
-                    className="px-1 text-center bg-green-500 rounded m-2"
-                  >
-                    Edit Info
-                  </NavLink>
                 </section>
                 <Rates rates={productRates} />
               </div>

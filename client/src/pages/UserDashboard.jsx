@@ -9,6 +9,7 @@ export default function UserDashboard() {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [wish, setWish] = useState([]);
+  const [invoices, setInvoices] = useState([])
   const [showTab, setShowTab] = useState(true);
 
   useEffect(() => {
@@ -80,6 +81,20 @@ export default function UserDashboard() {
     setWish(newWishList);
   };
 
+    const getInvoice = async () => {
+      const response =  await fetch("http://localhost:5000/api/app/buyer-invoice", {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+      })
+
+      const json = await response.json()
+
+      if(response.ok) {
+        console.log(json)
+      }
+    }
+
 
   return (
     <div className="lg:flex">
@@ -105,6 +120,12 @@ export default function UserDashboard() {
         >
           <TbJewishStar className="mt-1" />
           <button>Wishlist</button>
+        </div>
+        <div
+          onClick={getInvoice}
+          className="w-2/4 text-start border-b border-green-500 rounded flex justify-center gap-1"
+        >
+          <button>Generate Inovice</button>
         </div>
       </header>
       {showTab ? (

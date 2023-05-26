@@ -20,7 +20,9 @@ const {
   getSingleWishListProduct,
   removeWishList,
   getOrders,
-  intitiatePayment
+  intitiatePayment,
+  generateBuyerInvoice,
+  generateSellerInvoice
 } = require("../controllers/appControllers");
 
 const multer = require("multer");
@@ -76,5 +78,9 @@ router.delete("/remove-wishlist/:id", removeWishList);
 router.get("/business-orders/:name", getOrders);
 
 router.post("/pay", intitiatePayment)
+
+router.get("/buyer-invoice", generateBuyerInvoice)
+
+router.get("/seller-invoice", generateSellerInvoice)
 
 module.exports = router;

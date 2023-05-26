@@ -6,7 +6,6 @@ import Login from "./pages/Login"
 import Home from "./pages/Home"
 import Profile from "./pages/Profile"
 import Dashboard from "./pages/Dashboard"
-import Edit from "./pages/Edit"
 import UserDashboard from "./pages/UserDashboard"
 import Landing from "./pages/Landing"
 import Business from "./pages/Business"
@@ -28,7 +27,7 @@ function App() {
           <Route path="/" element={user ? <Home /> : <Navigate to="/landing" />} />
           <Route path="/profile" element={user ? <Profile /> : <Navigate to="/landing" />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/landing" />} />
-          <Route path="/edit/:id" element={user ? <Edit /> : <Navigate to="/landing" /> } />
+         
           <Route path="/cart" element={user ? <UserDashboard /> : <Navigate to="/landing" />} />
           <Route path="/order/:id" element={user ? <Order /> : <Navigate to="/landing" />} />
           <Route path="/wishlist/:id" element={user ? <WishList /> : <Navigate to="/landing" />} />
