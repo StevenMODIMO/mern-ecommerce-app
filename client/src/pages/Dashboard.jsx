@@ -109,7 +109,7 @@ export default function Dashboard() {
 }
 
   return (
-    <div className="lg:flex gap-20">
+    <div className="mt-24 h-96 overflow-auto lg:flex gap-20">
       <button onClick={getInvoice} className="bg-green-600">Generate Invoice</button>
       <main className="lg:w-full">
         <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">

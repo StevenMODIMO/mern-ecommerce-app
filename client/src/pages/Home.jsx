@@ -64,7 +64,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
+    <div className="mt-24 h-96 overflow-auto">
       {currentUser.role === "None" && (
         <>
           <div className="flex flex-col items-center mt-20">
