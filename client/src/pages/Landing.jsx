@@ -1,6 +1,6 @@
 export default function Landing() {
 	return (
-           <div>
+           <div className=" h-96 overflow-auto">
            	<header>Welcome To Landing Page</header>
            </div>
 		)

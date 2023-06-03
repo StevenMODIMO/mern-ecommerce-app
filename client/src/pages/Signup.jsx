@@ -35,7 +35,7 @@ export default function Signup() {
     }
   };
   return (
-    <div className="bg-gradient-to-t from-indigo-50 h-screen">
+    <div className="bg-gradient-to-t from-indigo-50 h-96">
       <header className="text-center m-2 underline">Register Now</header>
       <form
         onSubmit={handleSubmission}

@@ -97,7 +97,7 @@ export default function UserDashboard() {
 
 
   return (
-    <div className="mt-24 h-96 overflow-auto lg:flex">
+    <div className="mt-20 h-full overflow-auto lg:flex">
       <header className="flex w-screen text-lg lg:flex lg:flex-col">
         <div
           onClick={() => setShowTab(true)}
