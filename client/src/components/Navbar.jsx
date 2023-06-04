@@ -15,6 +15,7 @@ import { BiUser } from "react-icons/bi";
 import { FaTimes, FaBars, FaTruckMoving } from "react-icons/fa";
 import { BsFillBagFill } from "react-icons/bs";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import { FiPhoneCall } from "react-icons/fi"
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -61,6 +62,10 @@ export default function Navbar() {
           <div className={getCountryFlagClass(country)}></div>
           <div className="text-xs">{country}</div>
         </div>
+        <div className="hidden lg:flex gap-2 ml-48">
+        <FiPhoneCall className="mt-1 text-green-600" />
+          <p>Contact Us 900-567-435</p>
+        </div>
       </section>
       <section className="lg:flex justify-between w-full">
         <header className="flex justify-between mt-4 lg:m-5">
@@ -83,7 +88,7 @@ export default function Navbar() {
               : "z-10 absolute -left-full top-0 bg-black bg-opacity-90 w-full h-full text-green-500 transition-all duration-700 ease-in-out lg:relative lg:left-0 lg:h-0 lg:w-0 lg:mt-1 lg:gap-5 lg:mr-96"
           }
         >
-          <section className="flex gap-2 text-white bg-green-900/10 justify-center text-lg lg:hidden">
+          <section className="flex gap-2 text-green-500 bg-green-900/10 justify-center text-lg lg:hidden">
             <div className="flex gap-1">
               <FaTruckMoving className="mt-1" />
               <h1>Free Shipping to</h1>
@@ -221,7 +226,7 @@ export default function Navbar() {
                 </div>
               )}
             </section>
-            <footer className="text-sm text-center lg:hidden">
+            <footer className="text-sm text-green-500 text-center lg:hidden">
               <div className="flex justify-center">
                 <span className="text-2xl mr-2">&copy;</span>
                 <span className="mt-2 mr-1">2023 mernEcommerce</span>

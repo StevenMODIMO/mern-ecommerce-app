@@ -1,3 +1,29 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.slideshow-section {
+    position: absolute;
+    top: 170px;
+    left: 0;
+    width: 100%;
+    opacity: 0;
+    transition: transform 1s ease, opacity 1s ease;
+  }
+  
+  .slideshow-section.active {
+    opacity: 1;
+  }
+  
+  .slideshow-section:nth-child(1) {
+    transform: translate-x-0;
+  }
+  
+  .slideshow-section:nth-child(2) {
+    transform: translate-x-full;
+  }
+  
+  .slideshow-section:nth-child(3) {
+    transform: translate-x-full;
+  }
+  
