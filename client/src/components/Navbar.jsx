@@ -11,9 +11,8 @@ import {
   AiOutlineLogout,
 } from "react-icons/ai";
 import { MdDashboard } from "react-icons/md";
-import { BiUser } from "react-icons/bi";
 import { FaTimes, FaBars, FaTruckMoving } from "react-icons/fa";
-import { BsFillBagFill } from "react-icons/bs";
+import { BsFillBagFill, BsFillBagCheckFill, BsFillBagDashFill, BsFillBagHeartFill,  } from "react-icons/bs";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import { FiPhoneCall } from "react-icons/fi"
 
@@ -55,7 +54,7 @@ export default function Navbar() {
     <div className="lg:flex flex-col">
       <section className="flex gap-2 justify-center text-lg bg-green-900/10">
         <div className="flex gap-1">
-          <FaTruckMoving className="mt-1 text-green-600" />
+          <FaTruckMoving className="mt-1 text-yellow-500" />
           <h1>Free Shipping to</h1>
         </div>
         <div className="flex gap-1 text-sm">
@@ -63,7 +62,7 @@ export default function Navbar() {
           <div className="text-xs">{country}</div>
         </div>
         <div className="hidden lg:flex gap-2 ml-48">
-        <FiPhoneCall className="mt-1 text-green-600" />
+        <FiPhoneCall className="mt-1 text-yellow-500" />
           <p>Contact Us 900-567-435</p>
         </div>
       </section>
@@ -73,10 +72,10 @@ export default function Navbar() {
             <div className="text-lg ml-2">
               mern<span className="text-xl">Ecommerce</span>
             </div>
-            <BsFillBagFill className="text-sm text-green-600 mt-2" />
+            <BsFillBagFill className="text-sm text-yellow-600 mt-2" />
           </section>
           <div onClick={openNav} className="text-sm mr-2 mt-2 lg:hidden">
-            <FaBars className="text-green-600" />
+            <FaBars className="text-yellow-600" />
           </div>
         </header>
         <hr className="lg:hidden" />
@@ -84,11 +83,11 @@ export default function Navbar() {
           onClick={closePanel}
           className={
             open
-              ? "z-10 absolute left-0 top-0 bg-black bg-opacity-90 w-full h-screen text-green-500 transition-all duration-700 ease-in-out"
-              : "z-10 absolute -left-full top-0 bg-black bg-opacity-90 w-full h-full text-green-500 transition-all duration-700 ease-in-out lg:relative lg:left-0 lg:h-0 lg:w-0 lg:mt-1 lg:gap-5 lg:mr-96"
+              ? "z-10 absolute left-0 top-0 bg-black bg-opacity-90 w-full h-screen text-yellow-500 transition-all duration-700 ease-in-out"
+              : "z-10 absolute -left-full top-0 bg-black bg-opacity-90 w-full h-full text-yellow-500 transition-all duration-700 ease-in-out lg:relative lg:left-0 lg:h-0 lg:w-0 lg:mt-1 lg:gap-5 lg:mr-96"
           }
         >
-          <section className="flex gap-2 text-green-500 bg-green-900/10 justify-center text-lg lg:hidden">
+          <section className="flex gap-2 text-yellow-500 bg-yellow-900/10 justify-center text-lg lg:hidden">
             <div className="flex gap-1">
               <FaTruckMoving className="mt-1" />
               <h1>Free Shipping to</h1>
@@ -103,10 +102,10 @@ export default function Navbar() {
               <div className="text-lg ml-2">
                 mern<span className="text-xl">Ecommerce</span>
               </div>
-              <BsFillBagFill className="text-sm text-green-600 mt-2" />
+              <BsFillBagFill className="text-sm text-yellow-600 mt-2" />
             </section>
             <div onClick={closePanel} className="text-lg mr-2 mt-1 lg:hidden">
-              <FaTimes className="text-green-600" />
+              <FaTimes className="text-yellow-600" />
             </div>
           </header>
           <hr className="lg:hidden" />
@@ -118,8 +117,8 @@ export default function Navbar() {
                     to="/landing"
                     className={({ isActive }) =>
                       isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                     onClick={closeNavbar}
                   >
@@ -130,8 +129,8 @@ export default function Navbar() {
                     to="/signup"
                     className={({ isActive }) =>
                       isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                     onClick={closeNavbar}
                   >
@@ -143,8 +142,8 @@ export default function Navbar() {
                     to="/login"
                     className={({ isActive }) =>
                       isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                     onClick={closeNavbar}
                   >
@@ -160,8 +159,8 @@ export default function Navbar() {
                         to="/"
                         className={({ isActive }) =>
                       isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                         onClick={closeNavbar}
                       >
@@ -174,7 +173,7 @@ export default function Navbar() {
                         className={({ isActive }) =>
                       isActive
                         ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                         onClick={closeNavbar}
                       >
@@ -185,8 +184,8 @@ export default function Navbar() {
                     onClick={logoutEffect}
                     className={
                       user.role == "Buyer"
-                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-green-600 lg:mt-5"
-                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-green-600"
+                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600"
                     }
                   >
                     <AiOutlineLogout className="mt-1" />
@@ -200,8 +199,8 @@ export default function Navbar() {
                         to="/dashboard"
                         className={({ isActive }) =>
                       isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-green-600"
+                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                     }
                         onClick={closeNavbar}
                       >
@@ -212,8 +211,8 @@ export default function Navbar() {
                     onClick={logoutEffect}
                     className={
                       user.role == "Buyer"
-                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-green-600 lg:mt-5"
-                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-green-600 lg:mt-5"
+                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
                     }
                   >
                     <AiOutlineLogout className="mt-1" />
@@ -226,7 +225,7 @@ export default function Navbar() {
                 </div>
               )}
             </section>
-            <footer className="text-sm text-green-500 text-center lg:hidden">
+            <footer className="text-sm text-yellow-500 text-center lg:hidden">
               <div className="flex justify-center">
                 <span className="text-2xl mr-2">&copy;</span>
                 <span className="mt-2 mr-1">2023 mernEcommerce</span>
