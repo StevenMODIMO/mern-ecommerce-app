@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GiHand } from "react-icons/gi";
-import { BsFillBuildingsFill, BsFillBagFill } from "react-icons/bs";
+import { BsFillBagFill } from "react-icons/bs";
 import {
   FcElectronics,
   FcOvertime,
   FcComboChart,
   FcOnlineSupport,
   FcApproval,
-  FcSearch
+  FcSearch,
 } from "react-icons/fc";
-import Pic from "../assets/DrawKit-Vector-Illustration-ecommerce-01.svg"
-import Pic1 from "../assets/DrawKit-Vector-Illustration-ecommerce-02.svg"
+import Pic from "../assets/DrawKit-Vector-Illustration-ecommerce-01.svg";
+import Pic1 from "../assets/DrawKit-Vector-Illustration-ecommerce-02.svg";
 import { MdOutlinePrivacyTip } from "react-icons/md";
 export default function Landing() {
   const [currentSection, setCurrentSection] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,7 +76,11 @@ export default function Landing() {
       </main>
       <main className="mt-52 mb-10 lg:grid grid-cols-3">
         <div className="hidden lg:flex flex-col">
-          <img src={Pic} alt="sdsd" className="cursor-pointer h-80 -mt-44 lg:hover:scale-110 transition duration-700 ease-in-out" />
+          <img
+            src={Pic}
+            alt="sdsd"
+            className="cursor-pointer h-80 -mt-44 lg:hover:scale-110 transition duration-700 ease-in-out"
+          />
           <p className="text-lg text-center underline">Shop from anywhere</p>
         </div>
         <div className="text-lg p-2 m-3 text-center md:text-xl lg:text-2xl">
@@ -85,8 +91,14 @@ export default function Landing() {
           </p>
         </div>
         <div className="hidden lg:block">
-          <img src={Pic1} alt="sdsd" className="cursor-pointer h-80 -mt-20 lg:hover:scale-110 transition duration-700 ease-in-out" />
-          <p className="text-lg text-center underline">Join millions of others and shop unlimited......</p>
+          <img
+            src={Pic1}
+            alt="sdsd"
+            className="cursor-pointer h-80 -mt-20 lg:hover:scale-110 transition duration-700 ease-in-out"
+          />
+          <p className="text-lg text-center underline">
+            Join millions of others and shop unlimitedly......
+          </p>
         </div>
       </main>
       <hr />
@@ -109,7 +121,9 @@ export default function Landing() {
           <div className="flex justify-center text-6xl">
             <MdOutlinePrivacyTip />
           </div>
-          <p className="text-lg underline text-center">Online Threat Protection</p>
+          <p className="text-lg underline text-center">
+            Online Threat Protection
+          </p>
           <p className="text-sm text-center">
             Our Security team is always alert against online threats such as
             credit card frauds and other threats. Feel secured while surfing
@@ -123,7 +137,9 @@ export default function Landing() {
           </div>
           <p className="text-lg underline text-center">Approved Transactions</p>
           <p className="text-sm text-center">
-           Both businesses and consumers are approved before conducting business in the platform, therefore never worry about your money as we are in charge of payments between two parties
+            Both businesses and consumers are approved before conducting
+            business in the platform, therefore never worry about your money as
+            we are in charge of payments between two parties
           </p>
         </section>
 
@@ -133,9 +149,21 @@ export default function Landing() {
           </div>
           <p className="text-lg underline text-center">Wide Search</p>
           <p className="text-sm text-center">
-           Our marketing team ensures our customers have a wide range of search of their products within the platform. From home electronics up to business products.
+            Our marketing team ensures our customers have a wide range of search
+            of their products within the platform. From home electronics up to
+            business products.
           </p>
         </section>
+      </main>
+
+      <main className="mt-10">
+        <header className="text-center text-lg">
+          <h1 className="underline">Get Started</h1>
+        </header>
+          <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
+            <div onClick={() => navigate("/signup")} className="bg-yellow-600 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
+            <div></div>
+          </div>
       </main>
 
       <footer className="text-sm text-yellow-500 text-center mt-5">
