@@ -5,9 +5,9 @@ import { TbBusinessplan } from "react-icons/tb";
 import { BiPurchaseTag } from "react-icons/bi";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { TbJewishStar } from "react-icons/tb";
-import { BsFillBuildingsFill } from "react-icons/bs"
+import { BsFillBuildingsFill } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
-import Rates from "../components/Rates"
+import Rates from "../components/Rates";
 
 export default function Home() {
   const { user } = useAuth();
@@ -56,7 +56,7 @@ export default function Home() {
       const json = await response.json();
 
       if (response.ok) {
-        setProducts(json)
+        setProducts(json);
       }
     };
 
@@ -64,28 +64,30 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mt-24 h-96 overflow-auto">
+    <div className="mt-24">
       {currentUser.role === "None" && (
         <>
-          <div className="flex flex-col items-center mt-20">
+          <section className="sm:w-full flex justify-center">
+          <div className="flex flex-col items-center shadow-xl p-2 mx-4 rounded border-t-2 border-black sm:w-96 h-60 justify-center mx-auto">
             <header className="text-2xl underline text-center">
               Choose A Role
             </header>
             <main className="w-screen">
               <div
                 onClick={registerBuyer}
-                className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
+                className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
               >
                 <BiPurchaseTag /> I Want To Buy
               </div>
               <div
                 onClick={sendBusinessPage}
-                className="flex gap-3 justify-center bg-green-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
+                className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
               >
                 <TbBusinessplan /> I want To Sell
               </div>
             </main>
           </div>
+          </section>
         </>
       )}
       {currentUser.role === "Buyer" && (
@@ -116,8 +118,8 @@ export default function Home() {
                     <div className="text-lg">{prod.price}</div>
                   </section>
                   <section className="flex gap-1 bg-gray-800/10 p-1 rounded mt-2 w-fit">
-                  <BsFillBuildingsFill className="mt-1" />
-                  <div className="text-sm">By {prod.from}</div>
+                    <BsFillBuildingsFill className="mt-1" />
+                    <div className="text-sm">By {prod.from}</div>
                   </section>
                   <section className="bg-gray-900/10 mt-2 rounded p-1">
                     <div className="underline text-lg">Info:</div>
@@ -126,10 +128,8 @@ export default function Home() {
                   <div className="bg-gray-800/10 p-1 rounded mt-2">
                     id: {prod._id}
                   </div>
-                  <div>
-                  </div>
-                  <div className="text-xl">
-                  </div>
+                  <div></div>
+                  <div className="text-xl"></div>
                   <section className="flex justify-between mt-2">
                     <div className="flex text-lg gap-1 p-1 bg-green-400 rounded">
                       <MdOutlineAddShoppingCart className="mt-1" />
@@ -140,9 +140,9 @@ export default function Home() {
                       <NavLink to={`/wishlist/${prod._id}`}>Wishlist</NavLink>
                     </div>
                   </section>
-                    <div>
+                  <div>
                     <Rates rates={prod.rates} />
-                    </div>
+                  </div>
                 </main>
               );
             })}

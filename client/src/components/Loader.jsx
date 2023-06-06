@@ -1,7 +1,7 @@
 export default function Loader() {
-    return (
-        <div>
-            <p>Loader</p>
-        </div>
-    )
+  return (
+    <div>
+      <svg className="animate-spin h-5 w-5 rounded bg-yellow-500"></svg>
+    </div>
+  );
 }

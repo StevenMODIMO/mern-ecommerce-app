@@ -12,9 +12,14 @@ import {
 } from "react-icons/ai";
 import { MdDashboard } from "react-icons/md";
 import { FaTimes, FaBars, FaTruckMoving } from "react-icons/fa";
-import { BsFillBagFill, BsFillBagCheckFill, BsFillBagDashFill, BsFillBagHeartFill,  } from "react-icons/bs";
+import {
+  BsFillBagFill,
+  BsFillBagCheckFill,
+  BsFillBagDashFill,
+  BsFillBagHeartFill,
+} from "react-icons/bs";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
-import { FiPhoneCall } from "react-icons/fi"
+import { FiPhoneCall } from "react-icons/fi";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -62,7 +67,7 @@ export default function Navbar() {
           <div className="text-xs">{country}</div>
         </div>
         <div className="hidden lg:flex gap-2 ml-48">
-        <FiPhoneCall className="mt-1 text-yellow-500" />
+          <FiPhoneCall className="mt-1 text-yellow-500" />
           <p>Contact Us 900-567-435</p>
         </div>
       </section>
@@ -158,10 +163,10 @@ export default function Navbar() {
                       <NavLink
                         to="/"
                         className={({ isActive }) =>
-                      isActive
-                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
-                    }
+                          isActive
+                            ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                            : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
+                        }
                         onClick={closeNavbar}
                       >
                         <AiFillHome className="mt-1" />
@@ -171,26 +176,26 @@ export default function Navbar() {
                       <NavLink
                         to="/cart"
                         className={({ isActive }) =>
-                      isActive
-                        ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
-                    }
+                          isActive
+                            ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                            : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
+                        }
                         onClick={closeNavbar}
                       >
                         <AiOutlineShoppingCart className="mt-1" />
                         Dashboard
                       </NavLink>
                       <div
-                    onClick={logoutEffect}
-                    className={
-                      user.role == "Buyer"
-                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
-                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600"
-                    }
-                  >
-                    <AiOutlineLogout className="mt-1" />
-                    <div>Logout</div>
-                  </div>
+                        onClick={logoutEffect}
+                        className={
+                          user.role == "Buyer"
+                            ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                            : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600"
+                        }
+                      >
+                        <AiOutlineLogout className="mt-1" />
+                        <div>Logout</div>
+                      </div>
                     </>
                   )}
                   {user.role === "Seller" && (
@@ -198,30 +203,38 @@ export default function Navbar() {
                       <NavLink
                         to="/dashboard"
                         className={({ isActive }) =>
-                      isActive
-                        ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
-                        : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
-                    }
+                          isActive
+                            ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                            : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
+                        }
                         onClick={closeNavbar}
                       >
                         <MdDashboard className="mt-1" />
                         Dashboard
                       </NavLink>
                       <div
-                    onClick={logoutEffect}
-                    className={
-                      user.role == "Buyer"
-                        ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
-                        : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
-                    }
-                  >
-                    <AiOutlineLogout className="mt-1" />
-                    <div>Logout</div>
-                  </div>
+                        onClick={logoutEffect}
+                        className={
+                          user.role == "Buyer"
+                            ? "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                            : "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                        }
+                      >
+                        <AiOutlineLogout className="mt-1" />
+                        <div>Logout</div>
+                      </div>
                     </>
                   )}
 
-                  
+                  {user.role == "None" && <div
+                    onClick={logoutEffect}
+                    className=
+                      "flex gap-2 ml-4 mt-4 cursor-pointer lg:text-yellow-600 lg:mt-5"
+                    
+                  >
+                    <AiOutlineLogout className="mt-1" />
+                    <div>Logout</div>
+                  </div>}
                 </div>
               )}
             </section>

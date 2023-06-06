@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import Message from "../components/Message"
+import Loader from "../components/Loader"
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -12,6 +14,7 @@ export default function Login() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const response = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       headers: {
@@ -36,37 +39,37 @@ export default function Login() {
       dispatch({ type: "LOGIN", payload: json });
       navigate("/");
     }
+
+    setLoading(false);
   };
+
+
   return (
-    <div className="bg-gradient-to-t from-indigo-50 h-96">
-      <header className="text-center m-2 underline">Login To Countinue</header>
+    <div className="shadow-xl rounded border-t-2 border-black py-2 px-4  sm:w-96 mx-auto mt-10">
+      {error && <Message text={error} />}
+      <header className="text-center m-2 underline lg:mt-12">Login To Countinue</header>
       <form
         onSubmit={handleSubmission}
         onFocus={() => setError(null)}
-        className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded h-80 md:"
+        className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded h-80 "
       >
         <input
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-2 border-blue-200 outline-none rounded p-1"
+          className="border-2 border-blue-200 outline-none rounded p-1 text-lg w-80"
           placeholder="email address"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border-2 border-blue-200 outline-none rounded p-1"
+          className="border-2 border-blue-200 outline-none rounded p-1 text-lg w-80"
           placeholder="password"
         />
-        <button className="border-2 border-blue-200 p-1 rounded bg-blue-200">
+        {loading ? <Loader /> :<button disabled={loading} className="border-2 border-blue-200 p-1 rounded bg-blue-200">
           Login
-        </button>
-        {error && (
-          <div className="bg-red-300 text-center text-base m-2 p-3 rounded">
-            {error}
-          </div>
-        )}
+        </button>}
       </form>
     </div>
   );
