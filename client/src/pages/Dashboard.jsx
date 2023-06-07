@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { NavLink } from "react-router-dom";
-import { AiFillFileAdd } from "react-icons/ai";
+import { AiFillFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
 import { MdOutlineSend } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import Rates from "../components/Rates";
+import Message from "../components/Message";
+import Loader from "../components/Loader";
+import { FaFileInvoice } from "react-icons/fa";
+import { TfiViewListAlt } from "react-icons/tfi";
+import { BiBorderAll } from "react-icons/bi";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -16,6 +21,7 @@ export default function Dashboard() {
   const [currency, setCurrency] = useState("Select an option");
   const [category, setCategory] = useState("");
   const [rates, setRates] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
@@ -43,7 +49,7 @@ export default function Dashboard() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     const formData = new FormData();
     formData.append("image", image);
     formData.append("product_name", product_name);
@@ -77,6 +83,8 @@ export default function Dashboard() {
       setQuantity("");
       setImage("");
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {});
@@ -92,31 +100,53 @@ export default function Dashboard() {
     const newProducts = products.filter((product) => product._id !== id);
     setProducts(newProducts);
   };
-  
 
   const getInvoice = async () => {
-    const response = await fetch("http://localhost:5000/api/app/seller-invoice", {
-      headers: {
-        Authorization: `Bearer ${user.token}`
+    const response = await fetch(
+      "http://localhost:5000/api/app/seller-invoice",
+      {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       }
-    })
+    );
 
-    const json = await response.json()
+    const json = await response.json();
 
-    if(response.ok) {
-      console.log(json)
+    if (response.ok) {
+      console.log(json);
     }
-}
+  };
 
   return (
-    <div className="mt-24 h-96 overflow-auto lg:flex gap-20">
-      <button onClick={getInvoice} className="bg-green-600">Generate Invoice</button>
+    <div>
+      <main className="flex flex-col gap-0 sm:grid grid-cols-2 lg:grid-cols-4">
+        <section className="flex gap-2 text-lg bg-yellow-400 p-1">
+          <TfiViewListAlt className="mt-1" />
+          <div>Your Products</div>
+        </section>
+        <section className="flex gap-2 text-lg bg-yellow-400 p-1">
+          <AiOutlineFolderAdd className="mt-1" />
+          <div>New Product</div>
+        </section>
+        <section className="flex gap-2 text-lg bg-yellow-400 p-1">
+          <BiBorderAll className="mt-1" />
+          <div>Orders</div>
+        </section>
+        <section
+          onClick={getInvoice}
+          className="flex gap-2 text-lg bg-yellow-400 p-1"
+        >
+          <FaFileInvoice className="mt-1" />
+          <div>Invoices</div>
+        </section>
+      </main>
       <main className="lg:w-full">
         <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {products.map((product) => {
             const productRates = rates.filter(
               (rate) => rate.product_id === product._id
-            )
+            );
             return (
               <div
                 key={product._id}
@@ -165,6 +195,7 @@ export default function Dashboard() {
         </div>
       </main>
       <main>
+        {error && <Message text={error} />}
         <header>
           <div className="text-center">New Product</div>
         </header>
@@ -266,14 +297,13 @@ export default function Dashboard() {
                 Ram
               </option>
             </select>
-            <main className="flex justify-center mt-3 gap-1 bg-green-500/50 p-1 rounded">
-              <MdOutlineSend className=" text-2xl" />
-              <button>Submit</button>
-            </main>
-            {error && (
-              <div className="bg-red-500/50 text-lg text-center mx-auto mt-3 p-1 rounded">
-                {error}
-              </div>
+            {loading ? (
+              <Loader />
+            ) : (
+              <main className="flex justify-center mt-3 gap-1 bg-green-500/50 p-1 rounded">
+                <MdOutlineSend className=" text-2xl" />
+                <button>Submit</button>
+              </main>
             )}
           </form>
         </section>
