@@ -12,7 +12,6 @@ export default function Rates({ rates }) {
 
   return (
     <div>
-      <div>Rates</div>
       <div>
         {[...Array(5)].map((star, index) => {
           index += 1;
@@ -24,7 +23,7 @@ export default function Rates({ rates }) {
                 index <= averageRate >= 1 ? "text-yellow-500" : "text-black"
               }
             >
-              <span className="text-5xl">&#9733;</span>
+              <span>&#9733;</span>
               
             </button>
           );
