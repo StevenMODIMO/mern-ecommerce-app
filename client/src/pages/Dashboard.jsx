@@ -24,6 +24,18 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [model, setModel] = useState(false);
+  const [text, setText] = useState(false);
+  const [expandedProductIds, setExpandedProductIds] = useState([]);
+
+  const toggleProductExpansion = (productId) => {
+    if (expandedProductIds.includes(productId)) {
+      setExpandedProductIds(
+        expandedProductIds.filter((id) => id !== productId)
+      );
+    } else {
+      setExpandedProductIds([...expandedProductIds, productId]);
+    }
+  };
 
   const handleTabs = (tabIndex) => {
     setActiveTab(tabIndex);
@@ -97,7 +109,7 @@ export default function Dashboard() {
   useEffect(() => {});
 
   const deleteProduct = async (id) => {
-    setLoading(true)
+    setLoading(true);
     await fetch(`http://localhost:5000/api/app/${id}`, {
       method: "DELETE",
       headers: {
@@ -107,7 +119,7 @@ export default function Dashboard() {
 
     const newProducts = products.filter((product) => product._id !== id);
     setProducts(newProducts);
-    setLoading(false)
+    setLoading(false);
   };
 
   const getInvoice = async () => {
@@ -168,13 +180,14 @@ export default function Dashboard() {
       </section>
       {activeTab === 0 && (
         <main>
-          <div className="my-10 mx-10 text-lg flex flex-col gap-10">
+          <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4">
             {products.map((product) => {
               const productRates = rates.filter(
                 (rate) => rate.product_id === product._id
               );
+              const isExpanded = expandedProductIds.includes(product._id);
               return (
-                <div key={product._id} className="shadow-xl">
+                <div key={product._id} className="shadow-xl h-fit">
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
@@ -183,11 +196,26 @@ export default function Dashboard() {
                     />
                   </div>
                   <div className="text-yellow-500">{product.product_name}</div>
-                  <main className="my-2 bg-yellow-300">
+                  <main className="my-2">
                     <section>
                       <div className="px-2">Quantity: {product.quantity}</div>
                       <section className="px-2">
-                        <div>{product.description}</div>
+                        <div>
+                          {isExpanded
+                            ? product.description
+                            : product.description.length > 100
+                            ? product.description.slice(0, 100) + "..."
+                            : product.description}
+                        </div>
+                        {product.description.length > 100 && (
+                          <div className="ml-48"
+                            onClick={() => toggleProductExpansion(product._id)}
+                          >
+                            <button className="bg-yellow-300 px-1 h-fit w-fit rounded">
+                              {isExpanded ? "less" : "more"}
+                            </button>
+                          </div>
+                        )}
                       </section>
                       <div className="text-sm px-2">Id: {product._id}</div>
                     </section>
@@ -207,22 +235,82 @@ export default function Dashboard() {
                       <Rates rates={productRates} />
                     </div>
                   </main>
-                  {loading ? <div className="flex justify-center p-1 m-1">
-                    <Loader />
-                  </div> :<section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
-                    <button
-                      className="flex gap-1"
-                      onClick={() => deleteProduct(product._id)}
-                    >
-                      <FaTrash className="mt-1" /> Remove
-                    </button>
-                  </section>}
+                  {loading ? (
+                    <div className="flex justify-center p-1 m-1">
+                      <Loader />
+                    </div>
+                  ) : (
+                    <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
+                      <button
+                        className="flex gap-1"
+                        onClick={() => deleteProduct(product._id)}
+                      >
+                        <FaTrash className="mt-1" /> Remove
+                      </button>
+                    </section>
+                  )}
                 </div>
               );
             })}
           </div>
         </main>
       )}
+
+      {activeTab === 2 && (
+        <main>
+          <h1 className="text-center underline text-lg">Your Orders</h1>
+          <div  className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
+            {orders.map((order) => {
+              return (
+                <div
+                  key={order._id}
+                  className="shadow-xl h-fit"
+                >
+                  <div className="bg-gray-100">
+                    <img
+                      className="w-36 mx-auto"
+                      src={`http://localhost:5000/${order.imagePath}`}
+                      alt={order.imagePath}
+                    />
+                  </div>
+                  <section className="text-sm">
+                    <div className="text-2xl text-yellow-500">{order.product_name}</div>
+                    <div>Quantity ordered: {order.quantity}</div>
+                    <section className="flex gap-1">
+                      <div className="text-xl">
+                        {order.currency === "dollar"
+                          ? "Total: $"
+                          : order.currency == "pound"
+                          ? "Total: £"
+                          : order.currency == "euro"
+                          ? "Total: €"
+                          : ""}
+                      </div>
+                      <div className="text-lg">{order.price * order.quantity}</div>
+                    </section>
+                  </section>
+                  <section>
+                    <div>
+                      <div>
+                        Status: {order.shipped == false && "Not Shipped"}
+                      </div>
+                      <div>From: {order.from}</div>
+                      <div>Address: {order.address}</div>
+                    </div>
+                    <div className="text-xs">
+                      Order Id: {order._id}
+                    </div>
+                  </section>
+                  <div className="bg-green-600 p-1 rounded text-center w-fit mx-auto my-2">
+                    <button>Complete Order</button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </main>
+      )}
+
       {activeTab === 1 && (
         <main>
           {error && <Message text={error} />}
@@ -337,60 +425,6 @@ export default function Dashboard() {
               )}
             </form>
           </section>
-        </main>
-      )}
-
-      {activeTab === 2 && (
-        <main>
-          <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
-            {orders.map((order) => {
-              return (
-                <div
-                  key={order._id}
-                  className="shadow mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0"
-                >
-                  <img
-                    className="w-36"
-                    src={`http://localhost:5000/${order.imagePath}`}
-                    alt={order.imagePath}
-                  />
-                  <section className="text-sm ml-2">
-                    <div className="text-2xl">{order.product_name}</div>
-                    <div>Quantity: {order.quantity}</div>
-                    <section className="flex gap-1">
-                      <div className="text-xl">
-                        {order.currency === "dollar"
-                          ? "$"
-                          : order.currency == "pound"
-                          ? "£"
-                          : order.currency == "euro"
-                          ? "€"
-                          : ""}
-                      </div>
-                      <div className="text-lg">{order.price}</div>
-                    </section>
-                    <section className="bg-gray-900/10 mt-2 rounded p-1">
-                      <div className="underline text-lg">Info:</div>
-                      <div>{order.description}</div>
-                    </section>
-                    <div className="bg-gray-800/10 p-1 rounded mt-2">
-                      {order._id}
-                    </div>
-                  </section>
-                  <section className="text-lg">
-                    <h1>Order Info</h1>
-                    <div>
-                      <div>From: {order.from}</div>
-                      <div>
-                        Shipped: {order.shipped == false && "Not Shipped"}
-                      </div>
-                      <div>Address: {order.address}</div>
-                    </div>
-                  </section>
-                </div>
-              );
-            })}
-          </div>
         </main>
       )}
     </div>
