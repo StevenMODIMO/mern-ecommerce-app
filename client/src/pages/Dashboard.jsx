@@ -109,7 +109,6 @@ export default function Dashboard() {
   useEffect(() => {});
 
   const deleteProduct = async (id) => {
-    setLoading(true);
     await fetch(`http://localhost:5000/api/app/${id}`, {
       method: "DELETE",
       headers: {
@@ -119,7 +118,6 @@ export default function Dashboard() {
 
     const newProducts = products.filter((product) => product._id !== id);
     setProducts(newProducts);
-    setLoading(false);
   };
 
   const getInvoice = async () => {
@@ -235,12 +233,7 @@ export default function Dashboard() {
                       <Rates rates={productRates} />
                     </div>
                   </main>
-                  {loading ? (
-                    <div className="flex justify-center p-1 m-1">
-                      <Loader />
-                    </div>
-                  ) : (
-                    <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
+                  <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
                       <button
                         className="flex gap-1"
                         onClick={() => deleteProduct(product._id)}
@@ -248,7 +241,6 @@ export default function Dashboard() {
                         <FaTrash className="mt-1" /> Remove
                       </button>
                     </section>
-                  )}
                 </div>
               );
             })}
