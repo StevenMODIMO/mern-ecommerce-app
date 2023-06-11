@@ -538,6 +538,15 @@ const generateSellerInvoice = async (req, res) => {
   res.status(200).json(invoices)
 }
 
+const completeOrder = async(req, res) => {
+  const user_id = req.user
+  try {
+
+  } catch(error) {
+    await Seller.findOneAndUpdate({user_id: user_id}, {})
+  }
+}
+
 module.exports = {
   getAllProducts,
   registerSeller,

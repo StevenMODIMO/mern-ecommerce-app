@@ -284,7 +284,7 @@ export default function Dashboard() {
                   <section>
                     <div>
                       <div>
-                        Status: {order.shipped == false && "Not Shipped"}
+                        Status: {order.shipped == false ? "Not Shipped" : "Shipped"}
                       </div>
                       <div>From: {order.from}</div>
                       <div>Address: {order.address}</div>

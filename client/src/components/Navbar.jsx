@@ -177,7 +177,7 @@ export default function Navbar() {
                         to="/cart"
                         className={({ isActive }) =>
                           isActive
-                            ? "flex gap-2 mt-4 bg-green-900/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
+                            ? "flex gap-2 mt-4 bg-yellow-600/100 rounded-r-xl rounded-l-xl ml-4 bg-opacity-50 w-fit px-2 py-1"
                             : "flex gap-2 mt-4 bg-none ml-4 bg-opacity-50 w-fit px-2 py-1 lg:text-yellow-600"
                         }
                         onClick={closeNavbar}

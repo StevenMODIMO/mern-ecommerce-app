@@ -57,17 +57,17 @@ export default function Login() {
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-2 border-blue-200 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-200 outline-none rounded p-1 text-lg w-80"
           placeholder="email address"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border-2 border-blue-200 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-200 outline-none rounded p-1 text-lg w-80"
           placeholder="password"
         />
-        {loading ? <Loader /> :<button disabled={loading} className="border-2 border-blue-200 p-1 rounded bg-blue-200">
+        {loading ? <Loader /> :<button disabled={loading} className=" p-1 rounded bg-yellow-200">
           Login
         </button>}
       </form>
