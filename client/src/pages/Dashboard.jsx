@@ -146,28 +146,28 @@ export default function Dashboard() {
       <main className="flex flex-col gap-0 sm:grid grid-cols-2 lg:grid-cols-4">
         <section
           onClick={() => handleTabs(0)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-400 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <TfiViewListAlt className="mt-1" />
           <div>Your Products</div>
         </section>
         <section
           onClick={() => handleTabs(1)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-400 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <AiOutlineFolderAdd className="mt-1" />
           <div>New Product</div>
         </section>
         <section
           onClick={() => handleTabs(2)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-400 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <BiBorderAll className="mt-1" />
           <div>Orders</div>
         </section>
         <section
           onClick={() => setModel(true)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-400 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <FaFileInvoice className="mt-1" />
           <div>Invoices</div>
@@ -183,9 +183,9 @@ export default function Dashboard() {
               const productRates = rates.filter(
                 (rate) => rate.product_id === product._id
               );
-              const isExpanded = expandedProductIds.includes(product._id);
+              
               return (
-                <div key={product._id} className="shadow-xl h-fit">
+                <div key={product._id} className="shadow-2xl h-fit">
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
@@ -193,7 +193,7 @@ export default function Dashboard() {
                       alt={product.imagePath}
                     />
                   </div>
-                  <div className="text-yellow-500">{product.product_name}</div>
+                  <div className="text-yellow-600 text-lg">{product.product_name}</div>
                   <main className="my-2">
                     <section>
                       <div className="px-2">Quantity: {product.quantity}</div>
@@ -209,7 +209,7 @@ export default function Dashboard() {
                           <div className="ml-48"
                             onClick={() => toggleProductExpansion(product._id)}
                           >
-                            <button className="bg-yellow-300 px-1 h-fit w-fit rounded">
+                            <button className="bg-yellow-600 px-1 h-fit w-fit rounded">
                               {isExpanded ? "less" : "more"}
                             </button>
                           </div>
@@ -266,7 +266,7 @@ export default function Dashboard() {
                     />
                   </div>
                   <section className="text-sm">
-                    <div className="text-2xl text-yellow-500">{order.product_name}</div>
+                    <div className="text-2xl text-yellow-600">{order.product_name}</div>
                     <div>Quantity ordered: {order.quantity}</div>
                     <section className="flex gap-1">
                       <div className="text-xl">
@@ -311,13 +311,13 @@ export default function Dashboard() {
           </header>
           <section className="md:flex justify-center">
             <form
-              className="flex flex-col rounded text-lg border-t-2 border-black  mx-2 px-2 py-2 shadow-xl bg-white  md:w-80 px-4 mx-4 lg:w-96"
+              className="flex flex-col rounded text-lg border-t-2 border-black  mx-2 px-2 py-2 shadow-2xl bg-white  md:w-80 px-4 mx-4 lg:w-96"
               onSubmit={handleSubmission}
               onFocus={() => setError(null)}
             >
               <label
                 htmlFor="fileInput"
-                className=" mt-3 cursor-pointer gap-1 bg-yellow-500 rounded p-1"
+                className=" mt-3 cursor-pointer gap-1 bg-yellow-600 rounded p-1"
               >
                 <input
                   id="fileInput"
@@ -341,7 +341,7 @@ export default function Dashboard() {
 
               <label className="mt-3">Product Name</label>
               <input
-                className="border-2 border-yellow-500 outline-none p-1 rounded"
+                className="border-2 border-yellow-600 outline-none p-1 rounded"
                 type="text"
                 value={product_name}
                 onChange={(e) => setProduct_Name(e.target.value)}
@@ -349,14 +349,14 @@ export default function Dashboard() {
               />
               <label>Description</label>
               <textarea
-                className="border-2 border-yellow-500 outline-none  p-1 h-24 rounded"
+                className="border-2 border-yellow-600 outline-none  p-1 h-24 rounded"
                 placeholder="separate by comma e.g Ram 4GB, intel core i9, 500GB, Nvidia graphics"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
               <label className="mt-3">Price</label>
               <input
-                className="border-2 border-yellow-500 outline-none p-1 rounded"
+                className="border-2 border-yellow-600 outline-none p-1 rounded"
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
@@ -364,7 +364,7 @@ export default function Dashboard() {
               />
               <label className="mt-3">Quantity</label>
               <input
-                className="border-2 border-yellow-500 outline-none p-1 rounded"
+                className="border-2 border-yellow-600 outline-none p-1 rounded"
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
@@ -372,7 +372,7 @@ export default function Dashboard() {
               />
               <label className="mx-auto mt-3">Choose currency:</label>
               <select
-                className="border-2 border-yellow-500 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-600 p-1 outline-none w-40 mx-auto rounded"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
               >
@@ -389,7 +389,7 @@ export default function Dashboard() {
               </select>
               <label className="mx-auto mt-3">Select Category:</label>
               <select
-                className="border-2 border-yellow-500 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-600 p-1 outline-none w-40 mx-auto rounded"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -410,8 +410,8 @@ export default function Dashboard() {
               {loading ? (
                 <Loader />
               ) : (
-                <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
-                  <MdOutlineSend className=" text-2xl" />
+                <main className="flex justify-center mt-3 gap-1 bg-yellow-600 p-1 rounded">
+                  <MdOutlineSend className="text-2xl" />
                   <button>Submit</button>
                 </main>
               )}

@@ -59,7 +59,7 @@ export default function Navbar() {
     <div className="lg:flex flex-col">
       <section className="flex gap-2 justify-center text-lg bg-green-900/10">
         <div className="flex gap-1">
-          <FaTruckMoving className="mt-1 text-yellow-500" />
+          <FaTruckMoving className="mt-1 text-yellow-600" />
           <h1>Free Shipping to</h1>
         </div>
         <div className="flex gap-1 text-sm">
@@ -67,7 +67,7 @@ export default function Navbar() {
           <div className="text-xs">{country}</div>
         </div>
         <div className="hidden lg:flex gap-2 ml-48">
-          <FiPhoneCall className="mt-1 text-yellow-500" />
+          <FiPhoneCall className="mt-1 text-yellow-600" />
           <p>Contact Us 900-567-435</p>
         </div>
       </section>
@@ -92,7 +92,7 @@ export default function Navbar() {
               : "z-10 absolute -left-full top-0 bg-black bg-opacity-90 w-full h-full text-yellow-500 transition-all duration-700 ease-in-out lg:relative lg:left-0 lg:h-0 lg:w-0 lg:mt-1 lg:gap-5 lg:mr-96"
           }
         >
-          <section className="flex gap-2 text-yellow-500 bg-yellow-900/10 justify-center text-lg lg:hidden">
+          <section className="flex gap-2 text-yellow-600 bg-yellow-900/10 justify-center text-lg lg:hidden">
             <div className="flex gap-1">
               <FaTruckMoving className="mt-1" />
               <h1>Free Shipping to</h1>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Loader from "../components/Loader"
+import Message from "../components/Message"
 
 export default function WishList() {
   const params = useParams();
@@ -8,9 +10,11 @@ export default function WishList() {
   const [product, setProduct] = useState({});
   const [quantity, setQuantity] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getSingleProduct = async () => {
+      setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
         `http://localhost:5000/api/app/order/${id}`,
@@ -24,7 +28,7 @@ export default function WishList() {
 
       if (response.ok) {
         setProduct(json);
-      }
+      }setLoading(false)
     };
 
     getSingleProduct();
@@ -32,7 +36,7 @@ export default function WishList() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-
+    setLoading(true)
     const response = await fetch("http://localhost:5000/api/app/add-wishlist", {
       method: "POST",
       headers: {
@@ -60,18 +64,22 @@ export default function WishList() {
       setError(null);
       setQuantity("");
     }
+    setLoading(false)
   };
   return (
-    <div>
-      <main className="text-xs shadow drop-shadow-2xl mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0">
-        <header className="flex justify-center">
+    <>
+    {loading ? <div className="flex items-center justify-center h-96">
+      <Loader />
+    </div> : <div className="sm:w-80 shadow-2xl mx-auto lg:mt-10">
+      <main className="mt-5 mx-10 text-sm flex flex-col sm:w-72 mx-auto">
+      <div className="bg-gray-100">
           <img
-            className="w-44"
+            className="w-36 mx-auto"
             src={`http://localhost:5000/${product.imagePath}`}
             alt={product.imagePath}
           />
-        </header>
-        <div className="text-xl">{product.product_name}</div>
+        </div>
+        <div className="text-yellow-600 text-lg">{product.product_name}</div>
         <section className="flex gap-1">
           <div className="text-xl">
             {product.currency === "dollar"
@@ -84,36 +92,38 @@ export default function WishList() {
           </div>
           <div className="text-lg">{product.price}</div>
         </section>
-        <section className="bg-gray-900/10 mt-2 rounded p-1">
-          <div className="underline text-lg">Info:</div>
-          <div>{product.description}</div>
-        </section>
-        <div className="bg-gray-800/10 p-1 rounded mt-2">id: {product._id}</div>
+        <div className="text-sm">Id: {product._id}</div>
       </main>
 
-      <main>
+      <main className="-mt-10 text-sm">
+      {error && <Message text={error} />}
         <form
           onSubmit={handleSubmission}
           onFocus={() => setError(null)}
-          className="flex flex-col rounded text-lg mx-2 px-2 py-2 shadow bg-white md:w-80 lg:w-96 lg:text-xl"
+          className="flex flex-col justify-center gap-3  p-1 m-1 rounded h-72"
         >
+          <label>Quantity</label>
           <input
             type="number"
+            min="0"
+            max="10"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            className="border-2 border-green-500/50 outline-none p-1"
+            className="border-2 border-yellow-600 outline-none p-1 rounded"
             placeholder="Quantity of product e.g 4"
           />
-          <main className="flex justify-center mt-3 gap-1 bg-green-500/50 p-1 rounded">
-            <button>Add to Wishlist</button>
-          </main>
-          {error && (
-            <div className="bg-red-500/50 text-lg text-center mx-auto mt-3 p-1 rounded">
-              {error}
+          {loading ? (
+            <div classame="ml-64  ">
+              <Loader />
             </div>
+          ) : (
+            <main className="flex justify-center mt-3 gap-1 bg-yellow-600 p-1 rounded">
+              <button>Add to Wishlist</button>
+            </main>
           )}
         </form>
       </main>
-    </div>
+    </div>}
+    </>
   );
 }
