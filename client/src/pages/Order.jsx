@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
@@ -12,6 +12,7 @@ export default function Order() {
   const [rate, setRate] = useState(0);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getSingleProduct = async () => {
@@ -70,6 +71,7 @@ export default function Order() {
       setError(null);
       setQuantity("");
       setRate("");
+      navigate("/")
     }
 
     setLoading(false);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader"
 import Message from "../components/Message"
@@ -11,6 +11,7 @@ export default function WishList() {
   const [quantity, setQuantity] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getSingleProduct = async () => {
@@ -63,6 +64,7 @@ export default function WishList() {
     if (response.ok) {
       setError(null);
       setQuantity("");
+      navigate("/")
     }
     setLoading(false)
   };

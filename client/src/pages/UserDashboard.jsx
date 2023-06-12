@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbJewishStar } from "react-icons/tb";
-import { BsCartDash } from "react-icons/bs";
+import { BsStar, BsCartDash } from "react-icons/bs";
+import { FaFileInvoice } from "react-icons/fa";
+import { MdOutlinePayment, MdOutlineAddShoppingCart } from "react-icons/md"
+import Invoice from "../components/Invoice"
 
 export default function UserDashboard() {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
   const [wish, setWish] = useState([]);
-  const [invoices, setInvoices] = useState([])
+  const [invoices, setInvoices] = useState([]);
   const [showTab, setShowTab] = useState(true);
+  const [model, setModel] = useState(false);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -81,75 +85,80 @@ export default function UserDashboard() {
     setWish(newWishList);
   };
 
-    const getInvoice = async () => {
-      const response =  await fetch("http://localhost:5000/api/app/buyer-invoice", {
+  const getInvoice = async () => {
+    const response = await fetch(
+      "http://localhost:5000/api/app/buyer-invoice",
+      {
         headers: {
-          Authorization: `Bearer ${user.token}`
-        }
-      })
-
-      const json = await response.json()
-
-      if(response.ok) {
-        console.log(json)
+          Authorization: `Bearer ${user.token}`,
+        },
       }
-    }
+    );
 
+    const json = await response.json();
+
+    if (response.ok) {
+      setOrders(json);
+    }
+  };
+
+  useEffect(() => {
+    getInvoice();
+  }, []);
 
   return (
-    <div className="mt-20 h-full overflow-auto lg:flex">
-      <header className="flex w-screen text-lg lg:flex lg:flex-col">
+    <div>
+      <header className="text-lg flex flex-col gap-0 sm:grid grid-cols-3 lg:grid-cols-3">
         <div
           onClick={() => setShowTab(true)}
-          className={
-            showTab
-              ? "w-2/4 bg-green-500 rounded flex justify-center gap-1"
-              : "w-2/4 text-start border-b border-green-500 rounded flex justify-center gap-1"
-          }
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <AiOutlineShoppingCart className="mt-1" />
           <button>Cart</button>
         </div>
         <div
           onClick={() => setShowTab(false)}
-          className={
-            !showTab
-              ? "w-2/4 bg-green-500 rounded flex justify-center gap-1"
-              : "w-2/4 text-start border-b border-green-500 rounded flex justify-center gap-1"
-          }
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
           <TbJewishStar className="mt-1" />
           <button>Wishlist</button>
         </div>
         <div
-          onClick={getInvoice}
-          className="w-2/4 text-start border-b border-green-500 rounded flex justify-center gap-1"
+          onClick={() => setModel(true)}
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
         >
+          <FaFileInvoice className="mt-1" />
           <button>Generate Inovice</button>
         </div>
       </header>
+      <section>
+        {model && <Invoice orders={orders} setModel={setModel} />}
+      </section>
       {showTab ? (
-        <main className="lg:w-full">
+        <main>
           {orders.length == 0 ? (
-            <div>No Orders</div>
+            <div className="flex items-center justify-center h-80">
+              <div>No Orders</div>
+            </div>
           ) : (
-            <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
+            <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 lg:text-lg">
               {orders.map((order) => {
                 return (
-                  <div
-                    key={order._id}
-                    className="shadow mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0"
-                  >
-                    <img
-                      className="w-36"
-                      src={`http://localhost:5000/${order.imagePath}`}
-                      alt={order.imagePath}
-                    />
-                    <section className="text-sm ml-2">
-                      <div className="text-2xl">{order.product_name}</div>
-                      <div>Quantity: {order.quantity}</div>
-                      <section className="flex gap-1">
-                        <div className="text-xl">
+                  <div key={order._id} className=" mx-4 shadow-lg h-fit">
+                    <div  className="shadow-lg h-fit">
+                      <img
+                        className="w-36 mx-auto"
+                        src={`http://localhost:5000/${order.imagePath}`}
+                        alt={order.imagePath}
+                      />
+                    </div>
+                    <section>
+                      <div className="text-yellow-600 text-lg">
+                        {order.product_name}
+                      </div>
+                      <div className="text-lg">Quantity: {order.quantity}</div>
+                      <section className="flex text-sm">
+                        <div>
                           {order.currency === "dollar"
                             ? "$"
                             : order.currency == "pound"
@@ -158,34 +167,28 @@ export default function UserDashboard() {
                             ? "€"
                             : ""}
                         </div>
-                        <div className="text-lg">{order.price}</div>
+                        <div>{order.price}</div>
                       </section>
-                      <section className="bg-gray-900/10 mt-2 rounded p-1">
-                        <div>
+                      <section>
+                        <div className="text-sm">
                           Status:{" "}
                           {order.completed == false
                             ? "Not processed"
                             : "Processed"}
                         </div>
                       </section>
-                      <section className="bg-gray-900/10 mt-2 rounded p-1">
-                        <div className="underline text-lg">Info:</div>
-                        <div>{order.description}</div>
-                      </section>
-                      <div className="bg-gray-800/10 p-1 rounded mt-2">
-                        {order._id}
-                      </div>
+                      <div className="text-sm">Id: {order._id}</div>
                     </section>
-                    <section
-                      onClick={() => removeFromCart(order._id)}
-                      className="text-lg flex gap-1 justify-center bg-red-500 p-1 rounded"
-                    >
+                    <div className="bg-gray-200 flex justify-between px-4">
+                    <section className="text-yellow-600 cursor-pointer" onClick={() => removeFromCart(order._id)}>
                       <BsCartDash className="mt-1" />
-                      <button>Remove from cart</button>
                     </section>
-                    <section className="text-lg flex gap-1 justify-center bg-green-500 p-1 rounded">
-                      <NavLink to={`/payment/${order._id}`}>Complete Order</NavLink>
+                    <section className="text-yellow-600 cursor-pointer">
+                      <NavLink to={`/payment/${order._id}`} className="flex">
+                        <MdOutlinePayment className="mt-1" />
+                      </NavLink>
                     </section>
+                    </div>
                   </div>
                 );
               })}
@@ -193,27 +196,28 @@ export default function UserDashboard() {
           )}
         </main>
       ) : (
-        <main className="lg:w-full">
+        <main>
           {wish.length == 0 ? (
-            <div>WishList Empty</div>
+            <div className="flex items-center justify-center h-80">
+              <div>WishList Empty</div>
+            </div>
           ) : (
-            <div className="md:grid grid-cols-2 lg:grid-cols-3 lg:gap-10">
+            <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 lg:text-lg">
               {wish.map((w) => {
                 return (
-                  <div
-                    key={w._id}
-                    className="shadow mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0"
-                  >
-                    <img
-                      className="w-36"
-                      src={`http://localhost:5000/${w.imagePath}`}
-                      alt={w.imagePath}
-                    />
-                    <section className="text-sm ml-2">
-                      <div className="text-2xl">{w.product_name}</div>
-                      <div>Quantity: {w.quantity}</div>
-                      <section className="flex gap-1">
-                        <div className="text-xl">
+                  <div key={w._id} className="shadow-lg h-fit">
+                   <div className="bg-gray-100">
+                      <img
+                        className="w-36 mx-auto"
+                        src={`http://localhost:5000/${w.imagePath}`}
+                        alt={w.imagePath}
+                      />
+                    </div>
+                    <section>
+                      <div className="text-yellow-600 text-lg">{w.product_name}</div>
+                      <div className="text-lg">Quantity: {w.quantity}</div>
+                      <section className="flex text-sm">
+                        <div>
                           {w.currency === "dollar"
                             ? "$"
                             : w.currency == "pound"
@@ -222,28 +226,20 @@ export default function UserDashboard() {
                             ? "€"
                             : ""}
                         </div>
-                        <div className="text-lg">{w.price}</div>
+                        <div>{w.price}</div>
                       </section>
-                      <section className="bg-gray-900/10 mt-2 rounded p-1">
-                        <div className="underline text-lg">Info:</div>
-                        <div>{w.description}</div>
-                      </section>
-                      <div className="bg-gray-800/10 p-1 rounded mt-2">
-                        {w._id}
-                      </div>
+                      <div className="text-sm">Id: {w._id}</div>
                     </section>
-                    <section
-                      onClick={() => removeFromWishList(w._id)}
-                      className="text-lg flex gap-1 justify-center bg-red-500 p-1 rounded"
-                    >
-                      <BsCartDash className="mt-1" />
-                      <button>Remove Wishlist</button>
+                    <div className="bg-gray-200 flex justify-between px-4">
+                    <section onClick={() => removeFromWishList(w._id)}>
+                      <BsStar className="mt-1 cursor-pointer text-yellow-600" />
                     </section>
-                    <section
-                      className="text-lg flex gap-1 justify-center bg-green-500 p-1 rounded"
-                    >
-                      <NavLink to={`/cart/${w._id}`}>Add to Cart</NavLink>
+                    <section className="cursor-pointer">
+                      <NavLink to={`/cart/${w._id}`}>
+                      <MdOutlineAddShoppingCart className="mt-1 text-yellow-600" />
+                      </NavLink>
                     </section>
+                    </div>
                   </div>
                 );
               })}

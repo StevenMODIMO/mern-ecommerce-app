@@ -4,8 +4,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { TbBusinessplan } from "react-icons/tb";
 import { BiPurchaseTag, BiWalk } from "react-icons/bi";
 import { MdOutlineAddShoppingCart } from "react-icons/md";
-import { TbJewishStar } from "react-icons/tb";
-import { BsFillBuildingsFill } from "react-icons/bs";
+import { BsFillBuildingsFill, BsFillStarFill } from "react-icons/bs";
 import { NavLink } from "react-router-dom";
 import Rates from "../components/Rates";
 import Loader from "../components/Loader";
@@ -130,7 +129,7 @@ export default function Home() {
                       </div>
                       <div className="flex text-2xl gap-1 p-1 text-yellow-600 rounded">
                         <NavLink to={`/wishlist/${prod._id}`}>
-                          <TbJewishStar />
+                          <BsFillStarFill />
                         </NavLink>
                       </div>
                     </section>

@@ -183,7 +183,7 @@ export default function Dashboard() {
               const productRates = rates.filter(
                 (rate) => rate.product_id === product._id
               );
-              
+              const isExpanded = expandedProductIds.includes(product._id);
               return (
                 <div key={product._id} className="shadow-2xl h-fit">
                   <div className="bg-gray-100">
