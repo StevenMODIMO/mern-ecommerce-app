@@ -28,6 +28,7 @@ export default function UserDashboard() {
 
       if (response.ok) {
         setOrders(json);
+        console.log(json)
       }
     };
 
@@ -136,7 +137,7 @@ export default function UserDashboard() {
       </section>
       {showTab ? (
         <main>
-          {orders.length == 0 ? (
+          {orders.length === 0 ? (
             <div className="flex items-center justify-center h-80">
               <div>No Orders</div>
             </div>
@@ -197,7 +198,7 @@ export default function UserDashboard() {
         </main>
       ) : (
         <main>
-          {wish.length == 0 ? (
+          {wish.length === 0 ? (
             <div className="flex items-center justify-center h-80">
               <div>WishList Empty</div>
             </div>

@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useParams, useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 export default function WishToCart() {
   const { user } = useAuth();
   const params = useParams();
   const [wish, setWish] = useState({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleSubmission = async () => {
+    setLoading(true);
     const response = await fetch("http://localhost:5000/api/app/cart", {
       method: "POST",
       headers: {
@@ -27,10 +30,12 @@ export default function WishToCart() {
 
     if (response.ok) {
       navigate("/cart");
+      setLoading(false);
     }
   };
 
   const removeFromWishList = async (id) => {
+    setLoading(true);
     const response = await fetch(
       `http://localhost:5000/api/app/remove-wishlist/${id}`,
       {
@@ -40,6 +45,7 @@ export default function WishToCart() {
         },
       }
     );
+    setLoading(false);
   };
 
   const confirmAndRemove = (id) => {
@@ -49,6 +55,7 @@ export default function WishToCart() {
 
   useEffect(() => {
     const getSingleProduct = async () => {
+      setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
         `http://localhost:5000/api/app/get-wishlist/${id}`,
@@ -62,6 +69,7 @@ export default function WishToCart() {
 
       if (response.ok) {
         setWish(json);
+        setLoading(false);
       }
     };
 
@@ -69,18 +77,21 @@ export default function WishToCart() {
   }, []);
 
   return (
-    <div>
-      <main className="text-xs shadow drop-shadow-2xl mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0">
-        <header className="flex justify-center">
+    <>
+    {loading ? <div className="flex items-center justify-center h-96">
+      <Loader />
+    </div> : <div className="mt-10 px-4 mx-10 text-sm flex flex-col gap-10 sm:items-center lg:text-lg">
+      <main className="shadow-lg h-fit">
+        <div className="bg-gray-100">
           <img
-            className="w-36"
+            className="w-36 mx-auto"
             src={`http://localhost:5000/${wish.imagePath}`}
             alt={wish.imagePath}
           />
-        </header>
-        <div className="text-xl">{wish.product_name}</div>
-        <section className="flex gap-1">
-          <div className="text-xl">
+        </div>
+        <div className="text-yellow-600 text-lg">{wish.product_name}</div>
+        <section className="flex text-sm">
+          <div>
             {wish.currency === "dollar"
               ? "$"
               : wish.currency == "pound"
@@ -89,23 +100,18 @@ export default function WishToCart() {
               ? "€"
               : ""}
           </div>
-          <div className="text-lg">{wish.price}</div>
+          <div>{wish.price}</div>
         </section>
-        <section className="bg-gray-900/10 mt-2 rounded p-1">
-          <div className="underline text-lg">Info:</div>
-          <div>{wish.description}</div>
-        </section>
-        <div className="bg-gray-800/10 p-1 rounded mt-2">id: {wish._id}</div>
-        <div className="bg-gray-800/10 p-1 rounded mt-2 w-fit">
-          Quantity: {wish.quantity}
-        </div>
+        <div className="text-sm">Id: {wish._id}</div>
+        <div className="text-lg">Quantity: {wish.quantity}</div>
         <section
-          className="flex justify-center"
+          className="flex justify-center my-3"
           onClick={() => confirmAndRemove(wish._id)}
         >
-          <button className="bg-green-500 p-1 rounded px-2">Confirm</button>
+          <button className="bg-yellow-500 p-1  px-2">Confirm</button>
         </section>
       </main>
-    </div>
+    </div>}
+    </>
   );
 }

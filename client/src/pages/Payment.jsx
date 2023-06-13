@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import Message from "../components/Message"
+import Loader from "../components/Loader"
+import { FaCcMastercard, FaCcVisa } from "react-icons/fa"
 
 export default function Payment() {
   const [order, setOrder] = useState({});
@@ -12,9 +15,11 @@ export default function Payment() {
   const [error, setError] = useState(null);
   const params = useParams();
   const { user } = useAuth();
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const getSingleProduct = async () => {
+      setLoading(true)
       const id = params.id.toString();
       const response = await fetch(`http://localhost:5000/api/app/item/${id}`, {
         headers: {
@@ -26,6 +31,7 @@ export default function Payment() {
       if (response.ok) {
         console.log(json);
         setOrder(json);
+        setLoading(false)
       }
 
       if (!response.ok) {
@@ -38,7 +44,6 @@ export default function Payment() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-
     const response = await fetch("http://localhost:5000/api/app/pay", {
       method: "POST",
       headers: {
@@ -85,15 +90,19 @@ export default function Payment() {
     }
   };
   return (
-    <div>
-      <header>
-        <div>Payment Gateway Here:</div>
+    <>
+     {loading ? <div className="flex items-center justify-center h-96">
+      <Loader />
+      </div>: <div>
+      <header className="underline text-center text-lg">
+        <div>Complete Payment:</div>
       </header>
-      <section className="flex">
-        <main className="text-xs shadow drop-shadow-2xl mx-10 my-5 p-4 md:w-72 lg:w-64 lg:mx-0">
+      {error && <Message text={error} /> }
+      <section className="flex flex-col sm:mx-auto w-80 sm:flex-row w-full justify-center">
+        <main className="text-xs shadow-xl mx-10 my-5 p-4 md:w-72 lg:w-64 lg:ml-16">
           <header className="flex justify-center">
             <img
-              className="w-44"
+              className="w-36 mx-auto"
               src={`http://localhost:5000/${order.imagePath}`}
               alt={order.imagePath}
             />
@@ -101,7 +110,7 @@ export default function Payment() {
           <div className="text-xl">{order.product_name}</div>
           <div>Qunatity: {order.quantity}</div>
           <section className="flex gap-1">
-            <div className="text-xl">
+            <div className="flex text-sm">
               {order.currency === "dollar"
                 ? "$"
                 : order.currency == "pound"
@@ -110,67 +119,66 @@ export default function Payment() {
                 ? "€"
                 : ""}
             </div>
-            <div className="text-lg">{order.price}</div>
+            <div>{order.price}</div>
           </section>
-          <section className="bg-gray-900/10 mt-2 rounded p-1">
-            <div className="underline text-lg">Info:</div>
-            <div>{order.description}</div>
-          </section>
-          <div className="bg-gray-800/10 p-1 rounded mt-2">id: {order._id}</div>
+          <div className="text-xs mt-2">Id: {order._id}</div>
         </main>
 
         {
           <form
             onSubmit={handleSubmission}
             onFocus={() => setError(null)}
-            className="flex flex-col rounded text-lg mx-2 px-2 py-2 shadow bg-white md:w-80 lg:w-96 lg:text-xl"
+            className="flex flex-col rounded text-lg mx-2 px-2 py-2 shadow-xl bg-white md:w-80 lg:w-96 lg:text-lg"
           >
+            <header className="flex gap-2 text-5xl">
+            <FaCcMastercard />
+            <FaCcVisa />
+            </header>
             <label>card number</label>
             <input
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
               type="text"
-              className="border-2 border-green-500/50 outline-none p-1"
+              className="border-2 border-yellow-500/50 outline-none p-1"
             />
             <label>expire month</label>
             <input
               value={cardExpMonth}
               onChange={(e) => setExpMonth(e.target.value)}
               type="text"
-              className="border-2 border-green-500/50 outline-none p-1"
+              className="border-2 border-yellow-500/50 outline-none p-1"
+              placeholder="e.g 09 or 10"
             />
             <label>expire year</label>
             <input
               value={cardExpYear}
               onChange={(e) => setExpYear(e.target.value)}
               type="text"
-              className="border-2 border-green-500/50 outline-none p-1"
+              className="border-2 border-yellow-500/50 outline-none p-1"
+              placeholder="e.g 24/22/25"
             />
             <label>cvc code</label>
             <input
               value={cardCvc}
               onChange={(e) => setCvc(e.target.value)}
               type="text"
-              className="border-2 border-green-500/50 outline-none p-1"
+              className="border-2 border-yellow-500/50 outline-none p-1"
+              placeholder="Last three digits"
             />
             <label>Shipping Address</label>
             <input
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               type="text"
-              className="border-2 border-green-500/50 outline-none p-1"
+              className="border-2 border-yellow-500/50 outline-none p-1"
             />
-            <main className="flex justify-center mt-3 gap-1 bg-green-500/50 p-1 rounded">
+            <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
               <button>Complete Payment</button>
             </main>
-            {error && (
-              <div className="bg-red-500/50 text-lg text-center mx-auto mt-3 p-1 rounded">
-                {error}
-              </div>
-            )}
           </form>
         }
       </section>
-    </div>
+    </div>}
+    </>
   );
 }
