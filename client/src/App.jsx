@@ -4,7 +4,6 @@ import Navbar from "./components/Navbar"
 import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import Home from "./pages/Home"
-import Profile from "./pages/Profile"
 import Dashboard from "./pages/Dashboard"
 import UserDashboard from "./pages/UserDashboard"
 import Landing from "./pages/Landing"
@@ -25,9 +24,7 @@ function App() {
           <Route path="/signup" element={!user && <Signup />} />
           <Route path="/login" element={!user && <Login />} />
           <Route path="/" element={user ? <Home /> : <Navigate to="/landing" />} />
-          <Route path="/profile" element={user ? <Profile /> : <Navigate to="/landing" />} />
           <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/landing" />} />
-         
           <Route path="/cart" element={user ? <UserDashboard /> : <Navigate to="/landing" />} />
           <Route path="/order/:id" element={user ? <Order /> : <Navigate to="/landing" />} />
           <Route path="/wishlist/:id" element={user ? <WishList /> : <Navigate to="/landing" />} />
