@@ -29,7 +29,7 @@ export default function Home() {
   };
 
   const registerBuyer = async () => {
-    const response = await fetch("http://localhost:5000/api/app/buyer", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/buyer", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -60,7 +60,7 @@ export default function Home() {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("http://localhost:5000/api/app", {
+      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -136,7 +136,7 @@ export default function Home() {
                     <div className="bg-gray-100">
                       <img
                         className="w-36 mx-auto"
-                        src={`http://localhost:5000/${prod.imagePath}`}
+                        src={`https://mern-ecommerce-rhpa.onrender.com/${prod.imagePath}`}
                         alt={prod.imagePath}
                       />
                     </div>

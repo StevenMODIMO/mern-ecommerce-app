@@ -12,7 +12,7 @@ export default function WishToCart() {
 
   const handleSubmission = async () => {
     setLoading(true);
-    const response = await fetch("http://localhost:5000/api/app/cart", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function WishToCart() {
   const removeFromWishList = async (id) => {
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5000/api/app/remove-wishlist/${id}`,
+      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-wishlist/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -58,7 +58,7 @@ export default function WishToCart() {
       setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
-        `http://localhost:5000/api/app/get-wishlist/${id}`,
+        `https://mern-ecommerce-rhpa.onrender.com/api/app/get-wishlist/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -85,7 +85,7 @@ export default function WishToCart() {
         <div className="bg-gray-100">
           <img
             className="w-36 mx-auto"
-            src={`http://localhost:5000/${wish.imagePath}`}
+            src={`https://mern-ecommerce-rhpa.onrender.com/${wish.imagePath}`}
             alt={wish.imagePath}
           />
         </div>

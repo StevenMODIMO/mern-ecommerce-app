@@ -46,7 +46,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/app/products", {
+      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/products", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -78,7 +78,7 @@ export default function Dashboard() {
     formData.append("currency", currency);
     formData.append("category", category);
 
-    const response = await fetch("http://localhost:5000/api/app/new-product", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/new-product", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -109,7 +109,7 @@ export default function Dashboard() {
   useEffect(() => {});
 
   const deleteProduct = async (id) => {
-    await fetch(`http://localhost:5000/api/app/${id}`, {
+    await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -122,7 +122,7 @@ export default function Dashboard() {
 
   const getInvoice = async () => {
     const response = await fetch(
-      "http://localhost:5000/api/app/seller-invoice",
+      "https://mern-ecommerce-rhpa.onrender.com/api/app/seller-invoice",
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -140,6 +140,23 @@ export default function Dashboard() {
   useEffect(() => {
     getInvoice();
   }, []);
+
+  const completeShip = async(id) => {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/ship", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`
+      },
+      body: JSON.stringify({Id: id})
+    })
+
+    const json = await response.json()
+
+    if(response.ok) {
+      console.log(json)
+    }
+  }
 
   return (
     <div>
@@ -189,7 +206,7 @@ export default function Dashboard() {
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
-                      src={`http://localhost:5000/${product.imagePath}`}
+                      src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
                       alt={product.imagePath}
                     />
                   </div>
@@ -261,7 +278,7 @@ export default function Dashboard() {
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
-                      src={`http://localhost:5000/${order.imagePath}`}
+                      src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
                       alt={order.imagePath}
                     />
                   </div>
@@ -293,8 +310,8 @@ export default function Dashboard() {
                       Order Id: {order._id}
                     </div>
                   </section>
-                  <div className="bg-green-600 p-1 rounded text-center w-fit mx-auto my-2">
-                    <button>Complete Order</button>
+                  <div onClick={() => completeShip(order._id)} className="bg-yellow-600 p-1 rounded text-center w-fit mx-auto my-2">
+                    <button>Ship Product</button>
                   </div>
                 </div>
               );

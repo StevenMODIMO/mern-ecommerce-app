@@ -19,7 +19,7 @@ export default function Order() {
       setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
-        `http://localhost:5000/api/app/order/${id}`,
+        `https://mern-ecommerce-rhpa.onrender.com/api/app/order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -40,7 +40,7 @@ export default function Order() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch("http://localhost:5000/api/app/cart", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function Order() {
         <div className="bg-gray-100">
           <img
             className="w-36 mx-auto"
-            src={`http://localhost:5000/${product.imagePath}`}
+            src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
             alt={product.imagePath}
           />
         </div>

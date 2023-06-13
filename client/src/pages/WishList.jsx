@@ -18,7 +18,7 @@ export default function WishList() {
       setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
-        `http://localhost:5000/api/app/order/${id}`,
+        `https://mern-ecommerce-rhpa.onrender.com/api/app/order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -38,7 +38,7 @@ export default function WishList() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const response = await fetch("http://localhost:5000/api/app/add-wishlist", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/add-wishlist", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default function WishList() {
       <div className="bg-gray-100">
           <img
             className="w-36 mx-auto"
-            src={`http://localhost:5000/${product.imagePath}`}
+            src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
             alt={product.imagePath}
           />
         </div>

@@ -540,8 +540,14 @@ const generateSellerInvoice = async (req, res) => {
 
 const completeOrder = async(req, res) => {
   const user_id = req.user
+  const { id } = req.body
   try {
-
+    const shipProduct = await Seller.findOneAndUpdate(
+      {user_id: user_id},
+      { $set: {'orders.$[element].shipped': true}},
+      { arrayFilter: [{'element.id': id}]}
+    )
+    res.status(200).json("Shipped Successfully")
   } catch(error) {
     await Seller.findOneAndUpdate({user_id: user_id}, {})
   }
@@ -569,5 +575,6 @@ module.exports = {
   getOrders,
   intitiatePayment,
   generateBuyerInvoice,
-  generateSellerInvoice
+  generateSellerInvoice,
+  completeOrder
 };

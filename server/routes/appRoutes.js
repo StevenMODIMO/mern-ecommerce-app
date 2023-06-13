@@ -22,7 +22,8 @@ const {
   getOrders,
   intitiatePayment,
   generateBuyerInvoice,
-  generateSellerInvoice
+  generateSellerInvoice,
+  completeOrder
 } = require("../controllers/appControllers");
 
 const multer = require("multer");
@@ -82,5 +83,7 @@ router.post("/pay", intitiatePayment)
 router.get("/buyer-invoice", generateBuyerInvoice)
 
 router.get("/seller-invoice", generateSellerInvoice)
+
+router.post("/ship", completeOrder)
 
 module.exports = router;

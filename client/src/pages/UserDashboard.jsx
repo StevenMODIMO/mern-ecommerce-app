@@ -18,7 +18,7 @@ export default function UserDashboard() {
 
   useEffect(() => {
     const getOrders = async () => {
-      const response = await fetch("http://localhost:5000/api/app/orders", {
+      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/orders", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -28,7 +28,6 @@ export default function UserDashboard() {
 
       if (response.ok) {
         setOrders(json);
-        console.log(json)
       }
     };
 
@@ -38,7 +37,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const getWishList = async () => {
       const response = await fetch(
-        "http://localhost:5000/api/app/get-wishlist",
+        "https://mern-ecommerce-rhpa.onrender.com/api/app/get-wishlist",
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -58,7 +57,7 @@ export default function UserDashboard() {
 
   const removeFromCart = async (id) => {
     const response = await fetch(
-      `http://localhost:5000/api/app/remove-from-cart/${id}`,
+      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-from-cart/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -73,7 +72,7 @@ export default function UserDashboard() {
 
   const removeFromWishList = async (id) => {
     const response = await fetch(
-      `http://localhost:5000/api/app/remove-wishlist/${id}`,
+      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-wishlist/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -88,7 +87,7 @@ export default function UserDashboard() {
 
   const getInvoice = async () => {
     const response = await fetch(
-      "http://localhost:5000/api/app/buyer-invoice",
+      "https://mern-ecommerce-rhpa.onrender.com/api/app/buyer-invoice",
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -149,7 +148,7 @@ export default function UserDashboard() {
                     <div  className="shadow-lg h-fit">
                       <img
                         className="w-36 mx-auto"
-                        src={`http://localhost:5000/${order.imagePath}`}
+                        src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
                         alt={order.imagePath}
                       />
                     </div>
@@ -210,7 +209,7 @@ export default function UserDashboard() {
                    <div className="bg-gray-100">
                       <img
                         className="w-36 mx-auto"
-                        src={`http://localhost:5000/${w.imagePath}`}
+                        src={`https://mern-ecommerce-rhpa.onrender.com/${w.imagePath}`}
                         alt={w.imagePath}
                       />
                     </div>
