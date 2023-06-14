@@ -24,7 +24,6 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [model, setModel] = useState(false);
-  const [text, setText] = useState(false);
   const [expandedProductIds, setExpandedProductIds] = useState([]);
 
   const toggleProductExpansion = (productId) => {
@@ -46,7 +45,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/products", {
+      const response = await fetch("http://localhost:5000/api/app/products", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -78,7 +77,7 @@ export default function Dashboard() {
     formData.append("currency", currency);
     formData.append("category", category);
 
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/new-product", {
+    const response = await fetch("http://localhost:5000/api/app/new-product", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -109,7 +108,7 @@ export default function Dashboard() {
   useEffect(() => {});
 
   const deleteProduct = async (id) => {
-    await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/${id}`, {
+    await fetch(`http://localhost:5000/api/app/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -122,7 +121,7 @@ export default function Dashboard() {
 
   const getInvoice = async () => {
     const response = await fetch(
-      "https://mern-ecommerce-rhpa.onrender.com/api/app/seller-invoice",
+      "http://localhost:5000/api/app/seller-invoice",
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -141,50 +140,62 @@ export default function Dashboard() {
     getInvoice();
   }, []);
 
-  const completeShip = async(id) => {
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/ship", {
+  const completeShip = async (id) => {
+    const response = await fetch("http://localhost:5000/api/app/ship", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${user.token}`
+        Authorization: `Bearer ${user.token}`,
       },
-      body: JSON.stringify({Id: id})
-    })
+      body: JSON.stringify({ Id: id }),
+    });
 
-    const json = await response.json()
+    const json = await response.json();
 
-    if(response.ok) {
-      console.log(json)
+    if (response.ok) {
+      console.log(json);
     }
-  }
+  };
 
   return (
     <div>
       <main className="flex flex-col gap-0 sm:grid grid-cols-2 lg:grid-cols-4">
         <section
           onClick={() => handleTabs(0)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className={
+            activeTab === 0
+              ? "cursor-pointer flex gap-2 text-lg bg-none  border border-yellow-500 p-1"
+              : "cursor-pointer flex gap-2 text-lg bg-yellow-500  p-1"
+          }
         >
           <TfiViewListAlt className="mt-1" />
           <div>Your Products</div>
         </section>
         <section
           onClick={() => handleTabs(1)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className={
+            activeTab === 1
+              ? "cursor-pointer flex gap-2 text-lg bg-none border border-yellow-500 p-1"
+              : "cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
+          }
         >
           <AiOutlineFolderAdd className="mt-1" />
           <div>New Product</div>
         </section>
         <section
           onClick={() => handleTabs(2)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className={
+            activeTab === 2
+              ? "cursor-pointer flex gap-2 text-lg bg-none border border-yellow-500 p-1"
+              : "cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
+          }
         >
           <BiBorderAll className="mt-1" />
           <div>Orders</div>
         </section>
         <section
           onClick={() => setModel(true)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
         >
           <FaFileInvoice className="mt-1" />
           <div>Invoices</div>
@@ -206,11 +217,13 @@ export default function Dashboard() {
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
-                      src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
+                      src={`http://localhost:5000/${product.imagePath}`}
                       alt={product.imagePath}
                     />
                   </div>
-                  <div className="text-yellow-600 text-lg">{product.product_name}</div>
+                  <div className="text-yellow-500 text-lg">
+                    {product.product_name}
+                  </div>
                   <main className="my-2">
                     <section>
                       <div className="px-2">Quantity: {product.quantity}</div>
@@ -223,10 +236,11 @@ export default function Dashboard() {
                             : product.description}
                         </div>
                         {product.description.length > 100 && (
-                          <div className="ml-48"
+                          <div
+                            className="ml-48"
                             onClick={() => toggleProductExpansion(product._id)}
                           >
-                            <button className="bg-yellow-600 px-1 h-fit w-fit rounded">
+                            <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
                               {isExpanded ? "less" : "more"}
                             </button>
                           </div>
@@ -251,13 +265,13 @@ export default function Dashboard() {
                     </div>
                   </main>
                   <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
-                      <button
-                        className="flex gap-1"
-                        onClick={() => deleteProduct(product._id)}
-                      >
-                        <FaTrash className="mt-1" /> Remove
-                      </button>
-                    </section>
+                    <button
+                      className="flex gap-1"
+                      onClick={() => deleteProduct(product._id)}
+                    >
+                      <FaTrash className="mt-1" /> Remove
+                    </button>
+                  </section>
                 </div>
               );
             })}
@@ -268,22 +282,21 @@ export default function Dashboard() {
       {activeTab === 2 && (
         <main>
           <h1 className="text-center underline text-lg">Your Orders</h1>
-          <div  className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
+          <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
             {orders.map((order) => {
               return (
-                <div
-                  key={order._id}
-                  className="shadow-xl h-fit"
-                >
+                <div key={order._id} className="shadow-xl h-fit">
                   <div className="bg-gray-100">
                     <img
                       className="w-36 mx-auto"
-                      src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
+                      src={`http://localhost:5000/${order.imagePath}`}
                       alt={order.imagePath}
                     />
                   </div>
                   <section className="text-sm">
-                    <div className="text-2xl text-yellow-600">{order.product_name}</div>
+                    <div className="text-2xl text-yellow-500">
+                      {order.product_name}
+                    </div>
                     <div>Quantity ordered: {order.quantity}</div>
                     <section className="flex gap-1">
                       <div className="text-xl">
@@ -295,22 +308,26 @@ export default function Dashboard() {
                           ? "Total: €"
                           : ""}
                       </div>
-                      <div className="text-lg">{order.price * order.quantity}</div>
+                      <div className="text-lg">
+                        {order.price * order.quantity}
+                      </div>
                     </section>
                   </section>
                   <section>
                     <div>
                       <div>
-                        Status: {order.shipped == false ? "Not Shipped" : "Shipped"}
+                        Status:{" "}
+                        {order.shipped == false ? "Not Shipped" : "Shipped"}
                       </div>
                       <div>From: {order.from}</div>
                       <div>Address: {order.address}</div>
                     </div>
-                    <div className="text-xs">
-                      Order Id: {order._id}
-                    </div>
+                    <div className="text-xs">Order Id: {order._id}</div>
                   </section>
-                  <div onClick={() => completeShip(order._id)} className="bg-yellow-600 p-1 rounded text-center w-fit mx-auto my-2">
+                  <div
+                    onClick={() => completeShip(order._id)}
+                    className="bg-yellow-500 p-1 rounded text-center w-fit mx-auto my-2"
+                  >
                     <button>Ship Product</button>
                   </div>
                 </div>
@@ -334,7 +351,7 @@ export default function Dashboard() {
             >
               <label
                 htmlFor="fileInput"
-                className=" mt-3 cursor-pointer gap-1 bg-yellow-600 rounded p-1"
+                className=" mt-3 cursor-pointer gap-1 bg-yellow-500 rounded p-1"
               >
                 <input
                   id="fileInput"
@@ -358,7 +375,7 @@ export default function Dashboard() {
 
               <label className="mt-3">Product Name</label>
               <input
-                className="border-2 border-yellow-600 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-none p-1 rounded"
                 type="text"
                 value={product_name}
                 onChange={(e) => setProduct_Name(e.target.value)}
@@ -366,14 +383,14 @@ export default function Dashboard() {
               />
               <label>Description</label>
               <textarea
-                className="border-2 border-yellow-600 outline-none  p-1 h-24 rounded"
+                className="border-2 border-yellow-400 outline-none  p-1 h-24 rounded"
                 placeholder="separate by comma e.g Ram 4GB, intel core i9, 500GB, Nvidia graphics"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
               <label className="mt-3">Price</label>
               <input
-                className="border-2 border-yellow-600 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-none p-1 rounded"
                 type="number"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
@@ -381,7 +398,7 @@ export default function Dashboard() {
               />
               <label className="mt-3">Quantity</label>
               <input
-                className="border-2 border-yellow-600 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-none p-1 rounded"
                 type="number"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
@@ -389,7 +406,7 @@ export default function Dashboard() {
               />
               <label className="mx-auto mt-3">Choose currency:</label>
               <select
-                className="border-2 border-yellow-600 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-400 p-1 outline-none w-40 mx-auto rounded"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
               >
@@ -406,7 +423,7 @@ export default function Dashboard() {
               </select>
               <label className="mx-auto mt-3">Select Category:</label>
               <select
-                className="border-2 border-yellow-600 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-400 p-1 outline-none w-40 mx-auto rounded"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -427,7 +444,7 @@ export default function Dashboard() {
               {loading ? (
                 <Loader />
               ) : (
-                <main className="flex justify-center mt-3 gap-1 bg-yellow-600 p-1 rounded">
+                <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded">
                   <MdOutlineSend className="text-2xl" />
                   <button>Submit</button>
                 </main>

@@ -5,8 +5,8 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { TbJewishStar } from "react-icons/tb";
 import { BsStar, BsCartDash } from "react-icons/bs";
 import { FaFileInvoice } from "react-icons/fa";
-import { MdOutlinePayment, MdOutlineAddShoppingCart } from "react-icons/md"
-import Invoice from "../components/Invoice"
+import { MdOutlinePayment, MdOutlineAddShoppingCart } from "react-icons/md";
+import Invoice from "../components/Invoice";
 
 export default function UserDashboard() {
   const { user } = useAuth();
@@ -18,7 +18,7 @@ export default function UserDashboard() {
 
   useEffect(() => {
     const getOrders = async () => {
-      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/orders", {
+      const response = await fetch("http://localhost:5000/api/app/orders", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -37,7 +37,7 @@ export default function UserDashboard() {
   useEffect(() => {
     const getWishList = async () => {
       const response = await fetch(
-        "https://mern-ecommerce-rhpa.onrender.com/api/app/get-wishlist",
+        "http://localhost:5000/api/app/get-wishlist",
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -57,7 +57,7 @@ export default function UserDashboard() {
 
   const removeFromCart = async (id) => {
     const response = await fetch(
-      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-from-cart/${id}`,
+      `http://localhost:5000/api/app/remove-from-cart/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -72,7 +72,7 @@ export default function UserDashboard() {
 
   const removeFromWishList = async (id) => {
     const response = await fetch(
-      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-wishlist/${id}`,
+      `http://localhost:5000/api/app/remove-wishlist/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -87,7 +87,7 @@ export default function UserDashboard() {
 
   const getInvoice = async () => {
     const response = await fetch(
-      "https://mern-ecommerce-rhpa.onrender.com/api/app/buyer-invoice",
+      "http://localhost:5000/api/app/buyer-invoice",
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -98,7 +98,7 @@ export default function UserDashboard() {
     const json = await response.json();
 
     if (response.ok) {
-      setOrders(json);
+      setInvoices(json);
     }
   };
 
@@ -111,28 +111,36 @@ export default function UserDashboard() {
       <header className="text-lg flex flex-col gap-0 sm:grid grid-cols-3 lg:grid-cols-3">
         <div
           onClick={() => setShowTab(true)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className={
+            showTab
+              ? "cursor-pointer flex gap-2 text-lg bg-none border border-yellow-500 p-1"
+              : "cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
+          }
         >
           <AiOutlineShoppingCart className="mt-1" />
           <button>Cart</button>
         </div>
         <div
           onClick={() => setShowTab(false)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className={
+            !showTab
+              ? "cursor-pointer flex gap-2 text-lg bg-none border border-yellow-500 p-1"
+              : "cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
+          }
         >
           <TbJewishStar className="mt-1" />
           <button>Wishlist</button>
         </div>
         <div
           onClick={() => setModel(true)}
-          className="cursor-pointer flex gap-2 text-lg bg-yellow-600 p-1"
+          className="cursor-pointer flex gap-2 text-lg bg-yellow-500 p-1"
         >
           <FaFileInvoice className="mt-1" />
           <button>Generate Inovice</button>
         </div>
       </header>
       <section>
-        {model && <Invoice orders={orders} setModel={setModel} />}
+        {model && <Invoice orders={invoices} setModel={setModel} />}
       </section>
       {showTab ? (
         <main>
@@ -145,15 +153,15 @@ export default function UserDashboard() {
               {orders.map((order) => {
                 return (
                   <div key={order._id} className=" mx-4 shadow-lg h-fit">
-                    <div  className="shadow-lg h-fit">
+                    <div className="shadow-lg h-fit">
                       <img
                         className="w-36 mx-auto"
-                        src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
+                        src={`http://localhost:5000/${order.imagePath}`}
                         alt={order.imagePath}
                       />
                     </div>
                     <section>
-                      <div className="text-yellow-600 text-lg">
+                      <div className="text-yellow-500 text-lg">
                         {order.product_name}
                       </div>
                       <div className="text-lg">Quantity: {order.quantity}</div>
@@ -179,15 +187,18 @@ export default function UserDashboard() {
                       </section>
                       <div className="text-sm">Id: {order._id}</div>
                     </section>
-                    <div className="bg-gray-200 flex justify-between px-4">
-                    <section className="text-yellow-600 cursor-pointer" onClick={() => removeFromCart(order._id)}>
-                      <BsCartDash className="mt-1" />
-                    </section>
-                    <section className="text-yellow-600 cursor-pointer">
-                      <NavLink to={`/payment/${order._id}`} className="flex">
-                        <MdOutlinePayment className="mt-1" />
-                      </NavLink>
-                    </section>
+                    <div className="bg-gray-200 flex justify-between px-4 text-2xl">
+                      <section
+                        className="text-yellow-500 cursor-pointer"
+                        onClick={() => removeFromCart(order._id)}
+                      >
+                        <BsCartDash className="mt-1" />
+                      </section>
+                      <section className="text-yellow-500 cursor-pointer">
+                        <NavLink to={`/payment/${order._id}`} className="flex">
+                          <MdOutlinePayment className="mt-1" />
+                        </NavLink>
+                      </section>
                     </div>
                   </div>
                 );
@@ -206,15 +217,17 @@ export default function UserDashboard() {
               {wish.map((w) => {
                 return (
                   <div key={w._id} className="shadow-lg h-fit">
-                   <div className="bg-gray-100">
+                    <div className="bg-gray-100">
                       <img
                         className="w-36 mx-auto"
-                        src={`https://mern-ecommerce-rhpa.onrender.com/${w.imagePath}`}
+                        src={`http://localhost:5000/${w.imagePath}`}
                         alt={w.imagePath}
                       />
                     </div>
                     <section>
-                      <div className="text-yellow-600 text-lg">{w.product_name}</div>
+                      <div className="text-yellow-500 text-lg">
+                        {w.product_name}
+                      </div>
                       <div className="text-lg">Quantity: {w.quantity}</div>
                       <section className="flex text-sm">
                         <div>
@@ -230,15 +243,15 @@ export default function UserDashboard() {
                       </section>
                       <div className="text-sm">Id: {w._id}</div>
                     </section>
-                    <div className="bg-gray-200 flex justify-between px-4">
-                    <section onClick={() => removeFromWishList(w._id)}>
-                      <BsStar className="mt-1 cursor-pointer text-yellow-600" />
-                    </section>
-                    <section className="cursor-pointer">
-                      <NavLink to={`/cart/${w._id}`}>
-                      <MdOutlineAddShoppingCart className="mt-1 text-yellow-600" />
-                      </NavLink>
-                    </section>
+                    <div className="bg-gray-200 flex justify-between px-4 text-2xl">
+                      <section onClick={() => removeFromWishList(w._id)}>
+                        <BsStar className="mt-1 cursor-pointer text-yellow-500" />
+                      </section>
+                      <section className="cursor-pointer">
+                        <NavLink to={`/cart/${w._id}`}>
+                          <MdOutlineAddShoppingCart className="mt-1 text-yellow-500" />
+                        </NavLink>
+                      </section>
                     </div>
                   </div>
                 );

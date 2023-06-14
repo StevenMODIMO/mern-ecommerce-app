@@ -21,7 +21,7 @@ export default function Payment() {
     const getSingleProduct = async () => {
       setLoading(true)
       const id = params.id.toString();
-      const response = await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/item/${id}`, {
+      const response = await fetch(`http://localhost:5000/api/app/item/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -44,7 +44,7 @@ export default function Payment() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/pay", {
+    const response = await fetch("http://localhost:5000/api/app/pay", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function Payment() {
           <header className="flex justify-center">
             <img
               className="w-36 mx-auto"
-              src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
+              src={`http://localhost:5000/${order.imagePath}`}
               alt={order.imagePath}
             />
           </header>
@@ -139,14 +139,14 @@ export default function Payment() {
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
               type="text"
-              className="border-2 border-yellow-500/50 outline-none p-1"
+              className="border-2 border-yellow-500 outline-none p-1"
             />
             <label>expire month</label>
             <input
               value={cardExpMonth}
               onChange={(e) => setExpMonth(e.target.value)}
               type="text"
-              className="border-2 border-yellow-500/50 outline-none p-1"
+              className="border-2 border-yellow-500 outline-none p-1"
               placeholder="e.g 09 or 10"
             />
             <label>expire year</label>
@@ -154,7 +154,7 @@ export default function Payment() {
               value={cardExpYear}
               onChange={(e) => setExpYear(e.target.value)}
               type="text"
-              className="border-2 border-yellow-500/50 outline-none p-1"
+              className="border-2 border-yellow-500 outline-none p-1"
               placeholder="e.g 24/22/25"
             />
             <label>cvc code</label>
@@ -162,7 +162,7 @@ export default function Payment() {
               value={cardCvc}
               onChange={(e) => setCvc(e.target.value)}
               type="text"
-              className="border-2 border-yellow-500/50 outline-none p-1"
+              className="border-2 border-yellow-500 outline-none p-1"
               placeholder="Last three digits"
             />
             <label>Shipping Address</label>
@@ -170,7 +170,7 @@ export default function Payment() {
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               type="text"
-              className="border-2 border-yellow-500/50 outline-none p-1"
+              className="border-2 border-yellow-500 outline-none p-1"
             />
             <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
               <button>Complete Payment</button>

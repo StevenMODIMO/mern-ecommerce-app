@@ -89,7 +89,7 @@ export default function Invoice({ orders, setModel }) {
   const total = 0;
   return (
     <Backdrop close={closeModel}>
-      <div className="flex justify-end m-3 text-yellow-600">
+      <div className="flex justify-end m-3 text-yellow-500">
         <div onClick={closeModel}>
           <FaTimes />
         </div>

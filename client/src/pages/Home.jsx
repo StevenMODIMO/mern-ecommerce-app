@@ -29,7 +29,7 @@ export default function Home() {
   };
 
   const registerBuyer = async () => {
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/buyer", {
+    const response = await fetch("http://localhost:5000/api/app/buyer", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -60,7 +60,7 @@ export default function Home() {
   useEffect(() => {
     const getProducts = async () => {
       setLoading(true);
-      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app", {
+      const response = await fetch("http://localhost:5000/api/app", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -108,7 +108,7 @@ export default function Home() {
         <>
           <section>
             <header className="-mt-20 mb-5">
-              <div className="underline text-yellow-600 flex justify-center">
+              <div className="underline text-yellow-500 flex justify-center">
                 <BiWalk className="mt-1" />
                 <h1>Start Shopping</h1>
               </div>
@@ -121,13 +121,13 @@ export default function Home() {
                 return (
                   <main key={prod._id} className="shadow-xl h-fit">
                     <section className="flex justify-between my-3 bg-gray-200">
-                      <div className="flex text-2xl gap-1 p-1 text-yellow-600 rounded">
+                      <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded">
                         <NavLink to={`/order/${prod._id}`}>
                           {" "}
                           <MdOutlineAddShoppingCart />
                         </NavLink>
                       </div>
-                      <div className="flex text-2xl gap-1 p-1 text-yellow-600 rounded">
+                      <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded">
                         <NavLink to={`/wishlist/${prod._id}`}>
                           <BsFillStarFill />
                         </NavLink>
@@ -136,11 +136,11 @@ export default function Home() {
                     <div className="bg-gray-100">
                       <img
                         className="w-36 mx-auto"
-                        src={`https://mern-ecommerce-rhpa.onrender.com/${prod.imagePath}`}
+                        src={`http://localhost:5000/${prod.imagePath}`}
                         alt={prod.imagePath}
                       />
                     </div>
-                    <div className="text-yellow-600 text-lg">
+                    <div className="text-yellow-500 text-lg">
                       {prod.product_name}
                     </div>
                     <section className="flex gap-1">
@@ -172,7 +172,7 @@ export default function Home() {
                           className="ml-48"
                           onClick={() => toggleProductExpansion(prod._id)}
                         >
-                          <button className="bg-yellow-600 px-1 h-fit w-fit rounded">
+                          <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
                             {isExpanded ? "less" : "more"}
                           </button>
                         </div>

@@ -18,7 +18,7 @@ export default function WishList() {
       setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
-        `https://mern-ecommerce-rhpa.onrender.com/api/app/order/${id}`,
+        `http://localhost:5000/api/app/order/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -38,7 +38,7 @@ export default function WishList() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     setLoading(true)
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/add-wishlist", {
+    const response = await fetch("http://localhost:5000/api/app/add-wishlist", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -77,11 +77,11 @@ export default function WishList() {
       <div className="bg-gray-100">
           <img
             className="w-36 mx-auto"
-            src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
+            src={`http://localhost:5000/${product.imagePath}`}
             alt={product.imagePath}
           />
         </div>
-        <div className="text-yellow-600 text-lg">{product.product_name}</div>
+        <div className="text-yellow-500 text-lg">{product.product_name}</div>
         <section className="flex gap-1">
           <div className="text-xl">
             {product.currency === "dollar"
@@ -111,7 +111,7 @@ export default function WishList() {
             max="10"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            className="border-2 border-yellow-600 outline-none p-1 rounded"
+            className="border-2 border-yellow-500 outline-none p-1 rounded"
             placeholder="Quantity of product e.g 4"
           />
           {loading ? (
@@ -119,7 +119,7 @@ export default function WishList() {
               <Loader />
             </div>
           ) : (
-            <main className="flex justify-center mt-3 gap-1 bg-yellow-600 p-1 rounded">
+            <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded">
               <button>Add to Wishlist</button>
             </main>
           )}

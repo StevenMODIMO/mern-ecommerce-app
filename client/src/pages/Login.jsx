@@ -15,7 +15,7 @@ export default function Login() {
   const handleSubmission = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/auth/login", {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ export default function Login() {
 
 
   return (
-    <div className="shadow-xl rounded border-t-2 border-black py-2 px-4  sm:w-96 mx-auto mt-10">
+    <div className="shadow-xl rounded border-t-2 border-black py-2 px-2 mx-4  sm:w-96 mx-auto mt-10">
       {error && <Message text={error} />}
       <header className="text-center m-2 underline lg:mt-12">Login To Countinue</header>
       <form
@@ -57,17 +57,17 @@ export default function Login() {
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-2 border-yellow-200 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg w-80"
           placeholder="email address"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border-2 border-yellow-200 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg w-80"
           placeholder="password"
         />
-        {loading ? <Loader /> :<button disabled={loading} className=" p-1 rounded bg-yellow-200">
+        {loading ? <Loader /> :<button disabled={loading} className=" p-1 rounded bg-yellow-500">
           Login
         </button>}
       </form>

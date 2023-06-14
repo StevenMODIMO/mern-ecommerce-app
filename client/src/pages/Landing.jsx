@@ -44,7 +44,7 @@ export default function Landing() {
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcElectronics />
           </div>
-          <p className="text-center font-sans text-yellow-600">
+          <p className="text-center font-sans text-yellow-500">
             Home of Electronics
           </p>
         </section>
@@ -56,7 +56,7 @@ export default function Landing() {
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcOvertime />
           </div>
-          <p className="text-center font-sans text-yellow-600">
+          <p className="text-center font-sans text-yellow-500">
             Guaranteed Warranty
           </p>
         </section>
@@ -69,7 +69,7 @@ export default function Landing() {
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcComboChart />
           </div>
-          <p className="text-center font-sans text-yellow-600">
+          <p className="text-center font-sans text-yellow-500">
             Trending Technologies
           </p>
         </section>
@@ -161,10 +161,11 @@ export default function Landing() {
           <h1 className="underline">Get Started</h1>
         </header>
           <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
-            <div onClick={() => navigate("/signup")} className="bg-yellow-600 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
+            <div onClick={() => navigate("/signup")} className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
             <div></div>
           </div>
       </main>
+      
 
       <footer className="text-sm text-yellow-500 text-center mt-5">
         <div className="flex justify-center">
