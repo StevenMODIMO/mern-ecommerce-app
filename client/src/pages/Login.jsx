@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Message from "../components/Message"
-import Loader from "../components/Loader"
+import Loader from "../components/Loader";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -43,11 +42,11 @@ export default function Login() {
     setLoading(false);
   };
 
-
   return (
     <div className="shadow-xl rounded border-t-2 border-black py-2 px-2 mx-4  sm:w-96 mx-auto mt-10">
-      {error && <Message text={error} />}
-      <header className="text-center m-2 underline lg:mt-12">Login To Countinue</header>
+      <header className="text-center m-2 underline lg:mt-12">
+        Login To Countinue
+      </header>
       <form
         onSubmit={handleSubmission}
         onFocus={() => setError(null)}
@@ -67,9 +66,18 @@ export default function Login() {
           className="border-2 border-yellow-400 outline-none rounded p-1 text-lg w-80"
           placeholder="password"
         />
-        {loading ? <Loader /> :<button disabled={loading} className=" p-1 rounded bg-yellow-500">
-          Login
-        </button>}
+        {loading ? (
+          <Loader />
+        ) : (
+          <button disabled={loading} className=" p-1 rounded bg-yellow-500">
+            Login
+          </button>
+        )}
+        {error && (
+          <div className="text-lg bg-red-400 px-1 rounded">
+            <div>{error}</div>
+          </div>
+        )}
       </form>
     </div>
   );

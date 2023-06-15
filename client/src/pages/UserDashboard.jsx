@@ -145,9 +145,14 @@ export default function UserDashboard() {
       {showTab ? (
         <main>
           {orders.length === 0 ? (
-            <div className="flex items-center justify-center h-80">
-              <div>No Orders</div>
+            <div className="mt-5 sm:mt-20">
+            <div className="flex justify-center">
+              <AiOutlineShoppingCart className="text-9xl text-yellow-300" />
             </div>
+            <h1 className="text-lg text-center">
+              Cart is Empty
+            </h1>
+          </div>
           ) : (
             <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 lg:text-lg">
               {orders.map((order) => {
@@ -209,9 +214,14 @@ export default function UserDashboard() {
       ) : (
         <main>
           {wish.length === 0 ? (
-            <div className="flex items-center justify-center h-80">
-              <div>WishList Empty</div>
+            <div className="mt-5 sm:mt-20">
+            <div className="flex justify-center">
+              <TbJewishStar className="text-9xl text-yellow-300" />
             </div>
+            <h1 className="text-lg text-center">
+              Wishlist is empty
+            </h1>
+          </div>
           ) : (
             <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 lg:text-lg">
               {wish.map((w) => {

@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader";
-import Message from "../components/Message";
 
 export default function Order() {
   const params = useParams();
@@ -105,7 +104,6 @@ export default function Order() {
         <div className="text-sm">Id: {product._id}</div>
       </main>
       <main className="-mt-10 text-sm">
-        {error && <Message text={error} />} 
         <form
           onSubmit={handleSubmission}
           onFocus={() => setError(null)}

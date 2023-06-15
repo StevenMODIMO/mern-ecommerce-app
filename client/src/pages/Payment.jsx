@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import Message from "../components/Message"
 import Loader from "../components/Loader"
 import { FaCcMastercard, FaCcVisa } from "react-icons/fa"
 
@@ -16,6 +15,9 @@ export default function Payment() {
   const params = useParams();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false)
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [check,setCheck] = useState(false)
 
   useEffect(() => {
     const getSingleProduct = async () => {
@@ -29,7 +31,6 @@ export default function Payment() {
       const json = await response.json();
 
       if (response.ok) {
-        console.log(json);
         setOrder(json);
         setLoading(false)
       }
@@ -89,6 +90,30 @@ export default function Payment() {
       setError(json.error);
     }
   };
+
+  useEffect(() => {
+    const getLocation = async () => {
+      const response = await fetch(
+        "https://ipinfo.io/json?token=b068a85af3c0f9"
+      );
+      const json = await response.json();
+
+      if (response.ok) {
+        setCity(json.city);
+        setCountry(json.country);
+      }
+    };
+    getLocation();
+  }, []);
+
+  useEffect(() => {
+    if (check) {
+      setAddress(city + "," + country);
+    } else {
+      setAddress("");
+    }
+  }, [check, city, country]);
+
   return (
     <>
      {loading ? <div className="flex items-center justify-center h-96">
@@ -97,7 +122,6 @@ export default function Payment() {
       <header className="underline text-center text-lg">
         <div>Complete Payment:</div>
       </header>
-      {error && <Message text={error} /> }
       <section className="flex flex-col sm:mx-auto w-80 sm:flex-row w-full justify-center">
         <main className="text-xs shadow-xl mx-10 my-5 p-4 md:w-72 lg:w-64 lg:ml-16">
           <header className="flex justify-center">
@@ -172,9 +196,22 @@ export default function Payment() {
               type="text"
               className="border-2 border-yellow-500 outline-none p-1"
             />
+            <label className="text-sm flex gap-1 ml-0 sm:text-lg">
+          <input
+            type="checkbox"
+            checked={check}
+            onChange={(e) => setCheck(e.target.checked)}
+          />
+          <span className="bg-yellow-200 px-1">Use current location ?</span>
+        </label>
             <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
               <button>Complete Payment</button>
             </main>
+            {error && (
+          <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+            <div>{error}</div>
+          </div>
+        )}
           </form>
         }
       </section>

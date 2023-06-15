@@ -2,23 +2,22 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
-import Loader from "../components/Loader"
-import Message from "../components/Message"
+import Loader from "../components/Loader";
 
 export default function Business() {
   const [address, setAddress] = useState("");
   const [business_name, setBusinessName] = useState("");
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [check, setCheck] = useState(false)
-  const [city, setCity] = useState("")
-  const [country, setCountry] = useState("")
+  const [check, setCheck] = useState(false);
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-	setLoading(true)
+    setLoading(true);
     const response = await fetch("http://localhost:5000/api/app/seller", {
       method: "POST",
       headers: {
@@ -46,33 +45,34 @@ export default function Business() {
       navigate("/dashboard");
     }
 
-	setLoading(false)
+    setLoading(false);
   };
 
   useEffect(() => {
-    const getLocation = async() => {
-      const response = await fetch("https://ipinfo.io/json?token=b068a85af3c0f9")
-      const json = await response.json()
+    const getLocation = async () => {
+      const response = await fetch(
+        "https://ipinfo.io/json?token=b068a85af3c0f9"
+      );
+      const json = await response.json();
 
-      if(response.ok) {
-        setCity(json.city)
-        setCountry(json.country)
+      if (response.ok) {
+        setCity(json.city);
+        setCountry(json.country);
       }
-    }
-    getLocation()
-  }, [])
+    };
+    getLocation();
+  }, []);
 
   useEffect(() => {
     if (check) {
-      setAddress(city+","+country);
+      setAddress(city + "," + country);
     } else {
-      setAddress("")
+      setAddress("");
     }
   }, [check, city, country]);
 
   return (
     <div className="flex flex-col gap-10 shadow-2xl mt-10 mx-2 border-t-2 border-black sm:mx-36 lg:mx-96 h-96">
-		{error && <Message text={error} />}
       <header className="flex flex-col items-center mt-10">
         <div
           className="bg-yellow-400 p-1 rounded text-black w-fit flex gap-3"
@@ -103,11 +103,25 @@ export default function Business() {
           placeholder="address"
         />
         <label className="text-sm flex gap-1 ml-0 sm:text-lg">
-        <input type="checkbox" checked={check} onChange={(e) => setCheck(e.target.checked)} />
-        <span className="bg-yellow-200 px-1">Use current location ?</span>
+          <input
+            type="checkbox"
+            checked={check}
+            onChange={(e) => setCheck(e.target.checked)}
+          />
+          <span className="bg-yellow-200 px-1">Use current location ?</span>
         </label>
-		{loading ? <Loader /> :
-        <button className="bg-yellow-500 p-1 rounded">Register Business</button>}
+        {loading ? (
+          <Loader />
+        ) : (
+          <button className="bg-yellow-500 p-1 rounded">
+            Register Business
+          </button>
+        )}
+        {error && (
+          <div className="text-lg bg-red-400 px-1 rounded">
+            <div>{error}</div>
+          </div>
+        )}
       </form>
     </div>
   );

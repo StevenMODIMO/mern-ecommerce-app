@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import Message from "../components/Message";
 import Loader from "../components/Loader"
 
 export default function Signup() {
@@ -45,7 +44,6 @@ export default function Signup() {
 
   return (
     <div className="shadow-xl rounded border-t-2 border-black py-2 px-4 sm:w-96 mx-auto mt-10">
-      {error && <Message text={error} />}
       <header className="text-center m-2 underline lg:mt-12">
         Register Now
       </header>
@@ -71,6 +69,11 @@ export default function Signup() {
         {loading ? <Loader /> :<button disabled={loading} className="p-1 rounded bg-yellow-500">
           Sign Up
         </button>}
+        {
+          error && <div className="text-lg bg-red-400 px-1 rounded">
+            <div>{error}</div>
+          </div>
+        }
       </form>
     </div>
   );

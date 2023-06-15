@@ -4,12 +4,12 @@ import { AiFillFileAdd, AiOutlineFolderAdd } from "react-icons/ai";
 import { MdOutlineSend } from "react-icons/md";
 import { TiTick } from "react-icons/ti";
 import Rates from "../components/Rates";
-import Message from "../components/Message";
 import Loader from "../components/Loader";
 import { FaFileInvoice, FaTrash } from "react-icons/fa";
 import { TfiViewListAlt } from "react-icons/tfi";
 import { BiBorderAll } from "react-icons/bi";
 import Invoice from "../components/Invoice";
+import { HiTemplate } from "react-icons/hi";
 
 export default function Dashboard() {
   const [error, setError] = useState(null);
@@ -63,7 +63,7 @@ export default function Dashboard() {
       }
     };
     getProducts();
-  }, []);
+  }, [products]);
 
   const handleSubmission = async (e) => {
     e.preventDefault();
@@ -105,7 +105,6 @@ export default function Dashboard() {
     setLoading(false);
   };
 
-  useEffect(() => {});
 
   const deleteProduct = async (id) => {
     await fetch(`http://localhost:5000/api/app/${id}`, {
@@ -205,141 +204,170 @@ export default function Dashboard() {
         {model && <Invoice orders={orders} setModel={setModel} />}
       </section>
       {activeTab === 0 && (
-        <main>
-          <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4">
-            {products.map((product) => {
-              const productRates = rates.filter(
-                (rate) => rate.product_id === product._id
-              );
-              const isExpanded = expandedProductIds.includes(product._id);
-              return (
-                <div key={product._id} className="shadow-2xl h-fit">
-                  <div className="bg-gray-100">
-                    <img
-                      className="w-36 mx-auto"
-                      src={`http://localhost:5000/${product.imagePath}`}
-                      alt={product.imagePath}
-                    />
-                  </div>
-                  <div className="text-yellow-500 text-lg">
-                    {product.product_name}
-                  </div>
-                  <main className="my-2">
-                    <section>
-                      <div className="px-2">Quantity: {product.quantity}</div>
-                      <section className="px-2">
-                        <div>
-                          {isExpanded
-                            ? product.description
-                            : product.description.length > 100
-                            ? product.description.slice(0, 100) + "..."
-                            : product.description}
-                        </div>
-                        {product.description.length > 100 && (
-                          <div
-                            className="ml-48"
-                            onClick={() => toggleProductExpansion(product._id)}
-                          >
-                            <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
-                              {isExpanded ? "less" : "more"}
-                            </button>
+        <>
+          {products.length === 0 ? (
+            <div className="mt-5 sm:mt-20">
+              <div className="flex justify-center">
+                <HiTemplate className="text-9xl text-yellow-300" />
+              </div>
+              <h1 className="text-lg text-center">
+                You dont have any products
+              </h1>
+            </div>
+          ) : (
+            <main>
+              <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4">
+                {products.map((product) => {
+                  const productRates = rates.filter(
+                    (rate) => rate.product_id === product._id
+                  );
+                  const isExpanded = expandedProductIds.includes(product._id);
+                  return (
+                    <div key={product._id} className="shadow-2xl h-fit">
+                      <div className="bg-gray-100">
+                        <img
+                          className="w-36 mx-auto"
+                          src={`http://localhost:5000/${product.imagePath}`}
+                          alt={product.imagePath}
+                        />
+                      </div>
+                      <div className="text-yellow-500 text-lg">
+                        {product.product_name}
+                      </div>
+                      <main className="my-2">
+                        <section>
+                          <div className="px-2">
+                            Quantity: {product.quantity}
                           </div>
-                        )}
-                      </section>
-                      <div className="text-sm px-2">Id: {product._id}</div>
-                    </section>
-                    <div className="flex justify-between px-2">
-                      <section className="flex">
-                        <div>
-                          {product.currency === "dollar"
-                            ? "$"
-                            : product.currency == "pound"
-                            ? "£"
-                            : product.currency == "euro"
-                            ? "€"
-                            : ""}
+                          <section className="px-2">
+                            <div>
+                              {isExpanded
+                                ? product.description
+                                : product.description.length > 100
+                                ? product.description.slice(0, 100) + "..."
+                                : product.description}
+                            </div>
+                            {product.description.length > 100 && (
+                              <div
+                                className="ml-48"
+                                onClick={() =>
+                                  toggleProductExpansion(product._id)
+                                }
+                              >
+                                <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
+                                  {isExpanded ? "less" : "more"}
+                                </button>
+                              </div>
+                            )}
+                          </section>
+                          <div className="text-sm px-2">Id: {product._id}</div>
+                        </section>
+                        <div className="flex justify-between px-2">
+                          <section className="flex">
+                            <div>
+                              {product.currency === "dollar"
+                                ? "$"
+                                : product.currency == "pound"
+                                ? "£"
+                                : product.currency == "euro"
+                                ? "€"
+                                : ""}
+                            </div>
+                            <div>{product.price}</div>
+                          </section>
+                          <Rates rates={productRates} />
                         </div>
-                        <div>{product.price}</div>
+                      </main>
+                      <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
+                        <button
+                          className="flex gap-1"
+                          onClick={() => deleteProduct(product._id)}
+                        >
+                          <FaTrash className="mt-1" /> Remove
+                        </button>
                       </section>
-                      <Rates rates={productRates} />
                     </div>
-                  </main>
-                  <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
-                    <button
-                      className="flex gap-1"
-                      onClick={() => deleteProduct(product._id)}
-                    >
-                      <FaTrash className="mt-1" /> Remove
-                    </button>
-                  </section>
-                </div>
-              );
-            })}
-          </div>
-        </main>
+                  );
+                })}
+              </div>
+            </main>
+          )}
+        </>
       )}
 
       {activeTab === 2 && (
-        <main>
-          <h1 className="text-center underline text-lg">Your Orders</h1>
-          <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
-            {orders.map((order) => {
-              return (
-                <div key={order._id} className="shadow-xl h-fit">
-                  <div className="bg-gray-100">
-                    <img
-                      className="w-36 mx-auto"
-                      src={`http://localhost:5000/${order.imagePath}`}
-                      alt={order.imagePath}
-                    />
-                  </div>
-                  <section className="text-sm">
-                    <div className="text-2xl text-yellow-500">
-                      {order.product_name}
+        <>
+          {orders.length === 0 ? (
+            <div className="mt-5 sm:mt-20">
+              <div className="flex justify-center">
+                <BiBorderAll className="text-9xl text-yellow-300" />
+              </div>
+              <h1 className="text-lg text-center">
+                You dont have any orders
+              </h1>
+            </div>
+          ) : (
+            <main>
+              <h1 className="text-center underline text-lg">Your Orders</h1>
+              <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
+                {orders.map((order) => {
+                  return (
+                    <div key={order._id} className="shadow-xl h-fit">
+                      <div className="bg-gray-100">
+                        <img
+                          className="w-36 mx-auto"
+                          src={`http://localhost:5000/${order.imagePath}`}
+                          alt={order.imagePath}
+                        />
+                      </div>
+                      <section className="text-sm">
+                        <div className="text-2xl text-yellow-500">
+                          {order.product_name}
+                        </div>
+                        <div>Quantity ordered: {order.quantity}</div>
+                        <section className="flex gap-1">
+                          <div className="text-xl">
+                            {order.currency === "dollar"
+                              ? "Total: $"
+                              : order.currency == "pound"
+                              ? "Total: £"
+                              : order.currency == "euro"
+                              ? "Total: €"
+                              : ""}
+                          </div>
+                          <div className="text-lg">
+                            {order.price * order.quantity}
+                          </div>
+                        </section>
+                      </section>
+                      <section>
+                        <div>
+                          <div>
+                            Status:{" "}
+                            {order.shipped == false ? "Not Shipped" : "Shipped"}
+                          </div>
+                          <div>From: {order.from}</div>
+                          <div>Address: {order.address}</div>
+                        </div>
+                        <div className="text-xs">Order Id: {order._id}</div>
+                      </section>
+                      <div
+                        onClick={() => completeShip(order._id)}
+                        className="bg-yellow-500 p-1 rounded text-center w-fit mx-auto my-2"
+                      >
+                        <button>Ship Product</button>
+                      </div>
                     </div>
-                    <div>Quantity ordered: {order.quantity}</div>
-                    <section className="flex gap-1">
-                      <div className="text-xl">
-                        {order.currency === "dollar"
-                          ? "Total: $"
-                          : order.currency == "pound"
-                          ? "Total: £"
-                          : order.currency == "euro"
-                          ? "Total: €"
-                          : ""}
-                      </div>
-                      <div className="text-lg">
-                        {order.price * order.quantity}
-                      </div>
-                    </section>
-                  </section>
-                  <section>
-                    <div>
-                      <div>
-                        Status:{" "}
-                        {order.shipped == false ? "Not Shipped" : "Shipped"}
-                      </div>
-                      <div>From: {order.from}</div>
-                      <div>Address: {order.address}</div>
-                    </div>
-                    <div className="text-xs">Order Id: {order._id}</div>
-                  </section>
-                  <div
-                    onClick={() => completeShip(order._id)}
-                    className="bg-yellow-500 p-1 rounded text-center w-fit mx-auto my-2"
-                  >
-                    <button>Ship Product</button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </main>
+                  );
+                })}
+              </div>
+            </main>
+          )}
+        </>
       )}
 
       {activeTab === 1 && (
         <main>
-          {error && <Message text={error} />}
           <header>
             <div className="text-center">New Product</div>
           </header>
@@ -392,6 +420,8 @@ export default function Dashboard() {
               <input
                 className="border-2 border-yellow-400 outline-none p-1 rounded"
                 type="number"
+                min="1"
+                max="1000000"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 placeholder="e.g 5000"
@@ -400,6 +430,8 @@ export default function Dashboard() {
               <input
                 className="border-2 border-yellow-400 outline-none p-1 rounded"
                 type="number"
+                min="1"
+                max="10"
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
                 placeholder="e.g 4"
@@ -448,6 +480,11 @@ export default function Dashboard() {
                   <MdOutlineSend className="text-2xl" />
                   <button>Submit</button>
                 </main>
+              )}
+              {error && (
+                <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+                  <div>{error}</div>
+                </div>
               )}
             </form>
           </section>

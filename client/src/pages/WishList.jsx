@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import Loader from "../components/Loader"
-import Message from "../components/Message"
 
 export default function WishList() {
   const params = useParams();
@@ -98,7 +97,6 @@ export default function WishList() {
       </main>
 
       <main className="-mt-10 text-sm">
-      {error && <Message text={error} />}
         <form
           onSubmit={handleSubmission}
           onFocus={() => setError(null)}
@@ -123,6 +121,11 @@ export default function WishList() {
               <button>Add to Wishlist</button>
             </main>
           )}
+          {
+          error && <div className="text-lg bg-red-400 px-1 rounded">
+            <div>{error}</div>
+          </div>
+        }
         </form>
       </main>
     </div>}
