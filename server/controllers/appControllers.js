@@ -515,7 +515,7 @@ const intitiatePayment = async (req, res) => {
 
     res.status(200).json({ valid: true });
   } catch (error) {
-    res.status(400).json( error);
+    res.status(400).json(error);
   }
 };
 

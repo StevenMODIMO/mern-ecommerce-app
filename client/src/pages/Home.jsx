@@ -109,10 +109,9 @@ export default function Home() {
         <>
           <section>
             <header className="-mt-20 mb-5">
-              <div className="underline text-yellow-500 flex justify-center">
-                <BiWalk className="mt-1" />
-                <h1>Start Shopping</h1>
-              </div>
+              <form>
+                <input type="text" placeholder="sort by.." className="border border-yellow-500 outline-none" />
+              </form>
             </header>
             {loading ? (
               <div className="flex items-center justify-center h-96">
