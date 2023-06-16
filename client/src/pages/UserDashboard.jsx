@@ -28,6 +28,7 @@ export default function UserDashboard() {
 
       if (response.ok) {
         setOrders(json);
+        console.log(json)
       }
     };
 

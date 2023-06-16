@@ -6,7 +6,6 @@ const {
   registerBuyer,
   getSingleProduct,
   newProduct,
-  editProduct,
   getProducts,
   getProductById,
   getImage,
@@ -40,7 +39,7 @@ const upload = multer({ storage: storage })
 
 router.use(requireAuth);
 
-router.get("/", getAllProducts)
+router.get("/:category", getAllProducts)
 
 router.post("/seller", registerSeller);
 
@@ -49,8 +48,6 @@ router.post("/buyer", registerBuyer);
 router.get("/order/:id", getSingleProduct)
 
 router.post("/new-product", upload.single("image"), newProduct);
-
-router.post("/edit-product", editProduct)
 
 router.get("/products", getProducts);
 

@@ -203,6 +203,7 @@ export default function Dashboard() {
       <section>
         {model && <Invoice orders={orders} setModel={setModel} />}
       </section>
+      
       {activeTab === 0 && (
         <>
           {products.length === 0 ? (
@@ -460,17 +461,20 @@ export default function Dashboard() {
                 onChange={(e) => setCategory(e.target.value)}
               >
                 <option className="text-sm">Choose....</option>
-                <option className="text-sm" value="desktop computer">
-                  Desktop Computer
+                <option className="text-sm" value="computer">
+                  computer
                 </option>
                 <option className="text-sm" value="laptop">
-                  Laptop
+                  laptop
                 </option>
                 <option className="text-sm" value="camera">
-                  Camera
+                  camera
                 </option>
                 <option className="text-sm" value="ram">
-                  Ram
+                  ram
+                </option>
+                <option className="text-sm" value="other">
+                  other
                 </option>
               </select>
               {loading ? (

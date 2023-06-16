@@ -146,6 +146,11 @@ export default function Order() {
               <button>Add to Cart</button>
             </main>
           )}
+          {error && (
+                <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+                  <div>{error}</div>
+                </div>
+              )}
         </form>
       </main>
     </div>}

@@ -11,9 +11,15 @@ const { ObjectId } = require("mongodb")
 // Admin Controllers
 
 const getAllProducts = async (req, res) => {
+  const { category } = req.params
   try {
+    if(category == "all") {
     const docs = await Product.find();
     res.status(200).json(docs);
+    } else {
+      const catDocs = await Product.find({ category: category})
+      res.status(200).json(catDocs)
+    }
   } catch (error) {
     res.status(400).json(error);
   }
@@ -107,46 +113,6 @@ const newProduct = async (req, res) => {
   }
 };
 
-const editProduct = async (req, res) => {
-  const user_id = req.user;
-  const { product_name, description, price, quantity, currency, category } =
-    req.body;
-  if (
-    !req.file ||
-    !product_name ||
-    !description ||
-    !price ||
-    !quantity ||
-    !currency ||
-    !category
-  ) {
-    return res.status(400).json({ error: "All fields must be filled." });
-  }
-  const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
-
-  try {
-    const editedProduct = await Seller.findOneAndUpdate(
-      { user_id: user_id },
-      {
-        $push: {
-          products: {
-            imagePath: imagePath,
-            product_name: product_name,
-            description: description,
-            price: price,
-            quantity: quantity,
-            currency: currency,
-            category: category,
-          },
-        },
-      },
-      { new: true }
-    );
-    res.status(200).json(editedProduct);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
 
 const getProducts = async (req, res) => {
   const user_id = req.user;
@@ -311,6 +277,7 @@ const getCartProducts = async (req, res) => {
   try {
     const orders = await Buyer.findOne({ user_id: user_id });
     const userOrders = orders.cart;
+    console.log(userOrders)
     res.status(200).json(userOrders);
   } catch (error) {
     res.status(400).json(error);
@@ -559,7 +526,6 @@ module.exports = {
   registerBuyer,
   getSingleProduct,
   newProduct,
-  editProduct,
   getProducts,
   getProductById,
   getImage,
