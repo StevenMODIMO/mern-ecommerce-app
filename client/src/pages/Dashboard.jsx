@@ -54,8 +54,8 @@ export default function Dashboard() {
       const json = await response.json();
 
       if (response.ok) {
-        setProducts(json.products);
-        setRates(json.rates);
+        setProducts(json);
+        console.log(json)
       }
 
       if (!response.ok) {
@@ -63,7 +63,7 @@ export default function Dashboard() {
       }
     };
     getProducts();
-  }, [products]);
+  }, []);
 
   const handleSubmission = async (e) => {
     e.preventDefault();

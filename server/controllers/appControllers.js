@@ -6,19 +6,17 @@ const User = require("../models/authModel");
 const mongoose = require("mongoose");
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const path = require("path");
-const { ObjectId } = require("mongodb")
-
-// Admin Controllers
+const { ObjectId } = require("mongodb");
 
 const getAllProducts = async (req, res) => {
-  const { category } = req.params
+  const { category } = req.params;
   try {
-    if(category == "all") {
-    const docs = await Product.find();
-    res.status(200).json(docs);
+    if (category == "all") {
+      const docs = await Product.find();
+      res.status(200).json(docs);
     } else {
-      const catDocs = await Product.find({ category: category})
-      res.status(200).json(catDocs)
+      const catDocs = await Product.find({ category: category });
+      res.status(200).json(catDocs);
     }
   } catch (error) {
     res.status(400).json(error);
@@ -54,6 +52,21 @@ const registerSeller = async (req, res) => {
   }
 };
 
+const registerBuyer = async (req, res) => {
+  const user_id = new mongoose.Types.ObjectId(req.user);
+  try {
+    const updateUser = await User.findOneAndUpdate(
+      { _id: user_id },
+      { role: "Buyer" },
+      { new: true }
+    );
+    const newUser = await Buyer.create({ user_id: user_id });
+    res.status(200).json(updateUser.role);
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 const newProduct = async (req, res) => {
   const user_id = req.user;
   const { product_name, description, price, quantity, currency, category } =
@@ -72,7 +85,7 @@ const newProduct = async (req, res) => {
   const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
 
   try {
-    const newItem =  {
+    const newItem = {
       imagePath: imagePath,
       product_name: product_name,
       description: description,
@@ -80,7 +93,7 @@ const newProduct = async (req, res) => {
       quantity: quantity,
       currency: currency,
       category: category,
-    }
+    };
     const newProduct = await Seller.findOneAndUpdate(
       { user_id: user_id },
       {
@@ -90,12 +103,12 @@ const newProduct = async (req, res) => {
       },
       { new: true }
     );
-    const newID = {pid: ""}
-    const n = newProduct.products.filter(p => {
-      if(p.product_name == newItem.product_name) {
-        newID.pid = p.id
+    const newID = { pid: "" };
+    const n = newProduct.products.filter((p) => {
+      if (p.product_name == newItem.product_name) {
+        newID.pid = p.id;
       }
-    })
+    });
     const product = await Product.create({
       product_id: newID.pid,
       from: newProduct.business_name,
@@ -113,11 +126,10 @@ const newProduct = async (req, res) => {
   }
 };
 
-
 const getProducts = async (req, res) => {
-  const user_id = req.user;
+  const user_id = mongoose.Types.ObjectId(req.user);
   try {
-    const products = await Seller.findOne({ user_id });
+    const products = await Seller.findOne({ user_id: user_id });
     res.status(200).json(products);
   } catch (error) {
     res.status(400).json(error);
@@ -134,14 +146,6 @@ const getProductById = async (req, res) => {
         res.status(200).json(product);
       }
     });
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
-const getImage = async (req, res) => {
-  try {
-    const image = path.join(__dirname, "..", "images", req.params.filename);
-    res.sendFile(image);
   } catch (error) {
     res.status(400).json(error);
   }
@@ -182,23 +186,6 @@ const getOrders = async (req, res) => {
   }
 };
 
-// User Controllers
-
-const registerBuyer = async (req, res) => {
-  const user_id = new mongoose.Types.ObjectId(req.user);
-  try {
-    const updateUser = await User.findOneAndUpdate(
-      { _id: user_id },
-      { role: "Buyer" },
-      { new: true }
-    );
-    const newUser = await Buyer.create({ user_id: user_id });
-    res.status(200).json(updateUser.role);
-  } catch (error) {
-    res.status(400).json(error);
-  }
-};
-
 const getSingleProduct = async (req, res) => {
   try {
     const { id } = req.params;
@@ -211,8 +198,17 @@ const getSingleProduct = async (req, res) => {
 
 const addToCart = async (req, res) => {
   const user_id = req.user;
-  const { imagePath, product_name, description, price, currency, quantity,rate, product_id, business_name } =
-    req.body;
+  const {
+    imagePath,
+    product_name,
+    description,
+    price,
+    currency,
+    quantity,
+    rate,
+    product_id,
+    business_name,
+  } = req.body;
 
   if (!quantity) {
     return res.status(400).json({ error: "All fields must be filled." });
@@ -237,24 +233,28 @@ const addToCart = async (req, res) => {
     );
 
     const rateProduct = await Product.findOneAndUpdate(
-      {product_id: product_id},
+      { product_id: product_id },
       {
         $push: {
-        rates: {
-          rate: rate,
-          user: user_id
-        }
-      }}
-    )
-
-    const rateToSeller = await Seller.findOneAndUpdate({business_name: business_name}, {
-      $push: {
-        rates: {
-          product_id: product_id,
-          rate: rate
-        }
+          rates: {
+            rate: rate,
+            user: user_id,
+          },
+        },
       }
-    })
+    );
+
+    const rateToSeller = await Seller.findOneAndUpdate(
+      { business_name: business_name },
+      {
+        $push: {
+          rates: {
+            product_id: product_id,
+            rate: rate,
+          },
+        },
+      }
+    );
 
     const remove = await Buyer.findOneAndUpdate(
       { user_id: user_id },
@@ -273,14 +273,12 @@ const addToCart = async (req, res) => {
 };
 
 const getCartProducts = async (req, res) => {
-  const user_id = req.user;
+  const user_id = req.user
   try {
-    const orders = await Buyer.findOne({ user_id: user_id });
-    const userOrders = orders.cart;
-    console.log(userOrders)
-    res.status(200).json(userOrders);
-  } catch (error) {
-    res.status(400).json(error);
+    const orders = await Buyer.findById({ user_id: user_id})
+    res.status(200).json(orders)
+  } catch(error) {
+    res.status(400).json(error)
   }
 };
 
@@ -296,7 +294,7 @@ const getCartProduct = async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(400).json(error.message);
+    res.status(400).json(error);
   }
 };
 
@@ -351,7 +349,7 @@ const addWishList = async (req, res) => {
 };
 
 const getWishlistProducts = async (req, res) => {
-  const user_id = req.user;
+  const user_id = new mongoose.Types.ObjectId(req.user);
   try {
     const wishList = await Buyer.findOne({ user_id: user_id });
     const userWishList = wishList.wishlist;
@@ -397,8 +395,6 @@ const removeWishList = async (req, res) => {
   }
 };
 
-
-
 const intitiatePayment = async (req, res) => {
   const user_id = req.user;
   const {
@@ -415,7 +411,7 @@ const intitiatePayment = async (req, res) => {
     prevID,
     address,
     from,
-    business_name
+    business_name,
   } = req.body;
   if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvc) {
     return res.status(400).json({ error: "All fields must be filled." });
@@ -443,7 +439,7 @@ const intitiatePayment = async (req, res) => {
             price: price,
             currency: currency,
             quantity: quantity,
-            prevID: prevID
+            prevID: prevID,
           },
         },
       },
@@ -462,7 +458,7 @@ const intitiatePayment = async (req, res) => {
     );
 
     const sendToSellerInvoice = await Seller.findOneAndUpdate(
-      {business_name: business_name},
+      { business_name: business_name },
       {
         $push: {
           orders: {
@@ -474,11 +470,10 @@ const intitiatePayment = async (req, res) => {
             currency: currency,
             quantity: quantity,
             address: address,
-          }
-        }
+          },
+        },
       }
-    )
-
+    );
 
     res.status(200).json({ valid: true });
   } catch (error) {
@@ -487,49 +482,34 @@ const intitiatePayment = async (req, res) => {
 };
 
 const generateBuyerInvoice = async (req, res) => {
-  const user_id = req.user
-  
+  const user_id = req.user;
+
   try {
-    const invoice = await Buyer.findOne({ user_id: user_id})
-    const invoices = invoice.invoices
-    res.status(200).json(invoices)
-  } catch(error) {
-    res.status(400).json(error)
+    const invoice = await Buyer.findOne({ user_id: user_id });
+    const invoices = invoice.invoices;
+    res.status(200).json(invoices);
+  } catch (error) {
+    res.status(400).json(error);
   }
-}
+};
 
 const generateSellerInvoice = async (req, res) => {
-  const user_id = req.user
-  const invoice = await Seller.findOne({ user_id: user_id})
-  const invoices = invoice.orders
-  res.status(200).json(invoices)
-}
-
-const completeOrder = async(req, res) => {
-  const user_id = req.user
-  const { id } = req.body
-  try {
-    const shipProduct = await Seller.findOneAndUpdate(
-      {user_id: user_id},
-      { $set: {'orders.$[element].shipped': true}},
-      { arrayFilter: [{'element.id': id}]}
-    )
-    res.status(200).json("Shipped Successfully")
-  } catch(error) {
-    await Seller.findOneAndUpdate({user_id: user_id}, {})
-  }
-}
+  const user_id = req.user;
+  const invoice = await Seller.findOne({ user_id: user_id });
+  const invoices = invoice.orders;
+  res.status(200).json(invoices);
+};
 
 module.exports = {
   getAllProducts,
   registerSeller,
   registerBuyer,
-  getSingleProduct,
   newProduct,
   getProducts,
   getProductById,
-  getImage,
   deleteProducts,
+  getOrders,
+  getSingleProduct,
   addToCart,
   getCartProducts,
   getCartProduct,
@@ -538,9 +518,7 @@ module.exports = {
   getWishlistProducts,
   getSingleWishListProduct,
   removeWishList,
-  getOrders,
   intitiatePayment,
   generateBuyerInvoice,
   generateSellerInvoice,
-  completeOrder
 };

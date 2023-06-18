@@ -4,12 +4,12 @@ const {
   getAllProducts,
   registerSeller,
   registerBuyer,
-  getSingleProduct,
   newProduct,
   getProducts,
   getProductById,
-  getImage,
   deleteProducts,
+  getOrders,
+  getSingleProduct,
   addToCart,
   getCartProducts,
   getCartProduct,
@@ -18,11 +18,9 @@ const {
   getWishlistProducts,
   getSingleWishListProduct,
   removeWishList,
-  getOrders,
   intitiatePayment,
   generateBuyerInvoice,
   generateSellerInvoice,
-  completeOrder
 } = require("../controllers/appControllers");
 
 const multer = require("multer");
@@ -45,17 +43,17 @@ router.post("/seller", registerSeller);
 
 router.post("/buyer", registerBuyer);
 
-router.get("/order/:id", getSingleProduct)
-
 router.post("/new-product", upload.single("image"), newProduct);
 
 router.get("/products", getProducts);
 
 router.get("/product/:id", getProductById)
 
-router.get("/images/:filename", getImage)
-
 router.delete("/:id", deleteProducts);
+
+router.get("/business-orders/:name", getOrders);
+
+router.get("/order/:id", getSingleProduct)
 
 router.post("/cart", addToCart);
 
@@ -73,14 +71,10 @@ router.get("/get-wishlist/:id", getSingleWishListProduct)
 
 router.delete("/remove-wishlist/:id", removeWishList);
 
-router.get("/business-orders/:name", getOrders);
-
 router.post("/pay", intitiatePayment)
 
 router.get("/buyer-invoice", generateBuyerInvoice)
 
 router.get("/seller-invoice", generateSellerInvoice)
-
-router.post("/ship", completeOrder)
 
 module.exports = router;
