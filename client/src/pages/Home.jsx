@@ -65,7 +65,7 @@ export default function Home() {
     const getProducts = async () => {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:5000/api/app/${category}`,
+        `http://localhost:5000/api/app`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -82,7 +82,7 @@ export default function Home() {
     };
 
     getProducts();
-  }, [category]);
+  }, []);
 
   const toggle = (cat) => {
     setCategory(cat);

@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const requireAuth = require("../middleware/requireAuth");
 const {
   getAllProducts,
   registerSeller,
@@ -23,6 +22,9 @@ const {
   generateSellerInvoice,
 } = require("../controllers/appControllers");
 
+
+const requireAuth = require("../middleware/requireAuth");
+
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -37,7 +39,7 @@ const upload = multer({ storage: storage })
 
 router.use(requireAuth);
 
-router.get("/:category", getAllProducts)
+router.get("/", getAllProducts)
 
 router.post("/seller", registerSeller);
 
