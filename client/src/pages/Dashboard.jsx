@@ -55,7 +55,6 @@ export default function Dashboard() {
 
       if (response.ok) {
         setProducts(json);
-        console.log(json)
       }
 
       if (!response.ok) {

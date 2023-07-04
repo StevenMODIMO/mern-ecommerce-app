@@ -18,6 +18,7 @@ export default function Payment() {
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("");
   const [check, setCheck] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getSingleProduct = async () => {
@@ -79,6 +80,7 @@ export default function Payment() {
       setCvc("");
       setAddress("");
       setError(null);
+      navigate("/cart")
     }
 
     if (!response.ok) {

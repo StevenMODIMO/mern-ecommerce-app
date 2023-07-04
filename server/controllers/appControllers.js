@@ -15,7 +15,7 @@ const getAllProducts = async (req, res) => {
     const docs = await Product.find();
     res.status(200).json(docs);
   } catch (error) {
-    res.status(400).json(error);
+    res.status(400).json(error); 
   }
 };
 
@@ -509,8 +509,7 @@ const intitiatePayment = async (req, res) => {
         }
       }
     )
-
-
+    
     res.status(200).json({ valid: true });
   } catch (error) {
     res.status(400).json( error);
