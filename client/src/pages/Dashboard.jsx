@@ -139,13 +139,12 @@ export default function Dashboard() {
   }, []);
 
   const completeShip = async (id) => {
-    const response = await fetch("http://localhost:5000/api/app/ship", {
+    const response = await fetch(`http://localhost:5000/api/app/ship/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${user.token}`,
-      },
-      body: JSON.stringify({ Id: id }),
+      }
     });
 
     const json = await response.json();

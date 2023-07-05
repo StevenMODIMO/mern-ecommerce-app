@@ -20,6 +20,7 @@ const {
   intitiatePayment,
   generateBuyerInvoice,
   generateSellerInvoice,
+  shipProduct
 } = require("../controllers/appControllers");
 
 
@@ -78,5 +79,7 @@ router.post("/pay", intitiatePayment)
 router.get("/buyer-invoice", generateBuyerInvoice)
 
 router.get("/seller-invoice", generateSellerInvoice)
+
+router.post("/ship/:id", shipProduct)
 
 module.exports = router;

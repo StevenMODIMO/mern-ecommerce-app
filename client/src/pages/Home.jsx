@@ -62,7 +62,7 @@ export default function Home() {
   }, [user]);
 
   useEffect(() => {
-    const getProducts = async () => {
+    const getProducts = async (category) => {
       setLoading(true);
       const response = await fetch(
         `http://localhost:5000/api/app`,
