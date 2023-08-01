@@ -45,7 +45,7 @@ export default function Dashboard() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     const getProducts = async () => {
-      const response = await fetch("http://localhost:5000/api/app/products", {
+      const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/products", {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -76,7 +76,7 @@ export default function Dashboard() {
     formData.append("currency", currency);
     formData.append("category", category);
 
-    const response = await fetch("http://localhost:5000/api/app/new-product", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/new-product", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -106,7 +106,7 @@ export default function Dashboard() {
 
 
   const deleteProduct = async (id) => {
-    await fetch(`http://localhost:5000/api/app/${id}`, {
+    await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -119,7 +119,7 @@ export default function Dashboard() {
 
   const getInvoice = async () => {
     const response = await fetch(
-      "http://localhost:5000/api/app/seller-invoice",
+      "https://mern-ecommerce-rhpa.onrender.com/api/app/seller-invoice",
       {
         headers: {
           Authorization: `Bearer ${user.token}`,
@@ -139,7 +139,7 @@ export default function Dashboard() {
   }, []);
 
   const completeShip = async (id) => {
-    const response = await fetch(`http://localhost:5000/api/app/ship/${id}`, {
+    const response = await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/ship/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -201,7 +201,7 @@ export default function Dashboard() {
       <section>
         {model && <Invoice orders={orders} setModel={setModel} />}
       </section>
-      
+
       {activeTab === 0 && (
         <>
           {products.length === 0 ? (
@@ -226,7 +226,7 @@ export default function Dashboard() {
                       <div className="bg-gray-100">
                         <img
                           className="w-36 mx-auto"
-                          src={`http://localhost:5000/${product.imagePath}`}
+                          src={`https://mern-ecommerce-rhpa.onrender.com/${product.imagePath}`}
                           alt={product.imagePath}
                         />
                       </div>
@@ -243,8 +243,8 @@ export default function Dashboard() {
                               {isExpanded
                                 ? product.description
                                 : product.description.length > 100
-                                ? product.description.slice(0, 100) + "..."
-                                : product.description}
+                                  ? product.description.slice(0, 100) + "..."
+                                  : product.description}
                             </div>
                             {product.description.length > 100 && (
                               <div
@@ -267,10 +267,10 @@ export default function Dashboard() {
                               {product.currency === "dollar"
                                 ? "$"
                                 : product.currency == "pound"
-                                ? "£"
-                                : product.currency == "euro"
-                                ? "€"
-                                : ""}
+                                  ? "£"
+                                  : product.currency == "euro"
+                                    ? "€"
+                                    : ""}
                             </div>
                             <div>{product.price}</div>
                           </section>
@@ -315,7 +315,7 @@ export default function Dashboard() {
                       <div className="bg-gray-100">
                         <img
                           className="w-36 mx-auto"
-                          src={`http://localhost:5000/${order.imagePath}`}
+                          src={`https://mern-ecommerce-rhpa.onrender.com/${order.imagePath}`}
                           alt={order.imagePath}
                         />
                       </div>
@@ -329,10 +329,10 @@ export default function Dashboard() {
                             {order.currency === "dollar"
                               ? "Total: $"
                               : order.currency == "pound"
-                              ? "Total: £"
-                              : order.currency == "euro"
-                              ? "Total: €"
-                              : ""}
+                                ? "Total: £"
+                                : order.currency == "euro"
+                                  ? "Total: €"
+                                  : ""}
                           </div>
                           <div className="text-lg">
                             {order.price * order.quantity}

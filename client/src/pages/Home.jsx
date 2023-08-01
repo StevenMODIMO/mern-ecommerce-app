@@ -9,7 +9,6 @@ import { NavLink } from "react-router-dom";
 import Rates from "../components/Rates";
 import Loader from "../components/Loader";
 import { HiTemplate } from "react-icons/hi";
-import { motion } from "framer-motion";
 
 export default function Home() {
   const { user } = useAuth();
@@ -19,8 +18,6 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [expandedProductIds, setExpandedProductIds] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState("all");
-  const [show, setShow] = useState(false);
 
   const toggleProductExpansion = (productId) => {
     if (expandedProductIds.includes(productId)) {
@@ -33,7 +30,7 @@ export default function Home() {
   };
 
   const registerBuyer = async () => {
-    const response = await fetch("http://localhost:5000/api/app/buyer", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/buyer", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,
@@ -65,7 +62,7 @@ export default function Home() {
     const getProducts = async (category) => {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:5000/api/app`,
+        `https://mern-ecommerce-rhpa.onrender.com/api/app`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -83,11 +80,6 @@ export default function Home() {
 
     getProducts();
   }, []);
-
-  const toggle = (cat) => {
-    setCategory(cat);
-    setShow(false);
-  };
 
   return (
     <div className="mt-24">
@@ -119,64 +111,6 @@ export default function Home() {
       {currentUser.role === "Buyer" && (
         <>
           <section>
-            <header className="bg-yellow-500 -mt-20 mb-5 rounded border-2 border-yellow-500 w-fit cursor-pointer flex mx-auto text-xl">
-              <div className="bg-yellow-500 px-1 border-r border-black">
-                Sort
-              </div>
-              <div
-                className="flex bg-yellow-300 px-1"
-                onClick={() => setShow(!show)}
-              >
-                <h1>{category}</h1>
-                <BiDownArrow className="mt-1" />
-              </div>
-            </header>
-            <motion.ul
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: show ? 1 : 0, scale: show ? 1 : 0.8 }}
-              className={
-                show
-                  ? "text-lg bg-yellow-200 w-44 rounded absolute left-16 top-32 ml-3 mt-2 cursor-pointer sm:left-56 md:left-72 lg:left-1/3 lg:ml-32 lg:mt-5"
-                  : "hidden"
-              }
-            >
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("all")}
-              >
-                all
-              </li>
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("computer")}
-              >
-                computer
-              </li>
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("ram")}
-              >
-                ram
-              </li>
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("laptop")}
-              >
-                laptop
-              </li>
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("camera")}
-              >
-                camera
-              </li>
-              <li
-                className="p-2 rounded hover:bg-yellow-400"
-                onClick={() => toggle("other")}
-              >
-                other
-              </li>
-            </motion.ul>
             {loading ? (
               <div className="flex items-center justify-center h-96">
                 <Loader />
@@ -214,7 +148,7 @@ export default function Home() {
                           <div className="bg-gray-100">
                             <img
                               className="w-36 mx-auto"
-                              src={`http://localhost:5000/${prod.imagePath}`}
+                              src={`https://mern-ecommerce-rhpa.onrender.com/${prod.imagePath}`}
                               alt={prod.imagePath}
                             />
                           </div>
@@ -226,10 +160,10 @@ export default function Home() {
                               {prod.currency === "dollar"
                                 ? "$"
                                 : prod.currency == "pound"
-                                ? "£"
-                                : prod.currency == "euro"
-                                ? "€"
-                                : ""}
+                                  ? "£"
+                                  : prod.currency == "euro"
+                                    ? "€"
+                                    : ""}
                             </div>
                             <div className="text-lg">{prod.price}</div>
                           </section>
@@ -242,8 +176,8 @@ export default function Home() {
                               {isExpanded
                                 ? prod.description
                                 : prod.description.length > 100
-                                ? prod.description.slice(0, 100) + "..."
-                                : prod.description}
+                                  ? prod.description.slice(0, 100) + "..."
+                                  : prod.description}
                             </div>
                             {prod.description.length > 100 && (
                               <div

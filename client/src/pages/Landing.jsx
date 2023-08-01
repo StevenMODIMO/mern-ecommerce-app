@@ -37,9 +37,8 @@ export default function Landing() {
       </header>
       <main className="mt-10 mx-2">
         <section
-          className={`slideshow-section ${
-            currentSection === 0 ? "active" : ""
-          }`}
+          className={`slideshow-section ${currentSection === 0 ? "active" : ""
+            }`}
         >
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcElectronics />
@@ -49,9 +48,8 @@ export default function Landing() {
           </p>
         </section>
         <section
-          className={`slideshow-section ${
-            currentSection === 1 ? "active" : ""
-          }`}
+          className={`slideshow-section ${currentSection === 1 ? "active" : ""
+            }`}
         >
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcOvertime />
@@ -62,9 +60,8 @@ export default function Landing() {
         </section>
 
         <section
-          className={`slideshow-section ${
-            currentSection === 2 ? "active" : ""
-          }`}
+          className={`slideshow-section ${currentSection === 2 ? "active" : ""
+            }`}
         >
           <div className="flex justify-center text-9xl lg:mt-10">
             <FcComboChart />
@@ -160,12 +157,12 @@ export default function Landing() {
         <header className="text-center text-lg">
           <h1 className="underline">Get Started</h1>
         </header>
-          <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
-            <div onClick={() => navigate("/signup")} className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
-            <div></div>
-          </div>
+        <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
+          <div onClick={() => navigate("/signup")} className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
+          <div></div>
+        </div>
       </main>
-      
+
 
       <footer className="text-sm text-yellow-500 text-center mt-5">
         <div className="flex justify-center">

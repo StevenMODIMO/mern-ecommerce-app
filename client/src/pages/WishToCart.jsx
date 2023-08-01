@@ -12,7 +12,7 @@ export default function WishToCart() {
 
   const handleSubmission = async () => {
     setLoading(true);
-    const response = await fetch("http://localhost:5000/api/app/cart", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/cart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export default function WishToCart() {
   const removeFromWishList = async (id) => {
     setLoading(true);
     const response = await fetch(
-      `http://localhost:5000/api/app/remove-wishlist/${id}`,
+      `https://mern-ecommerce-rhpa.onrender.com/api/app/remove-wishlist/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -58,7 +58,7 @@ export default function WishToCart() {
       setLoading(true)
       const id = params.id.toString();
       const response = await fetch(
-        `http://localhost:5000/api/app/get-wishlist/${id}`,
+        `https://mern-ecommerce-rhpa.onrender.com/api/app/get-wishlist/${id}`,
         {
           headers: {
             Authorization: `Bearer ${user.token}`,
@@ -78,40 +78,40 @@ export default function WishToCart() {
 
   return (
     <>
-    {loading ? <div className="flex items-center justify-center h-96">
-      <Loader />
-    </div> : <div className="mt-10 px-4 mx-10 text-sm flex flex-col gap-10 sm:items-center lg:text-lg">
-      <main className="shadow-lg h-fit">
-        <div className="bg-gray-100">
-          <img
-            className="w-36 mx-auto"
-            src={`http://localhost:5000/${wish.imagePath}`}
-            alt={wish.imagePath}
-          />
-        </div>
-        <div className="text-yellow-500 text-lg">{wish.product_name}</div>
-        <section className="flex text-sm">
-          <div>
-            {wish.currency === "dollar"
-              ? "$"
-              : wish.currency == "pound"
-              ? "£"
-              : wish.currency == "euro"
-              ? "€"
-              : ""}
+      {loading ? <div className="flex items-center justify-center h-96">
+        <Loader />
+      </div> : <div className="mt-10 px-4 mx-10 text-sm flex flex-col gap-10 sm:items-center lg:text-lg">
+        <main className="shadow-lg h-fit">
+          <div className="bg-gray-100">
+            <img
+              className="w-36 mx-auto"
+              src={`https://mern-ecommerce-rhpa.onrender.com/${wish.imagePath}`}
+              alt={wish.imagePath}
+            />
           </div>
-          <div>{wish.price}</div>
-        </section>
-        <div className="text-sm">Id: {wish._id}</div>
-        <div className="text-lg">Quantity: {wish.quantity}</div>
-        <section
-          className="flex justify-center my-3"
-          onClick={() => confirmAndRemove(wish._id)}
-        >
-          <button className="bg-yellow-500 p-1  px-2">Confirm</button>
-        </section>
-      </main>
-    </div>}
+          <div className="text-yellow-500 text-lg">{wish.product_name}</div>
+          <section className="flex text-sm">
+            <div>
+              {wish.currency === "dollar"
+                ? "$"
+                : wish.currency == "pound"
+                  ? "£"
+                  : wish.currency == "euro"
+                    ? "€"
+                    : ""}
+            </div>
+            <div>{wish.price}</div>
+          </section>
+          <div className="text-sm">Id: {wish._id}</div>
+          <div className="text-lg">Quantity: {wish.quantity}</div>
+          <section
+            className="flex justify-center my-3"
+            onClick={() => confirmAndRemove(wish._id)}
+          >
+            <button className="bg-yellow-500 p-1  px-2">Confirm</button>
+          </section>
+        </main>
+      </div>}
     </>
   );
 }

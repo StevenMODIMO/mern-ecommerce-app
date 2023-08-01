@@ -24,7 +24,7 @@ export default function Payment() {
     const getSingleProduct = async () => {
       setLoading(true);
       const id = params.id.toString();
-      const response = await fetch(`http://localhost:5000/api/app/item/${id}`, {
+      const response = await fetch(`https://mern-ecommerce-rhpa.onrender.com/api/app/item/${id}`, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
@@ -46,7 +46,7 @@ export default function Payment() {
 
   const handleSubmission = async (e) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:5000/api/app/pay", {
+    const response = await fetch("https://mern-ecommerce-rhpa.onrender.com/api/app/pay", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,10 +144,10 @@ export default function Payment() {
                   {order.currency === "dollar"
                     ? "$"
                     : order.currency == "pound"
-                    ? "£"
-                    : order.currency == "euro"
-                    ? "€"
-                    : ""}
+                      ? "£"
+                      : order.currency == "euro"
+                        ? "€"
+                        : ""}
                 </div>
                 <div>{order.price}</div>
               </section>
