@@ -308,7 +308,7 @@ export default function Dashboard() {
           ) : (
             <main>
               <h1 className="text-center underline text-lg">Your Orders</h1>
-              <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4 text-sm">
+              <div className="my-10 mx-10 text-sm flex flex-col gap-10 sm:grid grid-cols-2 lg:grid-cols-4">
                 {orders.map((order) => {
                   return (
                     <div key={order._id} className="shadow-xl h-fit">
