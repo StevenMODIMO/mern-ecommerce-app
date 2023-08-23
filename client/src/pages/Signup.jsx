@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import Loader from "../components/Loader"
+import Alert from "../components/Alert";
 
 export default function Signup() {
   const [email, setEmail] = useState("");
@@ -44,6 +45,7 @@ export default function Signup() {
 
   return (
     <div className="shadow-xl rounded border-t-2 border-black py-2 px-4 sm:w-96 mx-auto mt-10">
+      <Alert />
       <header className="text-center m-2 underline lg:mt-12">
         Register Now
       </header>
