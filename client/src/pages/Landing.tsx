@@ -10,12 +10,12 @@ import {
   FcApproval,
   FcSearch,
 } from "react-icons/fc";
-import Pic from "../assets/DrawKit-Vector-Illustration-ecommerce-01.svg";
-import Pic1 from "../assets/DrawKit-Vector-Illustration-ecommerce-02.svg";
+//import Pic from "../assets/DrawKit-Vector-Illustration-ecommerce-01.svg";
+//import Pic1 from "../assets/DrawKit-Vector-Illustration-ecommerce-02.svg";
 import { MdOutlinePrivacyTip } from "react-icons/md";
 export default function Landing() {
   const [currentSection, setCurrentSection] = useState(0);
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -74,7 +74,7 @@ export default function Landing() {
       <main className="mt-52 mb-10 lg:grid grid-cols-3">
         <div className="hidden lg:flex flex-col">
           <img
-            src={Pic}
+          //  src={Pic}
             alt="sdsd"
             className="cursor-pointer h-80 -mt-44 lg:hover:scale-110 transition duration-700 ease-in-out"
           />
@@ -89,7 +89,7 @@ export default function Landing() {
         </div>
         <div className="hidden lg:block">
           <img
-            src={Pic1}
+           // src={Pic1}
             alt="sdsd"
             className="cursor-pointer h-80 -mt-20 lg:hover:scale-110 transition duration-700 ease-in-out"
           />
@@ -158,7 +158,9 @@ export default function Landing() {
           <h1 className="underline">Get Started</h1>
         </header>
         <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
-          <div onClick={() => navigate("/signup")} className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
+          <div 
+          //onClick={() => navigate("/signup")} 
+          className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
           <div></div>
         </div>
       </main>
