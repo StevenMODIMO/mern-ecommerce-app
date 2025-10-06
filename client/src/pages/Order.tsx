@@ -107,11 +107,11 @@ export default function Order() {
           <form
             onSubmit={handleSubmission}
             onFocus={() => setError(null)}
-            className="flex flex-col justify-center gap-3  p-1 m-1 rounded h-72"
+            className="flex flex-col justify-center gap-3  p-1 m-1 rounded-sm h-72"
           >
             <label>Quantity</label>
             <input
-              className="border-2 border-yellow-500 outline-none p-1 rounded"
+              className="border-2 border-yellow-500 outline-hidden p-1 rounded-sm"
               type="number"
               min="0"
               max="10"
@@ -142,12 +142,12 @@ export default function Order() {
                 <Loader />
               </div>
             ) : (
-              <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
+              <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded-sm">
                 <button>Add to Cart</button>
               </main>
             )}
             {error && (
-              <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+              <div className="text-sm mt-2 bg-red-400 px-1 rounded-sm sm:w-fit sm:text-lg mx-auto">
                 <div>{error}</div>
               </div>
             )}

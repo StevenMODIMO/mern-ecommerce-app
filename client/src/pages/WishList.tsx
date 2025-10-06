@@ -100,7 +100,7 @@ export default function WishList() {
           <form
             onSubmit={handleSubmission}
             onFocus={() => setError(null)}
-            className="flex flex-col justify-center gap-3  p-1 m-1 rounded h-72"
+            className="flex flex-col justify-center gap-3  p-1 m-1 rounded-sm h-72"
           >
             <label>Quantity</label>
             <input
@@ -109,7 +109,7 @@ export default function WishList() {
               max="10"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="border-2 border-yellow-500 outline-none p-1 rounded"
+              className="border-2 border-yellow-500 outline-hidden p-1 rounded-sm"
               placeholder="Quantity of product e.g 4"
             />
             {loading ? (
@@ -117,12 +117,12 @@ export default function WishList() {
                 <Loader />
               </div>
             ) : (
-              <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded">
+              <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded-sm">
                 <button>Add to Wishlist</button>
               </main>
             )}
             {
-              error && <div className="text-lg bg-red-400 px-1 rounded">
+              error && <div className="text-lg bg-red-400 px-1 rounded-sm">
                 <div>{error}</div>
               </div>
             }

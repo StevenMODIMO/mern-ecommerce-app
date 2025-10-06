@@ -47,7 +47,7 @@ export default function Login() {
   };
 
   return (
-    <div className="shadow-xl rounded border-t-2 border-black py-2 px-2 mx-4  sm:w-96 mx-auto mt-10">
+    <div className="shadow-xl rounded-sm border-t-2 border-black py-2 px-2 mx-4  sm:w-96 mx-auto mt-10">
       <Alert />
       <header className="text-center m-2 underline lg:mt-12">
         Login To Countinue
@@ -55,31 +55,31 @@ export default function Login() {
       <form
         onSubmit={handleSubmission}
         onFocus={() => setError(null)}
-        className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded h-80 "
+        className="flex flex-col items-center justify-center gap-3  p-1 m-1 rounded-sm h-80 "
       >
         <input
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-400 outline-hidden rounded-sm p-1 text-lg w-80"
           placeholder="email address"
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg w-80"
+          className="border-2 border-yellow-400 outline-hidden rounded-sm p-1 text-lg w-80"
           placeholder="password"
         />
         {loading ? (
           <Loader />
         ) : (
-          <button disabled={loading} className=" p-1 rounded bg-yellow-500">
+          <button disabled={loading} className=" p-1 rounded-sm bg-yellow-500">
             Login
           </button>
         )}
         {error && (
-          <div className="text-lg bg-red-400 px-1 rounded">
+          <div className="text-lg bg-red-400 px-1 rounded-sm">
             <div>{error}</div>
           </div>
         )}

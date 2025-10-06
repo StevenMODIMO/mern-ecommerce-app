@@ -253,7 +253,7 @@ export default function Dashboard() {
                                   toggleProductExpansion(product._id)
                                 }
                               >
-                                <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
+                                <button className="bg-yellow-500 px-1 h-fit w-fit rounded-sm">
                                   {isExpanded ? "less" : "more"}
                                 </button>
                               </div>
@@ -277,7 +277,7 @@ export default function Dashboard() {
                           <Rates rates={productRates} />
                         </div>
                       </main>
-                      <section className="bg-red-400 w-fit p-1 m-1 rounded mx-auto">
+                      <section className="bg-red-400 w-fit p-1 m-1 rounded-sm mx-auto">
                         <button
                           className="flex gap-1"
                           onClick={() => deleteProduct(product._id)}
@@ -352,7 +352,7 @@ export default function Dashboard() {
                       </section>
                       <div
                         onClick={() => completeShip(order._id)}
-                        className="bg-yellow-500 p-1 rounded text-center w-fit mx-auto my-2"
+                        className="bg-yellow-500 p-1 rounded-sm text-center w-fit mx-auto my-2"
                       >
                         <button>Ship Product</button>
                       </div>
@@ -372,13 +372,13 @@ export default function Dashboard() {
           </header>
           <section className="md:flex justify-center">
             <form
-              className="flex flex-col rounded text-lg border-t-2 border-black  mx-2 px-2 py-2 shadow-2xl bg-white  md:w-80 px-4 mx-4 lg:w-96"
+              className="flex flex-col rounded-sm text-lg border-t-2 border-black  mx-2 px-2 py-2 shadow-2xl bg-white  md:w-80 px-4 mx-4 lg:w-96"
               onSubmit={handleSubmission}
               onFocus={() => setError(null)}
             >
               <label
                 htmlFor="fileInput"
-                className=" mt-3 cursor-pointer gap-1 bg-yellow-500 rounded p-1"
+                className=" mt-3 cursor-pointer gap-1 bg-yellow-500 rounded-sm p-1"
               >
                 <input
                   id="fileInput"
@@ -402,7 +402,7 @@ export default function Dashboard() {
 
               <label className="mt-3">Product Name</label>
               <input
-                className="border-2 border-yellow-400 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-hidden p-1 rounded-sm"
                 type="text"
                 value={product_name}
                 onChange={(e) => setProduct_Name(e.target.value)}
@@ -410,14 +410,14 @@ export default function Dashboard() {
               />
               <label>Description</label>
               <textarea
-                className="border-2 border-yellow-400 outline-none  p-1 h-24 rounded"
+                className="border-2 border-yellow-400 outline-hidden  p-1 h-24 rounded-sm"
                 placeholder="separate by comma e.g Ram 4GB, intel core i9, 500GB, Nvidia graphics"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
               <label className="mt-3">Price</label>
               <input
-                className="border-2 border-yellow-400 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-hidden p-1 rounded-sm"
                 type="number"
                 min="1"
                 max="1000000"
@@ -427,7 +427,7 @@ export default function Dashboard() {
               />
               <label className="mt-3">Quantity</label>
               <input
-                className="border-2 border-yellow-400 outline-none p-1 rounded"
+                className="border-2 border-yellow-400 outline-hidden p-1 rounded-sm"
                 type="number"
                 min="1"
                 max="10"
@@ -437,7 +437,7 @@ export default function Dashboard() {
               />
               <label className="mx-auto mt-3">Choose currency:</label>
               <select
-                className="border-2 border-yellow-400 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-400 p-1 outline-hidden w-40 mx-auto rounded-sm"
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
               >
@@ -454,7 +454,7 @@ export default function Dashboard() {
               </select>
               <label className="mx-auto mt-3">Select Category:</label>
               <select
-                className="border-2 border-yellow-400 p-1 outline-none w-40 mx-auto rounded"
+                className="border-2 border-yellow-400 p-1 outline-hidden w-40 mx-auto rounded-sm"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               >
@@ -478,13 +478,13 @@ export default function Dashboard() {
               {loading ? (
                 <Loader />
               ) : (
-                <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded">
+                <main className="flex justify-center mt-3 gap-1 bg-yellow-400 p-1 rounded-sm">
                   <MdOutlineSend className="text-2xl" />
                   <button>Submit</button>
                 </main>
               )}
               {error && (
-                <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+                <div className="text-sm mt-2 bg-red-400 px-1 rounded-sm sm:w-fit sm:text-lg mx-auto">
                   <div>{error}</div>
                 </div>
               )}

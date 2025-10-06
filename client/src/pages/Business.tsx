@@ -75,7 +75,7 @@ export default function Business() {
     <div className="flex flex-col gap-10 shadow-2xl mt-10 mx-2 border-t-2 border-black sm:mx-36 lg:mx-96 h-96">
       <header className="flex flex-col items-center mt-10">
         <div
-          className="bg-yellow-400 p-1 rounded text-black w-fit flex gap-3"
+          className="bg-yellow-400 p-1 rounded-sm text-black w-fit flex gap-3"
           onClick={() => navigate("/")}
         >
           <BiArrowBack className="mt-1" />
@@ -86,20 +86,20 @@ export default function Business() {
       <form
         onSubmit={handleSubmission}
         onFocus={() => setError(null)}
-        className="flex flex-col items-center justify-center gap-3 p-1 m-1 rounded"
+        className="flex flex-col items-center justify-center gap-3 p-1 m-1 rounded-sm"
       >
         <input
           type="text"
           value={business_name}
           onChange={(e) => setBusinessName(e.target.value)}
-          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg sm:w-80"
+          className="border-2 border-yellow-400 outline-hidden rounded-sm p-1 text-lg sm:w-80"
           placeholder="business name"
         />
         <input
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          className="border-2 border-yellow-400 outline-none rounded p-1 text-lg sm:w-80"
+          className="border-2 border-yellow-400 outline-hidden rounded-sm p-1 text-lg sm:w-80"
           placeholder="address"
         />
         <label className="text-sm flex gap-1 ml-0 sm:text-lg">
@@ -113,12 +113,12 @@ export default function Business() {
         {loading ? (
           <Loader />
         ) : (
-          <button className="bg-yellow-500 p-1 rounded">
+          <button className="bg-yellow-500 p-1 rounded-sm">
             Register Business
           </button>
         )}
         {error && (
-          <div className="text-lg bg-red-400 px-1 rounded">
+          <div className="text-lg bg-red-400 px-1 rounded-sm">
             <div>{error}</div>
           </div>
         )}

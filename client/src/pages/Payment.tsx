@@ -158,7 +158,7 @@ export default function Payment() {
               <form
                 onSubmit={handleSubmission}
                 onFocus={() => setError(null)}
-                className="flex flex-col rounded text-lg mx-2 px-2 py-2 shadow-xl bg-white md:w-80 lg:w-96 lg:text-lg"
+                className="flex flex-col rounded-sm text-lg mx-2 px-2 py-2 shadow-xl bg-white md:w-80 lg:w-96 lg:text-lg"
               >
                 <header className="flex gap-2 text-5xl">
                   <FaCcMastercard />
@@ -169,14 +169,14 @@ export default function Payment() {
                   value={cardNumber}
                   onChange={(e) => setCardNumber(e.target.value)}
                   type="text"
-                  className="border-2 border-yellow-500 outline-none p-1"
+                  className="border-2 border-yellow-500 outline-hidden p-1"
                 />
                 <label>expire month</label>
                 <input
                   value={cardExpMonth}
                   onChange={(e) => setExpMonth(e.target.value)}
                   type="text"
-                  className="border-2 border-yellow-500 outline-none p-1"
+                  className="border-2 border-yellow-500 outline-hidden p-1"
                   placeholder="e.g 09 or 10"
                 />
                 <label>expire year</label>
@@ -184,7 +184,7 @@ export default function Payment() {
                   value={cardExpYear}
                   onChange={(e) => setExpYear(e.target.value)}
                   type="text"
-                  className="border-2 border-yellow-500 outline-none p-1"
+                  className="border-2 border-yellow-500 outline-hidden p-1"
                   placeholder="e.g 24/22/25"
                 />
                 <label>cvc code</label>
@@ -192,7 +192,7 @@ export default function Payment() {
                   value={cardCvc}
                   onChange={(e) => setCvc(e.target.value)}
                   type="text"
-                  className="border-2 border-yellow-500 outline-none p-1"
+                  className="border-2 border-yellow-500 outline-hidden p-1"
                   placeholder="Last three digits"
                 />
                 <label>Shipping Address</label>
@@ -200,7 +200,7 @@ export default function Payment() {
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   type="text"
-                  className="border-2 border-yellow-500 outline-none p-1"
+                  className="border-2 border-yellow-500 outline-hidden p-1"
                 />
                 <label className="text-sm flex gap-1 ml-0 sm:text-lg">
                   <input
@@ -212,11 +212,11 @@ export default function Payment() {
                     Use current location ?
                   </span>
                 </label>
-                <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded">
+                <main className="flex justify-center mt-3 gap-1 bg-yellow-500 p-1 rounded-sm">
                   <button>Complete Payment</button>
                 </main>
                 {error && (
-                  <div className="text-sm mt-2 bg-red-400 px-1 rounded sm:w-fit sm:text-lg mx-auto">
+                  <div className="text-sm mt-2 bg-red-400 px-1 rounded-sm sm:w-fit sm:text-lg mx-auto">
                     <div>{error}</div>
                   </div>
                 )}

@@ -86,20 +86,20 @@ export default function Home() {
       {currentUser.role === "None" && (
         <>
           <section className="sm:w-full flex justify-center">
-            <div className="flex flex-col items-center shadow-xl p-2 mx-4 rounded border-t-2 border-black sm:w-96 h-60 justify-center mx-auto">
+            <div className="flex flex-col items-center shadow-xl p-2 mx-4 rounded-sm border-t-2 border-black sm:w-96 h-60 justify-center mx-auto">
               <header className="text-2xl underline text-center">
                 Choose A Role
               </header>
               <main className="w-screen">
                 <div
                   onClick={registerBuyer}
-                  className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
+                  className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded-sm p-3 m-1 text-center cursor-pointer w-72 md:w-80"
                 >
                   <BiPurchaseTag /> I Want To Buy
                 </div>
                 <div
                   onClick={sendBusinessPage}
-                  className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded p-3 m-1 text-center cursor-pointer w-72 md:w-80"
+                  className="flex gap-3 justify-center bg-yellow-400 text-black mx-auto rounded-sm p-3 m-1 text-center cursor-pointer w-72 md:w-80"
                 >
                   <TbBusinessplan /> I want To Sell
                 </div>
@@ -133,13 +133,13 @@ export default function Home() {
                       return (
                         <main key={prod._id} className="shadow-xl h-fit">
                           <section className="flex justify-between my-3 bg-gray-200">
-                            <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded">
+                            <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded-sm">
                               <NavLink to={`/order/${prod._id}`}>
                                 {" "}
                                 <MdOutlineAddShoppingCart />
                               </NavLink>
                             </div>
-                            <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded">
+                            <div className="flex text-2xl gap-1 p-1 text-yellow-500 rounded-sm">
                               <NavLink to={`/wishlist/${prod._id}`}>
                                 <BsFillStarFill />
                               </NavLink>
@@ -167,7 +167,7 @@ export default function Home() {
                             </div>
                             <div className="text-lg">{prod.price}</div>
                           </section>
-                          <section className="flex gap-1 bg-gray-800/10 p-1 rounded mt-2 w-fit">
+                          <section className="flex gap-1 bg-gray-800/10 p-1 rounded-sm mt-2 w-fit">
                             <BsFillBuildingsFill className="mt-1" />
                             <div className="text-sm">By {prod.from}</div>
                           </section>
@@ -184,13 +184,13 @@ export default function Home() {
                                 className="ml-48"
                                 onClick={() => toggleProductExpansion(prod._id)}
                               >
-                                <button className="bg-yellow-500 px-1 h-fit w-fit rounded">
+                                <button className="bg-yellow-500 px-1 h-fit w-fit rounded-sm">
                                   {isExpanded ? "less" : "more"}
                                 </button>
                               </div>
                             )}
                           </section>
-                          <div className="bg-gray-30 w-fit text-xs p-1 rounded mt-2">
+                          <div className="bg-gray-30 w-fit text-xs p-1 rounded-sm mt-2">
                             Id: {prod._id}
                           </div>
                           <div></div>

@@ -103,7 +103,7 @@ export default function Landing() {
         <p className="underline text-end mr-10">Our Features</p>
       </main>
       <main className="mt-10 sm:grid grid-cols-2 lg:grid-cols-4">
-        <section className="cursor-pointer mx-10 py-5 px-3 shadow-lg rounded lg:hover:scale-110 transition duration-700 ease-in-out">
+        <section className="cursor-pointer mx-10 py-5 px-3 shadow-lg rounded-sm lg:hover:scale-110 transition duration-700 ease-in-out">
           <div className="flex justify-center text-6xl">
             <FcOnlineSupport />
           </div>
@@ -114,7 +114,7 @@ export default function Landing() {
           </p>
         </section>
 
-        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded lg:hover:scale-110 transition duration-700 ease-in-out">
+        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded-sm lg:hover:scale-110 transition duration-700 ease-in-out">
           <div className="flex justify-center text-6xl">
             <MdOutlinePrivacyTip />
           </div>
@@ -128,7 +128,7 @@ export default function Landing() {
           </p>
         </section>
 
-        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded lg:hover:scale-110 transition duration-700 ease-in-out">
+        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded-sm lg:hover:scale-110 transition duration-700 ease-in-out">
           <div className="flex justify-center text-6xl">
             <FcApproval />
           </div>
@@ -140,7 +140,7 @@ export default function Landing() {
           </p>
         </section>
 
-        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded lg:hover:scale-110 transition duration-700 ease-in-out">
+        <section className="cursor-pointer mx-10 py-5 px-3 mt-10 shadow-lg rounded-sm lg:hover:scale-110 transition duration-700 ease-in-out">
           <div className="flex justify-center text-6xl">
             <FcSearch />
           </div>
@@ -160,7 +160,7 @@ export default function Landing() {
         <div className="sm:mx-auto w-96 lg:hover:scale-110 transition duration-700 ease-in-out">
           <div 
           //onClick={() => navigate("/signup")} 
-          className="bg-yellow-500 cursor-pointer p-3 m-3 rounded text-lg text-center">Sign Up to Get Started, and Explore more.</div>
+          className="bg-yellow-500 cursor-pointer p-3 m-3 rounded-sm text-lg text-center">Sign Up to Get Started, and Explore more.</div>
           <div></div>
         </div>
       </main>

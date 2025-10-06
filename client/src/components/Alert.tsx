@@ -22,12 +22,12 @@ export default function Alert() {
           My servers are always in sleep mode because these projects are just
           for demostration.During this period, you might experience a slight
           delay for this service. I kindly request to click on the{" "}
-          <span className="bg-yellow-200 p-1 m-1 rounded">Login</span> or <span className="bg-yellow-200 p-1 m-1 rounded">Signup</span> button until an error
+          <span className="bg-yellow-200 p-1 m-1 rounded-sm">Login</span> or <span className="bg-yellow-200 p-1 m-1 rounded-sm">Signup</span> button until an error
           occurs. Also try refreshing the page and try again.
         </div>
         <p>Really sorry for this inconvenience</p>
         <button
-          className="text-lg bg-yellow-200 rounded p-1 m-2"
+          className="text-lg bg-yellow-200 rounded-sm p-1 m-2"
           onClick={() => setShowAgain(false)}
         >
           Got it!
