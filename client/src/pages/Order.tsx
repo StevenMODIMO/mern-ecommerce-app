@@ -80,7 +80,7 @@ export default function Order() {
       {loading ? <div className="flex items-center justify-center h-96">
         <Loader />
       </div> : <div className="sm:w-80 shadow-2xl mx-auto lg:mt-10">
-        <main className="mt-5 mx-10 text-sm flex flex-col sm:w-72 mx-auto">
+        <main className="mt-5 text-sm flex flex-col sm:w-72 mx-auto">
           <div className="bg-gray-100">
             <img
               className="w-36 mx-auto"
