@@ -47,7 +47,6 @@ const sellerSchema = new mongoose.Schema(
     ],
     orders: [
       {
-        
         from: String,
         imagePath: String,
         product_name: String,
@@ -58,12 +57,12 @@ const sellerSchema = new mongoose.Schema(
         address: String,
         shipped: {
           type: Boolean,
-          default: false
-        }
+          default: false,
+        },
       },
     ],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Seller", sellerSchema);
+export default mongoose.model("Seller", sellerSchema);

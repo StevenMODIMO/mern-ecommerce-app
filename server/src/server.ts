@@ -1,11 +1,12 @@
 require("dotenv").config();
-const express = require("express");
+import express from "express";
 const app = express();
-const cors = require("cors");
-const mongoose = require("mongoose");
-const authRoutes = require("./routes/authRoutes");
-const appRoutes = require("./routes/appRoutes")
-const path = require("path")
+import cors from "cors";
+import mongoose from "mongoose";
+import authRoutes from "./routes/authRoutes";
+import appRoutes from "./routes/appRoutes";
+import path from "path";
+import { setupSwagger } from "./swagger";
 
 app.use(cors());
 app.use(express.json());
@@ -15,18 +16,20 @@ app.use((req, res, next) => {
   next();
 });
 
+setupSwagger(app);
+
 app.get("/", (req, res) => {
-  res.send("MERN Ecommerce")
-})
+  res.redirect("/api-docs");
+});
 
 app.get("/images/:filename", async (req, res) => {
-  const imagePath = path.join(__dirname, "images", req.params.filename)
-  res.sendFile(imagePath)
-})
+  const imagePath = path.join(__dirname, "images", req.params.filename);
+  res.sendFile(imagePath);
+});
 app.use("/api/auth", authRoutes);
-app.use("/api/app", appRoutes)
+app.use("/api/app", appRoutes);
 
-mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true }).then(() => {
+mongoose.connect(process.env.MONGO_URI as string).then(() => {
   app.listen(process.env.PORT, () =>
     console.log(`http://localhost:${process.env.PORT}`)
   );

@@ -1,8 +1,37 @@
-const { signupUser, loginUser } = require("../controllers/authControllers")
-const router = require("express").Router()
+import { signupUser, loginUser } from "../controllers/authControllers";
+import { Router } from "express";
 
-router.post("/signup", signupUser)
+const router = Router();
 
-router.post("/login", loginUser)
+// /**
+//  * @swagger
+//  * /api/users:
+//  *   get:
+//  *     summary: Get all users
+//  *     tags: [Users]
+//  *     responses:
+//  *       200:
+//  *         description: Successfully retrieved users
+//  *         content:
+//  *           application/json:
+//  *             schema:
+//  *               type: array
+//  *               items:
+//  *                 type: object
+//  *                 properties:
+//  *                   id:
+//  *                     type: string
+//  *                   name:
+//  *                     type: string
+//  */
 
-module.exports = router
+/**
+ * @swagger
+ * /api/auth/signup:
+ */
+
+router.post("/signup", signupUser);
+
+router.post("/login", loginUser);
+
+export default router;

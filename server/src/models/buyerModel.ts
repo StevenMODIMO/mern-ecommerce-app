@@ -51,4 +51,4 @@ const buyerSchema = new mongoose.Schema({
   ],
 });
 
-module.exports = mongoose.model("Buyer", buyerSchema);
+export default mongoose.model("Buyer", buyerSchema);

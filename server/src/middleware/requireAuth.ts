@@ -1,8 +1,9 @@
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const User = require("../models/authModel");
+import jwt from "jsonwebtoken";
+import User from "../models/authModel";
+import { NextFunction, type Request, type Response } from "express";
 
-const requireAuth = async (req, res, next) => {
+const requireAuth = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
@@ -12,7 +13,7 @@ const requireAuth = async (req, res, next) => {
   const token = authorization.split(" ")[1];
 
   try {
-    const { _id } = jwt.verify(token, process.env.JWT_SECRET);
+    const { _id } = jwt.verify(token, process.env.JWT_SECRET as string);
     req.user = await User.findOne({ _id }).select("_id");
     next();
   } catch (error) {
@@ -20,5 +21,4 @@ const requireAuth = async (req, res, next) => {
   }
 };
 
-
-module.exports = requireAuth
+export default requireAuth;

@@ -54,4 +54,4 @@ userSchema.statics.login = async function (email, password) {
   return user;
 };
 
-module.exports = mongoose.model("Auth", userSchema);
+export default mongoose.model("Auth", userSchema);
