@@ -3,35 +3,118 @@ import { Router } from "express";
 
 const router = Router();
 
-// /**
-//  * @swagger
-//  * /api/users:
-//  *   get:
-//  *     summary: Get all users
-//  *     tags: [Users]
-//  *     responses:
-//  *       200:
-//  *         description: Successfully retrieved users
-//  *         content:
-//  *           application/json:
-//  *             schema:
-//  *               type: array
-//  *               items:
-//  *                 type: object
-//  *                 properties:
-//  *                   id:
-//  *                     type: string
-//  *                   name:
-//  *                     type: string
-//  */
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: Authentication and user management
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Products
+ *   description: Product management and operations
+ */
 
 /**
  * @swagger
  * /api/auth/signup:
+ *   post:
+ *     summary: Register a new user
+ *     description: Create a new user account using an email and password.
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "user@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *     responses:
+ *       201:
+ *         description: User registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: "66fcd3d97b12a2034a0fbc23"
+ *                 email:
+ *                   type: string
+ *                   example: "user@example.com"
+ *                 role:
+ *                   type: string
+ *                   example: "None"
+ *       400:
+ *         description: Missing or invalid credentials.
+ *       500:
+ *         description: Server error.
  */
-
 router.post("/signup", signupUser);
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login a user
+ *     description: Authenticate a user with email and password.
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "user@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "securePassword123"
+ *     responses:
+ *       200:
+ *         description: User logged in successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "66fcd3d97b12a2034a0fbc23"
+ *                     email:
+ *                       type: string
+ *                       example: "user@example.com"
+ *                     role:
+ *                       type: string
+ *                       example: "None"
+ *       400:
+ *         description: Invalid email or password.
+ *       500:
+ *         description: Server error.
+ */
 router.post("/login", loginUser);
 
 export default router;

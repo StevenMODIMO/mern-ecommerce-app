@@ -16,7 +16,7 @@ const options = {
         description: "Local Development server",
       },
       {
-        url: "http://localhost:3000",
+        url: "https://mern-ecommerce-rhpa.onrender.com",
         description: "Production server",
       },
     ],
