@@ -1,16 +1,44 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import "./index.css";
-import { AuthContextProvider } from "./context/AuthContext";
-
 import { createBrowserRouter, RouterProvider } from "react-router";
-import Landing from "./pages/Landing";
+
+/**Routes and Pages */
+import Home from "./routes/Home";
+import Login from "./routes/Login";
+import Signup from "./routes/Signup";
+import Cart from "./routes/Cart";
+import Dashboard from "./routes/Dashboard";
+
+/**Layouts */
+import RootLayout from "./layouts/RootLayout";
 
 const router = createBrowserRouter([
   {
-    path: "/landing",
-    element: <Landing />,
+    Component: RootLayout,
+    children: [
+      {
+        path: "/",
+        index: true,
+        Component: Home,
+      },
+      {
+        path: "signup",
+        Component: Signup,
+      },
+      {
+        path: "login",
+        Component: Login,
+      },
+      {
+        path: "dashboard",
+        Component: Dashboard,
+      },
+      {
+        path: "cart",
+        Component: Cart,
+      },
+    ],
   },
 ]);
 

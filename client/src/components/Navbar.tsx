@@ -51,7 +51,7 @@ export default function Navbar() {
     getCountry();
   }, []);
 
-  const getCountryFlagClass = (countryCode) => {
+  const getCountryFlagClass = (countryCode: string) => {
     return `fi fi-${countryCode.toLowerCase()}`;
   };
 
