@@ -12,13 +12,6 @@ const router = Router();
 
 /**
  * @swagger
- * tags:
- *   name: Products
- *   description: Product management and operations
- */
-
-/**
- * @swagger
  * /api/auth/signup:
  *   post:
  *     summary: Register a new user

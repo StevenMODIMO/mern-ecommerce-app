@@ -8,38 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.shipProduct = exports.generateSellerInvoice = exports.generateBuyerInvoice = exports.intitiatePayment = exports.getOrders = exports.removeWishList = exports.getSingleWishListProduct = exports.getWishlistProducts = exports.addWishList = exports.removeFromCart = exports.getCartProduct = exports.getCartProducts = exports.addToCart = exports.deleteProducts = exports.getImage = exports.getProductById = exports.getProducts = exports.editProduct = exports.newProduct = exports.getSingleProduct = exports.registerBuyer = exports.registerSeller = exports.getAllProducts = void 0;
 require("dotenv").config();
-const Seller = require("../models/sellerModel");
-const Buyer = require("../models/buyerModel");
-const Product = require("../models/productModel");
-const User = require("../models/authModel");
-const mongoose = require("mongoose");
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const sellerModel_1 = __importDefault(require("../models/sellerModel"));
+const buyerModel_1 = __importDefault(require("../models/buyerModel"));
+const productModel_1 = __importDefault(require("../models/productModel"));
+const authModel_1 = __importDefault(require("../models/authModel"));
+const mongoose_1 = __importDefault(require("mongoose"));
+const stripe_1 = __importDefault(require("stripe"));
 const path = require("path");
-const { ObjectId } = require("mongodb");
+const mongodb_1 = require("mongodb");
+const STRIPE = process.env.STRIPE_PRIVATE_KEY;
 // Admin Controllers
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const docs = yield Product.find();
+        const docs = yield productModel_1.default.find();
         res.status(200).json(docs);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.getAllProducts = getAllProducts;
 const registerSeller = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { business_name, address } = req.body;
-    const user_id = new mongoose.Types.ObjectId(req.user);
+    const user_id = new mongoose_1.default.Types.ObjectId(req.user);
     if (!business_name || !address) {
         return res.status(400).json({ error: "All fields must be filled." });
     }
-    const exists = yield Seller.findOne({ business_name });
+    const exists = yield sellerModel_1.default.findOne({ business_name });
     if (exists) {
         return res.status(400).json({ error: "Name already taken" });
     }
     try {
-        const updateUser = yield User.findOneAndUpdate({ _id: user_id }, { role: "Seller" }, { new: true });
-        const newSeller = yield Seller.create({
+        const updateUser = yield authModel_1.default.findOneAndUpdate({ _id: user_id }, { role: "Seller" }, { new: true });
+        const newSeller = yield sellerModel_1.default.create({
             user_id: user_id,
             business_name: business_name,
             address: address,
@@ -50,6 +57,7 @@ const registerSeller = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(error);
     }
 });
+exports.registerSeller = registerSeller;
 const newProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { product_name, description, price, quantity, currency, category } = req.body;
@@ -73,18 +81,18 @@ const newProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             currency: currency,
             category: category,
         };
-        const newProduct = yield Seller.findOneAndUpdate({ user_id: user_id }, {
+        const newProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 products: newItem,
             },
         }, { new: true });
         const newID = { pid: "" };
-        const n = newProduct.products.filter(p => {
+        const n = newProduct.products.filter((p) => {
             if (p.product_name == newItem.product_name) {
                 newID.pid = p.id;
             }
         });
-        const product = yield Product.create({
+        const product = yield productModel_1.default.create({
             product_id: newID.pid,
             from: newProduct.business_name,
             imagePath: imagePath,
@@ -101,6 +109,7 @@ const newProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(400).json(error);
     }
 });
+exports.newProduct = newProduct;
 const editProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { product_name, description, price, quantity, currency, category } = req.body;
@@ -115,7 +124,7 @@ const editProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
     try {
-        const editedProduct = yield Seller.findOneAndUpdate({ user_id: user_id }, {
+        const editedProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 products: {
                     imagePath: imagePath,
@@ -134,21 +143,23 @@ const editProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).json(error);
     }
 });
+exports.editProduct = editProduct;
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
-        const products = yield Seller.findOne({ user_id });
+        const products = yield sellerModel_1.default.findOne({ user_id });
         res.status(200).json(products.products);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.getProducts = getProducts;
 const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
         const { id } = req.params;
-        const updated = yield Seller.findOne({ user_id: user_id });
+        const updated = yield sellerModel_1.default.findOne({ user_id: user_id });
         updated.products.filter((product) => {
             if (product._id == id) {
                 res.status(200).json(product);
@@ -159,6 +170,7 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(error);
     }
 });
+exports.getProductById = getProductById;
 const getImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const image = path.join(__dirname, "..", "images", req.params.filename);
@@ -168,64 +180,69 @@ const getImage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(400).json(error);
     }
 });
+exports.getImage = getImage;
 const deleteProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const user_id = req.user;
     try {
-        const deletedProduct = yield Seller.findOneAndUpdate({ user_id: user_id }, {
+        const deletedProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 products: {
                     _id: id,
                 },
             },
         }, { new: true });
-        const deleteFromProduct = yield Product.findOneAndDelete({ product_id: id }, { new: true });
+        const deleteFromProduct = yield productModel_1.default.findOneAndDelete({ product_id: id }, { new: true });
         res.status(200).json(deletedProduct);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.deleteProducts = deleteProducts;
 const getOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name } = req.params;
     try {
-        const business_orders = yield Buyer.find({ "orders.business_name": name });
+        const business_orders = yield buyerModel_1.default.find({ "orders.business_name": name });
         res.status(200).json(business_orders);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.getOrders = getOrders;
 // User Controllers
 const registerBuyer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user_id = new mongoose.Types.ObjectId(req.user);
+    const user_id = new mongoose_1.default.Types.ObjectId(req.user);
     try {
-        const updateUser = yield User.findOneAndUpdate({ _id: user_id }, { role: "Buyer" }, { new: true });
-        const newUser = yield Buyer.create({ user_id: user_id });
+        const updateUser = yield authModel_1.default.findOneAndUpdate({ _id: user_id }, { role: "Buyer" }, { new: true });
+        const newUser = yield buyerModel_1.default.create({ user_id: user_id });
         res.status(200).json(updateUser.role);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.registerBuyer = registerBuyer;
 const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const doc = yield Product.findOne({ _id: id });
+        const doc = yield productModel_1.default.findOne({ _id: id });
         res.status(200).json(doc);
     }
     catch (error) {
         res.status(400).json(error);
     }
 });
+exports.getSingleProduct = getSingleProduct;
 const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
-    const { imagePath, product_name, description, price, currency, quantity, rate, product_id, business_name } = req.body;
+    const { imagePath, product_name, description, price, currency, quantity, rate, product_id, business_name, } = req.body;
     if (!quantity) {
         return res.status(400).json({ error: "All fields must be filled." });
     }
     try {
-        const newProduct = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const newProduct = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 cart: {
                     from: business_name,
@@ -238,23 +255,23 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             },
         }, { new: true });
-        const rateProduct = yield Product.findOneAndUpdate({ product_id: product_id }, {
+        const rateProduct = yield productModel_1.default.findOneAndUpdate({ product_id: product_id }, {
             $push: {
                 rates: {
                     rate: rate,
-                    user: user_id
-                }
-            }
+                    user: user_id,
+                },
+            },
         });
-        const rateToSeller = yield Seller.findOneAndUpdate({ business_name: business_name }, {
+        const rateToSeller = yield sellerModel_1.default.findOneAndUpdate({ business_name: business_name }, {
             $push: {
                 rates: {
                     product_id: product_id,
-                    rate: rate
-                }
-            }
+                    rate: rate,
+                },
+            },
         });
-        const remove = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const remove = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 wishlist: {
                     _id: newProduct._id,
@@ -267,10 +284,11 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(400).json(error);
     }
 });
+exports.addToCart = addToCart;
 const getCartProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
-        const orders = yield Buyer.findOne({ user_id: user_id });
+        const orders = yield buyerModel_1.default.findOne({ user_id: user_id });
         const userOrders = orders.cart;
         res.status(200).json(userOrders);
     }
@@ -278,11 +296,12 @@ const getCartProducts = (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(400).json(error);
     }
 });
+exports.getCartProducts = getCartProducts;
 const getCartProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { id } = req.params;
     try {
-        const orders = yield Buyer.findOne({ user_id: user_id });
+        const orders = yield buyerModel_1.default.findOne({ user_id: user_id });
         const cart = orders.cart;
         cart.filter((order) => {
             if (order._id == id) {
@@ -294,11 +313,12 @@ const getCartProduct = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(error.message);
     }
 });
+exports.getCartProduct = getCartProduct;
 const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const user_id = req.user;
     try {
-        const deletedProduct = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const deletedProduct = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 cart: {
                     _id: id,
@@ -311,6 +331,7 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(error);
     }
 });
+exports.removeFromCart = removeFromCart;
 const addWishList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { product_name, description, price, currency, quantity, imagePath } = req.body;
@@ -318,7 +339,7 @@ const addWishList = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(400).json({ error: "All fields must be filled." });
     }
     try {
-        const newProduct = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const newProduct = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 wishlist: {
                     imagePath: imagePath,
@@ -336,10 +357,11 @@ const addWishList = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).json(error);
     }
 });
+exports.addWishList = addWishList;
 const getWishlistProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
-        const wishList = yield Buyer.findOne({ user_id: user_id });
+        const wishList = yield buyerModel_1.default.findOne({ user_id: user_id });
         const userWishList = wishList.wishlist;
         res.status(200).json(userWishList);
     }
@@ -347,11 +369,12 @@ const getWishlistProducts = (req, res) => __awaiter(void 0, void 0, void 0, func
         res.status(400).json(error);
     }
 });
+exports.getWishlistProducts = getWishlistProducts;
 const getSingleWishListProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { id } = req.params;
     try {
-        const wishList = yield Buyer.findOne({ user_id: user_id });
+        const wishList = yield buyerModel_1.default.findOne({ user_id: user_id });
         const userWishList = wishList.wishlist;
         userWishList.filter((uw) => {
             if (uw._id == id) {
@@ -363,11 +386,12 @@ const getSingleWishListProduct = (req, res) => __awaiter(void 0, void 0, void 0,
         res.status(400).json(error);
     }
 });
+exports.getSingleWishListProduct = getSingleWishListProduct;
 const removeWishList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { id } = req.params;
     try {
-        const remove = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const remove = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 wishlist: {
                     _id: id,
@@ -380,14 +404,15 @@ const removeWishList = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).json(error);
     }
 });
+exports.removeWishList = removeWishList;
 const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
-    const { cardNumber, cardExpMonth, cardExpYear, cardCvc, product_name, description, price, currency, quantity, imagePath, prevID, address, from, business_name } = req.body;
+    const { cardNumber, cardExpMonth, cardExpYear, cardCvc, product_name, description, price, currency, quantity, imagePath, prevID, address, from, business_name, } = req.body;
     if (!cardNumber || !cardExpMonth || !cardExpYear || !cardCvc) {
         return res.status(400).json({ error: "All fields must be filled." });
     }
     try {
-        const payment = yield stripe.paymentMethods.create({
+        const payment = yield stripe_1.default.paymentMethods.create({
             type: "card",
             card: {
                 number: cardNumber,
@@ -396,7 +421,7 @@ const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 cvc: cardCvc,
             },
         });
-        const sendToInvoice = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const sendToInvoice = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 invoices: {
                     cardNumber: cardNumber,
@@ -406,18 +431,18 @@ const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     price: price,
                     currency: currency,
                     quantity: quantity,
-                    prevID: prevID
+                    prevID: prevID,
                 },
             },
         }, { new: true });
-        const remove = yield Buyer.findOneAndUpdate({ user_id: user_id }, {
+        const remove = yield buyerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 cart: {
-                    _id: new ObjectId(prevID),
+                    _id: new mongodb_1.ObjectId(prevID),
                 },
             },
         });
-        const sendToSellerInvoice = yield Seller.findOneAndUpdate({ business_name: business_name }, {
+        const sendToSellerInvoice = yield sellerModel_1.default.findOneAndUpdate({ business_name: business_name }, {
             $push: {
                 orders: {
                     from: from,
@@ -428,8 +453,8 @@ const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
                     currency: currency,
                     quantity: quantity,
                     address: address,
-                }
-            }
+                },
+            },
         });
         res.status(200).json({ valid: true });
     }
@@ -437,10 +462,11 @@ const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(400).json(error);
     }
 });
+exports.intitiatePayment = intitiatePayment;
 const generateBuyerInvoice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
-        const invoice = yield Buyer.findOne({ user_id: user_id });
+        const invoice = yield buyerModel_1.default.findOne({ user_id: user_id });
         const invoices = invoice.invoices;
         res.status(200).json(invoices);
     }
@@ -448,20 +474,22 @@ const generateBuyerInvoice = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.status(400).json(error);
     }
 });
+exports.generateBuyerInvoice = generateBuyerInvoice;
 const generateSellerInvoice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
-    const invoice = yield Seller.findOne({ user_id: user_id });
+    const invoice = yield sellerModel_1.default.findOne({ user_id: user_id });
     const invoices = invoice.orders;
     res.status(200).json(invoices);
 });
+exports.generateSellerInvoice = generateSellerInvoice;
 const shipProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     const { id } = req.params;
     try {
-        const ship = yield Seller.findOneAndUpdate({ user_id, 'orders.id': id }, {
+        const ship = yield sellerModel_1.default.findOneAndUpdate({ user_id, "orders.id": id }, {
             $set: {
-                'orders.$.shipped': true
-            }
+                "orders.$.shipped": true,
+            },
         }, { new: true });
         res.status(200).json(ship);
     }
@@ -469,28 +497,4 @@ const shipProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).json(error);
     }
 });
-module.exports = {
-    getAllProducts,
-    registerSeller,
-    registerBuyer,
-    getSingleProduct,
-    newProduct,
-    editProduct,
-    getProducts,
-    getProductById,
-    getImage,
-    deleteProducts,
-    addToCart,
-    getCartProducts,
-    getCartProduct,
-    removeFromCart,
-    addWishList,
-    getWishlistProducts,
-    getSingleWishListProduct,
-    removeWishList,
-    getOrders,
-    intitiatePayment,
-    generateBuyerInvoice,
-    generateSellerInvoice,
-    shipProduct
-};
+exports.shipProduct = shipProduct;

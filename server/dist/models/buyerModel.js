@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const buyerSchema = new mongoose.Schema({
     user_id: {
@@ -50,4 +51,4 @@ const buyerSchema = new mongoose.Schema({
         }
     ],
 });
-module.exports = mongoose.model("Buyer", buyerSchema);
+exports.default = mongoose.model("Buyer", buyerSchema);

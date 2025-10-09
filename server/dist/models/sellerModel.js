@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const sellerSchema = new mongoose.Schema({
     user_id: {
@@ -56,9 +57,9 @@ const sellerSchema = new mongoose.Schema({
             address: String,
             shipped: {
                 type: Boolean,
-                default: false
-            }
+                default: false,
+            },
         },
     ],
 }, { timestamps: true });
-module.exports = mongoose.model("Seller", sellerSchema);
+exports.default = mongoose.model("Seller", sellerSchema);

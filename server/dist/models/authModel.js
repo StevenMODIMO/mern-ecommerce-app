@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
@@ -53,4 +54,4 @@ userSchema.statics.login = function (email, password) {
         return user;
     });
 };
-module.exports = mongoose.model("Auth", userSchema);
+exports.default = mongoose.model("Auth", userSchema);

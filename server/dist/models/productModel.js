@@ -1,8 +1,9 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
     product_id: {
-        type: String
+        type: String,
     },
     from: {
         type: String,
@@ -40,4 +41,4 @@ const productSchema = new mongoose.Schema({
         type: String,
     },
 });
-module.exports = mongoose.model("Product", productSchema);
+exports.default = mongoose.model("Product", productSchema);

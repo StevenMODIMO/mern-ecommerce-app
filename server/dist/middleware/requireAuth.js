@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
 require("dotenv").config();
-const jwt = require("jsonwebtoken");
-const User = require("../models/authModel");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const authModel_1 = __importDefault(require("../models/authModel"));
 const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { authorization } = req.headers;
     if (!authorization) {
@@ -18,12 +22,12 @@ const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
     }
     const token = authorization.split(" ")[1];
     try {
-        const { _id } = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = yield User.findOne({ _id }).select("_id");
+        const { _id } = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        req.user = yield authModel_1.default.findOne({ _id }).select("_id");
         next();
     }
     catch (error) {
         res.status(400).json({ error: "Request is not authorized" });
     }
 });
-module.exports = requireAuth;
+exports.default = requireAuth;
