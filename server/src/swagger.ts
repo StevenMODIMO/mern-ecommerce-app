@@ -1,3 +1,4 @@
+import path from "path";
 import { Express } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
@@ -11,10 +12,7 @@ const options = {
       description: "API documentation for the Mern Store backend",
     },
     servers: [
-      {
-        url: "http://localhost:3000",
-        description: "Local Development server",
-      },
+      { url: "http://localhost:3000", description: "Local Development server" },
       {
         url: "https://mern-store-backend-kjd1.onrender.com",
         description: "Production server",
@@ -25,12 +23,12 @@ const options = {
         bearerAuth: {
           type: "http",
           scheme: "bearer",
-          bearerFormat: "JWT"
-        }
-      }
-    }
+          bearerFormat: "JWT",
+        },
+      },
+    },
   },
-  apis: ["./src/routes/*.ts"],
+  apis: [path.join(__dirname, "./routes/*.js")], // 👈 Fixed path
 };
 
 const swaggerSpec = swaggerJSDoc(options);

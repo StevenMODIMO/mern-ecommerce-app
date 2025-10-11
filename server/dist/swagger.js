@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupSwagger = void 0;
+const path_1 = __importDefault(require("path"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const options = {
@@ -15,10 +16,7 @@ const options = {
             description: "API documentation for the Mern Store backend",
         },
         servers: [
-            {
-                url: "http://localhost:3000",
-                description: "Local Development server",
-            },
+            { url: "http://localhost:3000", description: "Local Development server" },
             {
                 url: "https://mern-store-backend-kjd1.onrender.com",
                 description: "Production server",
@@ -29,12 +27,12 @@ const options = {
                 bearerAuth: {
                     type: "http",
                     scheme: "bearer",
-                    bearerFormat: "JWT"
-                }
-            }
-        }
+                    bearerFormat: "JWT",
+                },
+            },
+        },
     },
-    apis: ["./src/routes/*.ts"],
+    apis: [path_1.default.join(__dirname, "./routes/*.js")], // 👈 Fixed path
 };
 const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
 const setupSwagger = (app) => {
