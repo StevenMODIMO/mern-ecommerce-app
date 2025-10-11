@@ -8,33 +8,37 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const validator = require("validator");
-const userSchema = new mongoose.Schema({
+const mongoose_1 = __importDefault(require("mongoose"));
+const bcrypt_1 = require("bcrypt");
+const validator_1 = require("validator");
+const userSchema = new mongoose_1.default.Schema({
+    display_name: String,
     email: String,
     password: String,
-    role: { type: String, default: "None" },
+    role: String,
 });
 userSchema.statics.signup = function (email, password) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!email || !password) {
             throw Error("All fields must be filled");
         }
-        if (!validator.isEmail(email)) {
+        if (!(0, validator_1.isEmail)(email)) {
             throw Error("Invalid Email");
         }
-        if (!validator.isStrongPassword(password)) {
+        if (!(0, validator_1.isStrongPassword)(password)) {
             throw Error("Password must contain upper and lowercase letters, numbers and special characters");
         }
         const exists = yield this.findOne({ email });
         if (exists) {
             throw Error("User exists");
         }
-        const salt = yield bcrypt.genSalt(10);
-        const hash = yield bcrypt.hash(password, salt);
-        const user = yield this.create({ email, password: hash });
+        const salt = yield (0, bcrypt_1.genSalt)(10);
+        const hashed = yield (0, bcrypt_1.hash)(password, salt);
+        const user = yield this.create({ email, password: hashed });
         return user;
     });
 };
@@ -47,11 +51,11 @@ userSchema.statics.login = function (email, password) {
         if (!user) {
             throw Error("Incorrect email");
         }
-        const match = yield bcrypt.compare(password, user.password);
+        const match = yield (0, bcrypt_1.compare)(password, user.password);
         if (!match) {
             throw Error("Incorrect Password");
         }
         return user;
     });
 };
-exports.default = mongoose.model("Auth", userSchema);
+exports.default = mongoose_1.default.model("Auth", userSchema);

@@ -20,10 +20,19 @@ const options = {
                 description: "Local Development server",
             },
             {
-                url: "https://mern-ecommerce-rhpa.onrender.com",
+                url: "https://mern-store-backend-kjd1.onrender.com",
                 description: "Production server",
             },
         ],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: "http",
+                    scheme: "bearer",
+                    bearerFormat: "JWT"
+                }
+            }
+        }
     },
     apis: ["./src/routes/*.ts"],
 };

@@ -11,12 +11,6 @@ const router = (0, express_1.Router)();
  */
 /**
  * @swagger
- * tags:
- *   name: Products
- *   description: Product management and operations
- */
-/**
- * @swagger
  * /api/auth/signup:
  *   post:
  *     summary: Register a new user
@@ -77,6 +71,7 @@ router.post("/signup", authControllers_1.signupUser);
  *             required:
  *               - email
  *               - password
+ *               - role
  *             properties:
  *               email:
  *                 type: string
@@ -84,6 +79,9 @@ router.post("/signup", authControllers_1.signupUser);
  *               password:
  *                 type: string
  *                 example: "securePassword123"
+ *               role:
+ *                 type: string
+ *                 example: "Buyer | Seller | Both"
  *     responses:
  *       200:
  *         description: User logged in successfully.
@@ -106,7 +104,7 @@ router.post("/signup", authControllers_1.signupUser);
  *                       example: "user@example.com"
  *                     role:
  *                       type: string
- *                       example: "None"
+ *                       example: "Buyer | Seller | Both"
  *       400:
  *         description: Invalid email or password.
  *       500:
