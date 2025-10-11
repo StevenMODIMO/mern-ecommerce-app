@@ -1,24 +1,27 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
-const validator = require("validator");
+import mongoose from "mongoose";
+import { compare, genSalt, hash } from "bcrypt";
+import { isStrongPassword, isEmail } from "validator";
 
 const userSchema = new mongoose.Schema({
+  display_name: String,
   email: String,
   password: String,
-  role: { type: String, default: "None" },
+  role: String,
 });
 
-userSchema.statics.signup = async function (email, password) {
+userSchema.statics.signup = async function (email: string, password: string) {
   if (!email || !password) {
     throw Error("All fields must be filled");
   }
 
-  if (!validator.isEmail(email)) {
+  if (!isEmail(email)) {
     throw Error("Invalid Email");
   }
 
-  if (!validator.isStrongPassword(password)) {
-    throw Error("Password must contain upper and lowercase letters, numbers and special characters");
+  if (!isStrongPassword(password)) {
+    throw Error(
+      "Password must contain upper and lowercase letters, numbers and special characters"
+    );
   }
 
   const exists = await this.findOne({ email });
@@ -27,10 +30,10 @@ userSchema.statics.signup = async function (email, password) {
     throw Error("User exists");
   }
 
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(password, salt);
+  const salt = await genSalt(10);
+  const hashed = await hash(password, salt);
 
-  const user = await this.create({ email, password: hash });
+  const user = await this.create({ email, password: hashed });
   return user;
 };
 
@@ -45,7 +48,7 @@ userSchema.statics.login = async function (email, password) {
     throw Error("Incorrect email");
   }
 
-  const match = await bcrypt.compare(password, user.password);
+  const match = await compare(password, user.password);
 
   if (!match) {
     throw Error("Incorrect Password");
