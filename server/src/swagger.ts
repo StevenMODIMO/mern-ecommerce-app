@@ -1,7 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
 import path from "path";
 import { Express } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUI from "swagger-ui-express";
+
+const env = (process.env.NODE_ENV as string) || "development";
 
 const options = {
   definition: {
@@ -28,7 +32,12 @@ const options = {
       },
     },
   },
-  apis: [path.join(__dirname, "./routes/*.js")], // 👈 Fixed path
+  apis: [
+    path.join(
+      __dirname,
+      `${env === "development" ? "./routes/*.ts" : "./routes/*.js"}`
+    ),
+  ],
 };
 
 const swaggerSpec = swaggerJSDoc(options);

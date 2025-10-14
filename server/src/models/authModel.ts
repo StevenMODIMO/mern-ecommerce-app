@@ -6,7 +6,22 @@ const userSchema = new mongoose.Schema({
   display_name: String,
   email: String,
   password: String,
-  role: String,
+  role: {
+    type: String,
+    enum: ["buyer", "seller", "merchant"],
+    default: "buyer",
+  },
+  cart: [
+    {
+      from: String,
+      imagePath: String,
+      product_name: String,
+      description: String,
+      price: Number,
+      currency: String,
+      quantity: Number,
+    },
+  ],
 });
 
 userSchema.statics.signup = async function (email: string, password: string) {
