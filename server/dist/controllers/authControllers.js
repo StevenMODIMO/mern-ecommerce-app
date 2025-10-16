@@ -12,13 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.signupUser = void 0;
+exports.loginUser = exports.signupUser = void 0;
 const authModel_1 = __importDefault(require("../models/authModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const blob_1 = require("@vercel/blob");
 const createToken = (_id) => {
     return jsonwebtoken_1.default.sign({ _id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
+        expiresIn: "10d",
     });
 };
 const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -36,12 +36,23 @@ const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             avatar_url = url;
         }
         const user = yield authModel_1.default.signup(email, password, display_name, avatar_url || "");
-        // const token = createToken(user._id);
-        // const user_role = user.role;
-        res.status(201).json(user);
+        const token = createToken(user._id);
+        res.status(201).json(Object.assign(Object.assign({}, user.toObject()), { token }));
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 exports.signupUser = signupUser;
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email, password } = req.body;
+    try {
+        const user = yield authModel_1.default.login(email, password);
+        const token = createToken(user._id);
+        res.status(200).json(Object.assign(Object.assign({}, user.toObject()), { token }));
+    }
+    catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+exports.loginUser = loginUser;

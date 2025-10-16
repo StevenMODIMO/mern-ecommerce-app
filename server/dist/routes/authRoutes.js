@@ -41,7 +41,6 @@ const express_1 = __importStar(require("express"));
 const multer_1 = __importDefault(require("multer"));
 const storage = multer_1.default.memoryStorage();
 const upload = (0, multer_1.default)({ storage });
-const app = (0, express_1.default)();
 const router = (0, express_1.Router)();
 /**
  * @swagger
@@ -122,7 +121,6 @@ router.post("/signup", upload.single("avatar"), authControllers_1.signupUser);
  *             required:
  *               - email
  *               - password
- *               - role
  *             properties:
  *               email:
  *                 type: string
@@ -130,9 +128,6 @@ router.post("/signup", upload.single("avatar"), authControllers_1.signupUser);
  *               password:
  *                 type: string
  *                 example: "securePassword123"
- *               role:
- *                 type: string
- *                 example: "Buyer | Seller | Both"
  *     responses:
  *       200:
  *         description: User logged in successfully.
@@ -153,14 +148,10 @@ router.post("/signup", upload.single("avatar"), authControllers_1.signupUser);
  *                     email:
  *                       type: string
  *                       example: "user@example.com"
- *                     role:
- *                       type: string
- *                       example: "Buyer | Seller | Both"
  *       400:
  *         description: Invalid email or password.
  *       500:
  *         description: Server error.
  */
-// app.use(express.json());
-// router.post("/login", loginUser);
+router.post("/login", express_1.default.json(), authControllers_1.loginUser);
 exports.default = router;
