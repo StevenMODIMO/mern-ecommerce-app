@@ -153,5 +153,71 @@ router.post("/signup", upload.single("avatar"), authControllers_1.signupUser);
  *       500:
  *         description: Server error.
  */
+/**
+ * @swagger
+ * /api/auth/complete-account:
+ *   post:
+ *     summary: Complete user account creation
+ *     description: Update a user's account with required fields like role, and optional seller-specific fields. Marks the account as completed.
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - role
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "user@example.com"
+ *                 description: "The email of the user to complete."
+ *               role:
+ *                 type: string
+ *                 enum: ["buyer", "seller"]
+ *                 example: "seller"
+ *                 description: "The role to assign to the user."
+ *     responses:
+ *       200:
+ *         description: Account completed successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Account completed successfully"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "66fcd3d97b12a2034a0fbc23"
+ *                     email:
+ *                       type: string
+ *                       example: "user@example.com"
+ *                     role:
+ *                       type: string
+ *                       example: "seller"
+ *                     account_completed:
+ *                       type: boolean
+ *                       example: true
+ *                     business_name:
+ *                       type: string
+ *                       example: "Tech Supplies Ltd"
+ *                     business_description:
+ *                       type: string
+ *                       example: "Supplier of tech gadgets."
+ *       400:
+ *         description: Missing required fields or invalid input.
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Server error.
+ */
+router.post("/complete-account", express_1.default.json(), authControllers_1.completeAccountCreation);
 router.post("/login", express_1.default.json(), authControllers_1.loginUser);
 exports.default = router;

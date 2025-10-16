@@ -70,7 +70,7 @@ userSchema.statics.login = function (email, password) {
             throw Error("Incorrect email");
         const match = yield (0, bcrypt_1.compare)(password, user.password);
         if (!match)
-            throw Error("Incorrect Password");
+            throw Error("Incorrect Password, reset password ?");
         return user;
     });
 };
