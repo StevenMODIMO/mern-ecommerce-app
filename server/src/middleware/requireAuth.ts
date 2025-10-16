@@ -1,6 +1,6 @@
 require("dotenv").config();
 import jwt from "jsonwebtoken";
-import User from "../models/AuthModel";
+import User from "../models/authModel";
 import { NextFunction, type Request, type Response } from "express";
 
 const requireAuth = async (req: Request, res: Response, next: NextFunction) => {

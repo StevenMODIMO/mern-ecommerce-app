@@ -3,7 +3,7 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
-import authRoutes from "./routes/AuthRoutes";
+import authRoutes from "./routes/authRoutes";
 import appRoutes from "./routes/appRoutes";
 import path from "path";
 import { setupSwagger } from "./swagger";

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.shipProduct = exports.generateSellerInvoice = exports.generateBuyerInvoice = exports.intitiatePayment = exports.getOrders = exports.removeWishList = exports.getSingleWishListProduct = exports.getWishlistProducts = exports.addWishList = exports.removeFromCart = exports.getCartProduct = exports.getCartProducts = exports.addToCart = exports.deleteProducts = exports.getImage = exports.getProductById = exports.getProducts = exports.editProduct = exports.newProduct = exports.getSingleProduct = exports.registerBuyer = exports.registerSeller = exports.getAllProducts = void 0;
 require("dotenv").config();
-const sellerModel_1 = __importDefault(require("../models/sellerModel"));
+const businessModel_1 = __importDefault(require("../models/businessModel"));
 const buyerModel_1 = __importDefault(require("../models/buyerModel"));
 const productModel_1 = __importDefault(require("../models/productModel"));
 const authModel_1 = __importDefault(require("../models/authModel"));
@@ -40,13 +40,13 @@ const registerSeller = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!business_name || !address) {
         return res.status(400).json({ error: "All fields must be filled." });
     }
-    const exists = yield sellerModel_1.default.findOne({ business_name });
+    const exists = yield businessModel_1.default.findOne({ business_name });
     if (exists) {
         return res.status(400).json({ error: "Name already taken" });
     }
     try {
         const updateUser = yield authModel_1.default.findOneAndUpdate({ _id: user_id }, { role: "Seller" }, { new: true });
-        const newSeller = yield sellerModel_1.default.create({
+        const newSeller = yield businessModel_1.default.create({
             user_id: user_id,
             business_name: business_name,
             address: address,
@@ -81,7 +81,7 @@ const newProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             currency: currency,
             category: category,
         };
-        const newProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
+        const newProduct = yield businessModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 products: newItem,
             },
@@ -124,7 +124,7 @@ const editProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     const imagePath = path.normalize(req.file.path).replace(/\\/g, "/");
     try {
-        const editedProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
+        const editedProduct = yield businessModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $push: {
                 products: {
                     imagePath: imagePath,
@@ -147,7 +147,7 @@ exports.editProduct = editProduct;
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
     try {
-        const products = yield sellerModel_1.default.findOne({ user_id });
+        const products = yield businessModel_1.default.findOne({ user_id });
         res.status(200).json(products.products);
     }
     catch (error) {
@@ -159,7 +159,7 @@ const getProductById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const user_id = req.user;
     try {
         const { id } = req.params;
-        const updated = yield sellerModel_1.default.findOne({ user_id: user_id });
+        const updated = yield businessModel_1.default.findOne({ user_id: user_id });
         updated.products.filter((product) => {
             if (product._id == id) {
                 res.status(200).json(product);
@@ -185,7 +185,7 @@ const deleteProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const { id } = req.params;
     const user_id = req.user;
     try {
-        const deletedProduct = yield sellerModel_1.default.findOneAndUpdate({ user_id: user_id }, {
+        const deletedProduct = yield businessModel_1.default.findOneAndUpdate({ user_id: user_id }, {
             $pull: {
                 products: {
                     _id: id,
@@ -263,7 +263,7 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 },
             },
         });
-        const rateToSeller = yield sellerModel_1.default.findOneAndUpdate({ business_name: business_name }, {
+        const rateToSeller = yield businessModel_1.default.findOneAndUpdate({ business_name: business_name }, {
             $push: {
                 rates: {
                     product_id: product_id,
@@ -442,7 +442,7 @@ const intitiatePayment = (req, res) => __awaiter(void 0, void 0, void 0, functio
                 },
             },
         });
-        const sendToSellerInvoice = yield sellerModel_1.default.findOneAndUpdate({ business_name: business_name }, {
+        const sendToSellerInvoice = yield businessModel_1.default.findOneAndUpdate({ business_name: business_name }, {
             $push: {
                 orders: {
                     from: from,
@@ -477,7 +477,7 @@ const generateBuyerInvoice = (req, res) => __awaiter(void 0, void 0, void 0, fun
 exports.generateBuyerInvoice = generateBuyerInvoice;
 const generateSellerInvoice = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user_id = req.user;
-    const invoice = yield sellerModel_1.default.findOne({ user_id: user_id });
+    const invoice = yield businessModel_1.default.findOne({ user_id: user_id });
     const invoices = invoice.orders;
     res.status(200).json(invoices);
 });
@@ -486,7 +486,7 @@ const shipProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const user_id = req.user;
     const { id } = req.params;
     try {
-        const ship = yield sellerModel_1.default.findOneAndUpdate({ user_id, "orders.id": id }, {
+        const ship = yield businessModel_1.default.findOneAndUpdate({ user_id, "orders.id": id }, {
             $set: {
                 "orders.$.shipped": true,
             },

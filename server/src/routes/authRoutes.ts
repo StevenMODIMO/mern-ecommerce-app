@@ -1,4 +1,7 @@
-import { signupUser, loginUser } from "../controllers/AuthControllers";
+import {
+  signupUser,
+  //loginUser
+} from "../controllers/authControllers";
 import express, { Router } from "express";
 import multer from "multer";
 
@@ -131,7 +134,7 @@ router.post("/signup", upload.single("avatar"), signupUser);
  *         description: Server error.
  */
 
-app.use(express.json());
-router.post("/login", loginUser);
+// app.use(express.json());
+// router.post("/login", loginUser);
 
 export default router;

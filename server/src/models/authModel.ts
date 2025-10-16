@@ -16,9 +16,9 @@ interface IUser extends Document {
   display_name?: string;
   email: string;
   password: string;
-  avatar: string;
-  role: "buyer" | "seller" | "merchant";
-  //cart: ICartItem[];
+  avatar_url: string;
+  account_completed: boolean;
+  role: string;
 }
 
 interface IUserModel extends Model<IUser> {
@@ -26,7 +26,7 @@ interface IUserModel extends Model<IUser> {
     display_name: string,
     email: string,
     password: string,
-    role: string
+    avatar_url: string
   ): Promise<IUser>;
   login(email: string, password: string): Promise<IUser>;
 }
@@ -35,7 +35,9 @@ const userSchema = new mongoose.Schema<IUser>({
   display_name: String,
   email: String,
   password: String,
-  // avatar: String,
+  avatar_url: String,
+  account_completed: { type: Boolean, default: false },
+  role: { type: String, default: "not-set" },
   // role: {
   //   type: String,
   //   enum: ["buyer", "seller", "merchant"],
@@ -57,10 +59,11 @@ const userSchema = new mongoose.Schema<IUser>({
 userSchema.statics.signup = async function (
   email: string,
   password: string,
-  display_name: string
-  //role: string
+  display_name: string,
+  avatar_url: string
 ) {
-  if (!email || !password) throw Error("All fields must be filled");
+  if (!email || !password || !display_name)
+    throw Error("All fields must be filled");
   if (!isEmail(email)) throw Error("Invalid Email");
   if (!isStrongPassword(password))
     throw Error(
@@ -77,7 +80,7 @@ userSchema.statics.signup = async function (
     email,
     password: hashed,
     display_name,
-    //role,
+    avatar_url,
   });
   return user;
 };

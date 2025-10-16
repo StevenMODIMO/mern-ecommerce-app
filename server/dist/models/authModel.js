@@ -19,26 +19,29 @@ const userSchema = new mongoose_1.default.Schema({
     display_name: String,
     email: String,
     password: String,
-    role: {
-        type: String,
-        enum: ["buyer", "seller", "merchant"],
-        default: "buyer",
-    },
-    cart: [
-        {
-            from: String,
-            imagePath: String,
-            product_name: String,
-            description: String,
-            price: Number,
-            currency: String,
-            quantity: Number,
-        },
-    ],
+    avatar_url: String,
+    account_completed: { type: Boolean, default: false },
+    role: { type: String, default: "not-set" },
+    // role: {
+    //   type: String,
+    //   enum: ["buyer", "seller", "merchant"],
+    //   default: "buyer",
+    // },
+    // cart: [
+    //   {
+    //     from: String,
+    //     imagePath: String,
+    //     product_name: String,
+    //     description: String,
+    //     price: Number,
+    //     currency: String,
+    //     quantity: Number,
+    //   },
+    // ],
 });
-userSchema.statics.signup = function (display_name, email, password, role) {
+userSchema.statics.signup = function (email, password, display_name, avatar_url) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!email || !password)
+        if (!email || !password || !display_name)
             throw Error("All fields must be filled");
         if (!(0, validator_1.isEmail)(email))
             throw Error("Invalid Email");
@@ -53,7 +56,7 @@ userSchema.statics.signup = function (display_name, email, password, role) {
             email,
             password: hashed,
             display_name,
-            role,
+            avatar_url,
         });
         return user;
     });

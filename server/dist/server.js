@@ -22,7 +22,6 @@ const appRoutes_1 = __importDefault(require("./routes/appRoutes"));
 const path_1 = __importDefault(require("path"));
 const swagger_1 = require("./swagger");
 app.use((0, cors_1.default)());
-app.use(express_1.default.json());
 app.use((req, res, next) => {
     console.log(req.method, req.path);
     next();

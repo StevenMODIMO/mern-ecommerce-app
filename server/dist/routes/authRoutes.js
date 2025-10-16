@@ -1,7 +1,47 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const authControllers_1 = require("../controllers/authControllers");
-const express_1 = require("express");
+const express_1 = __importStar(require("express"));
+const multer_1 = __importDefault(require("multer"));
+const storage = multer_1.default.memoryStorage();
+const upload = (0, multer_1.default)({ storage });
+const app = (0, express_1.default)();
 const router = (0, express_1.Router)();
 /**
  * @swagger
@@ -14,24 +54,35 @@ const router = (0, express_1.Router)();
  * /api/auth/signup:
  *   post:
  *     summary: Register a new user
- *     description: Create a new user account using an email and password.
+ *     description: Create a new user account using email, password, and display name.
  *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
  *               - email
  *               - password
+ *               - display_name
  *             properties:
  *               email:
  *                 type: string
- *                 example: "user@example.com"
+ *                 example: "johndoe@email.com"
+ *                 description: "Must be a valid email address."
  *               password:
  *                 type: string
- *                 example: "securePassword123"
+ *                 example: "johndoe.1234!!"
+ *                 description: "Must be at least 8 characters long and include uppercase, lowercase, number, and special character."
+ *               display_name:
+ *                 type: string
+ *                 example: "John Doe"
+ *                 description: "User's display name."
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *                 description: Optional user avatar image file.
  *     responses:
  *       201:
  *         description: User registered successfully.
@@ -48,13 +99,13 @@ const router = (0, express_1.Router)();
  *                   example: "user@example.com"
  *                 role:
  *                   type: string
- *                   example: "None"
+ *                   example: "buyer"
  *       400:
  *         description: Missing or invalid credentials.
  *       500:
  *         description: Server error.
  */
-router.post("/signup", authControllers_1.signupUser);
+router.post("/signup", upload.single("avatar"), authControllers_1.signupUser);
 /**
  * @swagger
  * /api/auth/login:
@@ -110,5 +161,6 @@ router.post("/signup", authControllers_1.signupUser);
  *       500:
  *         description: Server error.
  */
-router.post("/login", authControllers_1.loginUser);
+// app.use(express.json());
+// router.post("/login", loginUser);
 exports.default = router;

@@ -12,38 +12,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.signupUser = void 0;
+exports.signupUser = void 0;
 const authModel_1 = __importDefault(require("../models/authModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const blob_1 = require("@vercel/blob");
 const createToken = (_id) => {
     return jsonwebtoken_1.default.sign({ _id }, process.env.JWT_SECRET, {
         expiresIn: "30d",
     });
 };
 const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password, display_name, role } = req.body;
+    const { email, password, display_name } = req.body;
+    const avatar = req.file;
+    let avatar_url;
     try {
-        const user = yield authModel_1.default.signup(email, password, display_name, role);
-        const token = createToken(user._id);
-        const user_role = user.role;
-        res.status(200).json({ email, token, user_role });
+        const avatarContent = avatar && avatar.buffer;
+        if (avatar) {
+            const { url } = yield (0, blob_1.put)(`cdn.mern-store/${avatar === null || avatar === void 0 ? void 0 : avatar.originalname}`, avatarContent, {
+                access: "public",
+                contentType: avatar === null || avatar === void 0 ? void 0 : avatar.mimetype,
+                allowOverwrite: true,
+            });
+            avatar_url = url;
+        }
+        const user = yield authModel_1.default.signup(email, password, display_name, avatar_url || "");
+        // const token = createToken(user._id);
+        // const user_role = user.role;
+        res.status(201).json(user);
     }
     catch (error) {
-        res.status(400).json({ error: error });
+        res.status(400).json({ error: error.message });
     }
 });
 exports.signupUser = signupUser;
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
-    try {
-        const user = yield authModel_1.default.login(email, password);
-        const token = createToken(user._id);
-        const role = user.role;
-        const name = user.display_name;
-        res.status(200).json({ email, token, role, name });
-    }
-    catch (error) {
-        res.status(400).json({ error: error === null || error === void 0 ? void 0 : error.message });
-    }
-});
-exports.loginUser = loginUser;
