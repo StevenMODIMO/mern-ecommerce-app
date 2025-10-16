@@ -35,12 +35,12 @@ const userSchema = new mongoose.Schema<IUser>({
   display_name: String,
   email: String,
   password: String,
-  avatar: String,
-  role: {
-    type: String,
-    enum: ["buyer", "seller", "merchant"],
-    default: "buyer",
-  },
+  // avatar: String,
+  // role: {
+  //   type: String,
+  //   enum: ["buyer", "seller", "merchant"],
+  //   default: "buyer",
+  // },
   // cart: [
   //   {
   //     from: String,
@@ -55,10 +55,10 @@ const userSchema = new mongoose.Schema<IUser>({
 });
 
 userSchema.statics.signup = async function (
-  display_name: string,
   email: string,
   password: string,
-  role: string
+  display_name: string
+  //role: string
 ) {
   if (!email || !password) throw Error("All fields must be filled");
   if (!isEmail(email)) throw Error("Invalid Email");
@@ -77,7 +77,7 @@ userSchema.statics.signup = async function (
     email,
     password: hashed,
     display_name,
-    role,
+    //role,
   });
   return user;
 };

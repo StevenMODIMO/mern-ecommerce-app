@@ -1,5 +1,11 @@
-import { signupUser, loginUser } from "../controllers/authControllers";
-import { Router } from "express";
+import { signupUser, loginUser } from "../controllers/AuthControllers";
+import express, { Router } from "express";
+import multer from "multer";
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+
+const app = express();
 
 const router = Router();
 
@@ -15,24 +21,35 @@ const router = Router();
  * /api/auth/signup:
  *   post:
  *     summary: Register a new user
- *     description: Create a new user account using an email and password.
+ *     description: Create a new user account using email, password, and display name.
  *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             required:
  *               - email
  *               - password
+ *               - display_name
  *             properties:
  *               email:
  *                 type: string
- *                 example: "user@example.com"
+ *                 example: "johndoe@email.com"
+ *                 description: "Must be a valid email address."
  *               password:
  *                 type: string
- *                 example: "securePassword123"
+ *                 example: "johndoe.1234!!"
+ *                 description: "Must be at least 8 characters long and include uppercase, lowercase, number, and special character."
+ *               display_name:
+ *                 type: string
+ *                 example: "John Doe"
+ *                 description: "User's display name."
+ *               avatar:
+ *                 type: string
+ *                 format: binary
+ *                 description: Optional user avatar image file.
  *     responses:
  *       201:
  *         description: User registered successfully.
@@ -49,13 +66,14 @@ const router = Router();
  *                   example: "user@example.com"
  *                 role:
  *                   type: string
- *                   example: "None"
+ *                   example: "buyer"
  *       400:
  *         description: Missing or invalid credentials.
  *       500:
  *         description: Server error.
  */
-router.post("/signup", signupUser);
+
+router.post("/signup", upload.single("avatar"), signupUser);
 
 /**
  * @swagger
@@ -112,6 +130,8 @@ router.post("/signup", signupUser);
  *       500:
  *         description: Server error.
  */
+
+app.use(express.json());
 router.post("/login", loginUser);
 
 export default router;

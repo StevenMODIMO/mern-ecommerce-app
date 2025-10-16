@@ -1,6 +1,7 @@
 import Auth from "../models/authModel";
 import jwt from "jsonwebtoken";
 import { type Request, type Response } from "express";
+import { put } from "@vercel/blob";
 
 const createToken = (_id: string) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET as string, {
@@ -9,14 +10,16 @@ const createToken = (_id: string) => {
 };
 
 const signupUser = async (req: Request, res: Response) => {
-  const { email, password, display_name, role } = req.body;
+  const { email, password, display_name } = req.body;
+  const avatar = req.file;
   try {
-    const user = await Auth.signup(email, password, display_name, role);
-    const token = createToken(user._id);
-    const user_role = user.role;
-    res.status(200).json({ email, token, user_role });
+    const fileName = avatar ? avatar.originalname : null;
+    // const user = await Auth.signup(email, password, display_name, role);
+    // const token = createToken(user._id);
+    // const user_role = user.role;
+    res.status(200).json({ email, password, display_name, avatar: fileName });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error: error.message });
   }
 };
 

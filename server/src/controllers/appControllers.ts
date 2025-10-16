@@ -2,7 +2,7 @@ require("dotenv").config();
 import Seller from "../models/sellerModel";
 import Buyer from "../models/buyerModel";
 import Product from "../models/productModel";
-import User from "../models/authModel";
+import User from "../models/AuthModel";
 import mongoose from "mongoose";
 import stripe from "stripe";
 import path = require("path");

@@ -3,13 +3,12 @@ import express from "express";
 const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
-import authRoutes from "./routes/authRoutes";
+import authRoutes from "./routes/AuthRoutes";
 import appRoutes from "./routes/appRoutes";
 import path from "path";
 import { setupSwagger } from "./swagger";
 
 app.use(cors());
-app.use(express.json());
 
 app.use((req, res, next) => {
   console.log(req.method, req.path);
