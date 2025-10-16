@@ -92,7 +92,7 @@ userSchema.statics.login = async function (email: string, password: string) {
   if (!user) throw Error("Incorrect email");
 
   const match = await compare(password, user.password);
-  if (!match) throw Error("Incorrect Password");
+  if (!match) throw Error("Incorrect Password, reset password ?");
 
   return user;
 };
