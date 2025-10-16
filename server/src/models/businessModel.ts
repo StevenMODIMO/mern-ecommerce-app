@@ -9,3 +9,16 @@ const businessSchema = new mongoose.Schema({
   description: String,
   phone: String,
 });
+
+businessSchema.statics.createBusiness = async function (
+  name,
+  address,
+  merchant_email,
+  thumbnail,
+  logo_url,
+  description,
+  phone
+) {
+  if (!name || !address || description || !phone)
+    throw Error("All fields must be filled.");
+};

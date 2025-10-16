@@ -1,14 +1,9 @@
-import {
-  signupUser,
-  //loginUser
-} from "../controllers/authControllers";
+import { signupUser, loginUser } from "../controllers/authControllers";
 import express, { Router } from "express";
 import multer from "multer";
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
-
-const app = express();
 
 const router = Router();
 
@@ -94,7 +89,6 @@ router.post("/signup", upload.single("avatar"), signupUser);
  *             required:
  *               - email
  *               - password
- *               - role
  *             properties:
  *               email:
  *                 type: string
@@ -102,9 +96,6 @@ router.post("/signup", upload.single("avatar"), signupUser);
  *               password:
  *                 type: string
  *                 example: "securePassword123"
- *               role:
- *                 type: string
- *                 example: "Buyer | Seller | Both"
  *     responses:
  *       200:
  *         description: User logged in successfully.
@@ -125,16 +116,12 @@ router.post("/signup", upload.single("avatar"), signupUser);
  *                     email:
  *                       type: string
  *                       example: "user@example.com"
- *                     role:
- *                       type: string
- *                       example: "Buyer | Seller | Both"
  *       400:
  *         description: Invalid email or password.
  *       500:
  *         description: Server error.
  */
 
-// app.use(express.json());
-// router.post("/login", loginUser);
+router.post("/login", express.json(), loginUser);
 
 export default router;

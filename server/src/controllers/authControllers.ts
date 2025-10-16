@@ -5,7 +5,7 @@ import { put } from "@vercel/blob";
 
 const createToken = (_id: string) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET as string, {
-    expiresIn: "30d",
+    expiresIn: "10d",
   });
 };
 
@@ -34,28 +34,22 @@ const signupUser = async (req: Request, res: Response) => {
       display_name,
       avatar_url || ""
     );
-    // const token = createToken(user._id);
-    // const user_role = user.role;
-    res.status(201).json(user);
+    const token = createToken(user._id);
+    res.status(201).json({ ...user.toObject(), token });
   } catch (error: any) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// const loginUser = async (req: Request, res: Response) => {
-//   const { email, password } = req.body;
-//   try {
-//     const user = await Auth.login(email, password);
-//     const token = createToken(user._id);
-//     const role = user.role;
-//     const name = user.display_name;
-//     res.status(200).json({ email, token, role, name });
-//   } catch (error) {
-//     res.status(400).json({ error: error?.message });
-//   }
-// };
-
-export {
-  signupUser,
-  //loginUser
+const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  try {
+    const user = await Auth.login(email, password);
+    const token = createToken(user._id);
+    res.status(200).json({ ...user.toObject(), token });
+  } catch (error: any) {
+    res.status(400).json({ error: error.message });
+  }
 };
+
+export { signupUser, loginUser };
