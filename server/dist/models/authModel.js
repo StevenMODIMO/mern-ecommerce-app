@@ -19,42 +19,55 @@ const userSchema = new mongoose_1.default.Schema({
     display_name: String,
     email: String,
     password: String,
-    role: String,
+    role: {
+        type: String,
+        enum: ["buyer", "seller", "merchant"],
+        default: "buyer",
+    },
+    cart: [
+        {
+            from: String,
+            imagePath: String,
+            product_name: String,
+            description: String,
+            price: Number,
+            currency: String,
+            quantity: Number,
+        },
+    ],
 });
-userSchema.statics.signup = function (email, password) {
+userSchema.statics.signup = function (display_name, email, password, role) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!email || !password) {
+        if (!email || !password)
             throw Error("All fields must be filled");
-        }
-        if (!(0, validator_1.isEmail)(email)) {
+        if (!(0, validator_1.isEmail)(email))
             throw Error("Invalid Email");
-        }
-        if (!(0, validator_1.isStrongPassword)(password)) {
+        if (!(0, validator_1.isStrongPassword)(password))
             throw Error("Password must contain upper and lowercase letters, numbers and special characters");
-        }
         const exists = yield this.findOne({ email });
-        if (exists) {
+        if (exists)
             throw Error("User exists");
-        }
         const salt = yield (0, bcrypt_1.genSalt)(10);
         const hashed = yield (0, bcrypt_1.hash)(password, salt);
-        const user = yield this.create({ email, password: hashed });
+        const user = yield this.create({
+            email,
+            password: hashed,
+            display_name,
+            role,
+        });
         return user;
     });
 };
 userSchema.statics.login = function (email, password) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!email || !password) {
+        if (!email || !password)
             throw Error("All fields must be filled");
-        }
         const user = yield this.findOne({ email });
-        if (!user) {
+        if (!user)
             throw Error("Incorrect email");
-        }
         const match = yield (0, bcrypt_1.compare)(password, user.password);
-        if (!match) {
+        if (!match)
             throw Error("Incorrect Password");
-        }
         return user;
     });
 };

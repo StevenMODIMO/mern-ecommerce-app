@@ -21,15 +21,15 @@ const createToken = (_id) => {
     });
 };
 const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { email, password, display_name, role } = req.body;
     try {
-        const user = yield authModel_1.default.signup(email, password);
+        const user = yield authModel_1.default.signup(email, password, display_name, role);
         const token = createToken(user._id);
-        const role = user.role;
-        res.status(200).json({ email, token, role });
+        const user_role = user.role;
+        res.status(200).json({ email, token, user_role });
     }
     catch (error) {
-        res.status(400).json({ error: error === null || error === void 0 ? void 0 : error.message });
+        res.status(400).json({ error: error });
     }
 });
 exports.signupUser = signupUser;
@@ -39,7 +39,7 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const user = yield authModel_1.default.login(email, password);
         const token = createToken(user._id);
         const role = user.role;
-        const name = user.username;
+        const name = user.display_name;
         res.status(200).json({ email, token, role, name });
     }
     catch (error) {

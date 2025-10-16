@@ -4,9 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.setupSwagger = void 0;
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const path_1 = __importDefault(require("path"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const env = process.env.NODE_ENV || "development";
 const options = {
     definition: {
         openapi: "3.0.0",
@@ -32,7 +35,9 @@ const options = {
             },
         },
     },
-    apis: [path_1.default.join(__dirname, "./routes/*.js")], // 👈 Fixed path
+    apis: [
+        path_1.default.join(__dirname, `${env === "development" ? "./routes/*.ts" : "./routes/*.js"}`),
+    ],
 };
 const swaggerSpec = (0, swagger_jsdoc_1.default)(options);
 const setupSwagger = (app) => {
