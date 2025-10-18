@@ -9,6 +9,17 @@ const createToken = (_id: string) => {
   });
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await Auth.find();
+    return res
+      .status(200)
+      .json({ ...users, message: "Users returned successfully" });
+  } catch (error: any) {
+    res.status(400).json(error);
+  }
+};
+
 const signupUser = async (req: Request, res: Response) => {
   const { email, password, display_name } = req.body;
   const avatar = req.file;
@@ -70,12 +81,13 @@ const completeAccountCreation = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json({ message: "Account completed", user: updatedUser.toObject() });
+    res
+      .status(200)
+      .json({ message: "Account completed", user: updatedUser.toObject() });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
@@ -95,4 +107,4 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export { signupUser, completeAccountCreation, loginUser };
+export { getAllUsers, signupUser, completeAccountCreation, loginUser };

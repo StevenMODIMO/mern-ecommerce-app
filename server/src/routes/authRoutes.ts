@@ -1,4 +1,5 @@
 import {
+  getAllUsers,
   signupUser,
   completeAccountCreation,
   loginUser,
@@ -17,6 +18,39 @@ const router = Router();
  *   name: Users
  *   description: Authentication and user management
  */
+
+/**
+ * @swagger
+ * /api/auth/users:
+ *   get:
+ *     summary: Retrieve all users
+ *     description: Fetch a list of all registered users.
+ *     tags: [Users]
+ *     responses:
+ *       200:
+ *         description: A list of users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     example: "66fcd3d97b12a2034a0fbc23"
+ *                   email:
+ *                     type: string
+ *                     example: "user@example.com"
+ *                   display_name:
+ *                     type: string
+ *                     example: "John Doe"
+ *                   avatar_url:
+ *                     type: string
+ *                     example: "https://example.com/avatar.jpg"
+ */
+
+router.get("/users", getAllUsers);
 
 /**
  * @swagger
