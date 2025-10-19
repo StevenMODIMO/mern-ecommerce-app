@@ -20,6 +20,20 @@ const getAllUsers = async (req: Request, res: Response) => {
   }
 };
 
+const getUser = async (req: Request, res: Response) => {
+  const { email } = req.params;
+  try {
+    const user = await Auth.findOne({ email });
+    if (!user)
+      return res
+        .status(400)
+        .json({ message: `User with email: ${email} not found` });
+    res.status(200).json(user);
+  } catch (error: any) {
+    res.status(400).json(error);
+  }
+};
+
 const signupUser = async (req: Request, res: Response) => {
   const { email, password, display_name } = req.body;
   const avatar = req.file;
@@ -107,4 +121,4 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-export { getAllUsers, signupUser, completeAccountCreation, loginUser };
+export { getAllUsers, getUser, signupUser, completeAccountCreation, loginUser };

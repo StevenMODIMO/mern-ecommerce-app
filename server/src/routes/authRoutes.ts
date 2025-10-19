@@ -1,5 +1,6 @@
 import {
   getAllUsers,
+  getUser,
   signupUser,
   completeAccountCreation,
   loginUser,
@@ -51,6 +52,79 @@ const router = Router();
  */
 
 router.get("/users", getAllUsers);
+
+/**
+ * @swagger
+ * /api/auth/{email}:
+ *   get:
+ *     summary: Retrieve a single user by email
+ *     description: Fetch details of a specific user using their unique identifier.
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         schema:
+ *           type: string
+ *           example: johndoe@email.com
+ *         description: User email for query
+ *     responses:
+ *       200:
+ *         description: Successfully returned user by email
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 68f1099a0e465b6908ef4d0c
+ *                 display_name:
+ *                   type: string
+ *                   example: John Doe
+ *                 email:
+ *                   type: string
+ *                   example: johndoes@email.com
+ *                 password:
+ *                   type: string
+ *                   example: Sf7ChEVMl2PKSVyF8l8UuuQtWjfMbyw2eIoJi1g11hCnCO5fHvuPS
+ *                 avatar_url:
+ *                   type: string
+ *                   example: https://t0mrrn6uzcxdc7gp.public.blob.vercel-storage.com/cdn.mern-store/istockphoto-1193297271-612x612.jpg
+ *                 account_completed:
+ *                   type: boolean
+ *                   enum: [true, false]
+ *                   example: true
+ *                 role:
+ *                   type: string
+ *                   enum: ["seller", "buyer"]
+ *                   example: "seller"
+ *       400:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User with email {email} not found
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: false
+ *                 message:
+ *                   type: string
+ *                   example: Internal server error
+ */
+
+router.get("/:email", getUser);
 
 /**
  * @swagger
