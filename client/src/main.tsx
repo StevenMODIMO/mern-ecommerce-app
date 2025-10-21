@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router";
-
+import { AuthProvider } from "./context/AuthContext";
 /**Routes and Pages */
 import Home from "./routes/Home";
 import Login from "./routes/Login";
@@ -45,5 +45,9 @@ const router = createBrowserRouter([
 const root = document.getElementById("root");
 
 if (root) {
-  ReactDOM.createRoot(root).render(<RouterProvider router={router} />);
+  ReactDOM.createRoot(root).render(
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }

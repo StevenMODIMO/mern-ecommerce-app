@@ -1,41 +1,56 @@
-import { createContext, useContext, useEffect, useReducer } from "react";
+import React, { createContext, useReducer, useEffect } from "react";
 
+interface User {
+  _id: string;
+  email: string;
+  display_name: string;
+  avatar_url: string;
+  account_completed: boolean;
+  role: string;
+}
 
-const AuthContext = createContext();
+interface AuthState {
+  user: User | null;
+}
 
-const authReducer = (state, action) => {
+type AuthAction = { type: "LOGIN"; payload: User } | { type: "LOGOUT" };
+
+interface AuthContextType {
+  state: AuthState;
+  dispatch: React.Dispatch<AuthAction>;
+}
+
+export const AuthContext = createContext<AuthContextType | null>(null);
+
+const authReducer = (state: AuthState, action: AuthAction) => {
   switch (action.type) {
     case "LOGIN":
       return { user: action.payload };
     case "LOGOUT":
-        return { user: null }
+      return { user: null };
     default:
-        return state
+      return state;
   }
 };
 
-export const AuthContextProvider = ({ children}) => {
-    const [state, dispatch ] = useReducer(authReducer, { user: null})
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [state, dispatch] = useReducer(authReducer, { user: null });
 
-    useEffect(() => {
-        const user = JSON.parse(localStorage.getItem("user"))
-        if(user) {
-            dispatch({ type: "LOGIN", payload: user })
-        }
-    }, [])
-    console.log("Authentication State", state)
-
-    return (
-        <AuthContext.Provider value={{ ...state, dispatch}}>
-            { children }
-        </AuthContext.Provider>
-    )
-}
-
-export const useAuth = () => {
-    const context = useContext(AuthContext)
-    if(!context) {
-        throw Error("AuthContext must be used inside AuthContextProvider")
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      const parsedUser = JSON.parse(user);
+      dispatch({ type: "LOGIN", payload: parsedUser });
     }
-    return context
-}
+  }, []);
+
+  console.log("Auth Context: ", state);
+
+  return (
+    <AuthContext.Provider value={{ state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

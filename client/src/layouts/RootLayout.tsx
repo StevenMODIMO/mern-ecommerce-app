@@ -1,4 +1,4 @@
-import { Outlet, NavLink } from "react-router";
+import { Outlet, NavLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 import {
@@ -25,9 +25,15 @@ import {
 } from "lucide-react";
 import { navLinks } from "@/lib/navlinks";
 
+import { useAuthContext } from "@/hooks/useAuthContext";
+
 export default function RootLayout() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const { state } = useAuthContext();
 
   const IPINFO_TOKEN = import.meta.env.VITE_IPINFO_TOKEN;
 
@@ -68,43 +74,59 @@ export default function RootLayout() {
           </NavLink>
           <NavigationMenu>
             <NavigationMenuList className="flex">
-              {navLinks.map(({ id, path, title }) => {
-                let Icon;
-                switch (path) {
-                  case "/":
-                    Icon = House;
-                    break;
-                  case "/login":
-                    Icon = KeySquare;
-                    break;
-                  case "/signup":
-                    Icon = UserRoundPlus;
-                    break;
-                  case "/cart":
-                    Icon = ShoppingCart;
-                    break;
-                  case "/dashboard":
-                    Icon = ChartNoAxesCombined;
-                    break;
-                  default:
-                    Icon = Menu; // fallback
-                }
-                return (
-                  <NavigationMenuItem key={id}>
-                    <NavigationMenuLink
-                      asChild
-                      className="hover:bg-transparent focus:bg-transparent focus:text-none"
-                    >
-                      <NavLink to={path}>
-                        <div className="md:flex md:items-center gap-2">
-                          <Icon className="w-5 h-5" />
-                          <span className="hidden md:block">{title}</span>
-                        </div>
-                      </NavLink>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                );
-              })}
+              {navLinks
+                .filter(
+                  ({ path }) =>
+                    !state.user && ["/", "/login", "/signup"].includes(path)
+                )
+                .map(({ id, path, title }) => {
+                  let Icon;
+                  switch (path) {
+                    case "/":
+                      Icon = House;
+                      break;
+                    case "/login":
+                      Icon = KeySquare;
+                      break;
+                    case "/signup":
+                      Icon = UserRoundPlus;
+                      break;
+                    case "/cart":
+                      Icon = ShoppingCart;
+                      break;
+                    case "/dashboard":
+                      Icon = ChartNoAxesCombined;
+                      break;
+                    default:
+                      Icon = Menu; // fallback
+                  }
+                  return (
+                    <NavigationMenuItem key={id}>
+                      <NavigationMenuLink
+                        asChild
+                        className="hover:bg-transparent focus:bg-transparent focus:text-none"
+                      >
+                        <NavLink to={path}>
+                          <div className="md:flex md:items-center gap-2">
+                            <Icon
+                              className={`${
+                                pathname === path &&
+                                "text-[#f0b100] lg:text-[#737373]"
+                              }`}
+                            />
+                            <span
+                              className={`hidden md:block ${
+                                pathname === path && "text-[#737373]"
+                              }`}
+                            >
+                              {title}
+                            </span>
+                          </div>
+                        </NavLink>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  );
+                })}
             </NavigationMenuList>
           </NavigationMenu>
           <Menu className="hidden" />

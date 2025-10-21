@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = exports.completeAccountCreation = exports.signupUser = void 0;
+exports.loginUser = exports.completeAccountCreation = exports.signupUser = exports.getUser = exports.getAllUsers = void 0;
 const authModel_1 = __importDefault(require("../models/authModel"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const blob_1 = require("@vercel/blob");
@@ -21,6 +21,33 @@ const createToken = (_id) => {
         expiresIn: "10d",
     });
 };
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield authModel_1.default.find();
+        return res
+            .status(200)
+            .json(Object.assign(Object.assign({}, users), { message: "Users returned successfully" }));
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
+exports.getAllUsers = getAllUsers;
+const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { email } = req.params;
+    try {
+        const user = yield authModel_1.default.findOne({ email });
+        if (!user)
+            return res
+                .status(400)
+                .json({ message: `User with email: ${email} not found` });
+        res.status(200).json(user);
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
+exports.getUser = getUser;
 const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, display_name } = req.body;
     const avatar = req.file;
@@ -67,7 +94,9 @@ const completeAccountCreation = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!updatedUser) {
             return res.status(404).json({ error: "User not found" });
         }
-        res.status(200).json({ message: "Account completed", user: updatedUser.toObject() });
+        res
+            .status(200)
+            .json({ message: "Account completed", user: updatedUser.toObject() });
     }
     catch (error) {
         res.status(500).json({ error: error.message });
