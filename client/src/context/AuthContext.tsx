@@ -7,6 +7,7 @@ interface User {
   avatar_url: string;
   account_completed: boolean;
   role: string;
+  token: string
 }
 
 interface AuthState {
