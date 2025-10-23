@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSignup } from "@/hooks/useSignup";
 
 import {
   Card,
@@ -12,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import AccountCompletion from "@/components/AccountCompletion";
 
 export default function Signup() {
   const [display_name, setDisplayName] = useState("");
@@ -19,9 +21,30 @@ export default function Signup() {
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
+
+  const { signup, error, loading, setError, completeForm } = useSignup();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    await signup({
+      email,
+      password,
+      display_name,
+      avatar_url: avatar || undefined,
+    });
+    setEmail("");
+    setPassword("");
+    setDisplayName("");
+    setAvatar(null);
+  };
+
   return (
     <div>
-      <Card className="border-none shadow-xs sm:w-[60%] sm:mx-auto lg:w-[30%]">
+      <Card
+        className={`border-none shadow-xs sm:w-[60%] sm:mx-auto lg:w-[30%] ${
+          completeForm && "hidden"
+        }`}
+      >
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
           <CardDescription>Create a new account</CardDescription>
@@ -34,12 +57,16 @@ export default function Signup() {
               className="w-20 h-20 mx-auto rounded-full"
             />
           )}
-          <form className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={handleSubmit}
+            onFocus={() => setError(null)}
+          >
             <div>
-              <Label htmlFor="username">Avatar (optional)</Label>
+              <Label htmlFor="avatar">Avatar (optional)</Label>
               <Input
                 type="file"
-                id="username"
+                id="avatar"
                 placeholder="Enter your username"
                 className="mt-1"
                 name="avatar"
@@ -49,17 +76,6 @@ export default function Signup() {
                     setPreview(URL.createObjectURL(e.target.files[0]));
                   }
                 }}
-              />
-            </div>
-            <div>
-              <Label htmlFor="username">Username</Label>
-              <Input
-                type="text"
-                id="username"
-                placeholder="Enter your username"
-                className="mt-1"
-                value={display_name}
-                onChange={(e) => setDisplayName(e.target.value)}
               />
             </div>
             <div>
@@ -84,6 +100,17 @@ export default function Signup() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <div>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                type="text"
+                id="username"
+                placeholder="Enter your username"
+                className="mt-1"
+                value={display_name}
+                onChange={(e) => setDisplayName(e.target.value)}
+              />
+            </div>
             <CardFooter>
               <Button type="submit" className="w-full">
                 Sign Up
@@ -91,9 +118,10 @@ export default function Signup() {
             </CardFooter>
           </form>
         </CardContent>
-        <span>{email}</span> <span>{password}</span>{" "}
-        <span>{display_name} </span>
+        {error && <span className="text-center text-red-500">{error}</span>}
+        {loading && <span>{loading}</span>}
       </Card>
+      {completeForm && <AccountCompletion />}
     </div>
   );
 }

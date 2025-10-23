@@ -13,6 +13,7 @@ export const useSignup = () => {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [completeForm, setCompleteForm] = useState(false);
   const { dispatch } = useAuthContext();
 
   const signup = async ({
@@ -30,7 +31,7 @@ export const useSignup = () => {
       formData.append("password", password);
       formData.append("display_name", display_name);
       if (avatar_url) {
-        formData.append("avatar_url", avatar_url);
+        formData.append("avatar", avatar_url);
       }
 
       const response = await fetch(`${BASE_URL}/api/auth/signup`, {
@@ -42,13 +43,15 @@ export const useSignup = () => {
 
       if (!response.ok) {
         throw new Error(json.error || "Signup failed");
+      } else if (json.incomplete) {
+        setCompleteForm(true)
       }
 
-      // Save the user to local storage
-      localStorage.setItem("user", JSON.stringify(json));
+      // // Save the user to local storage
+      // localStorage.setItem("user", JSON.stringify(json));
 
-      // Update the auth context
-      dispatch({ type: "LOGIN", payload: json });
+      // // Update the auth context
+      // dispatch({ type: "LOGIN", payload: json });
 
       setLoading(false);
     } catch (err: any) {
@@ -56,4 +59,6 @@ export const useSignup = () => {
       setLoading(false);
     }
   };
+
+  return { signup, error, loading, setError, completeForm };
 };
