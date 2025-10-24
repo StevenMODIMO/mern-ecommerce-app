@@ -1,6 +1,7 @@
 import { Outlet, NavLink, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardHeader,
@@ -33,7 +34,12 @@ export default function RootLayout() {
   const location = useLocation();
   const pathname = location.pathname;
 
-  const { state } = useAuthContext();
+  const { state, dispatch } = useAuthContext();
+
+  const logout = () => {
+    dispatch({ type: "LOGOUT" });
+    localStorage.removeItem("user");
+  };
 
   const IPINFO_TOKEN = import.meta.env.VITE_IPINFO_TOKEN;
 
@@ -75,10 +81,13 @@ export default function RootLayout() {
           <NavigationMenu>
             <NavigationMenuList className="flex">
               {navLinks
-                .filter(
-                  ({ path }) =>
-                    !state.user && ["/", "/login", "/signup"].includes(path)
-                )
+                .filter(({ path }) => {
+                  if (state.user) {
+                    return ["/dashboard", "/cart"].includes(path);
+                  } else {
+                    return ["/", "/login", "/signup"].includes(path);
+                  }
+                })
                 .map(({ id, path, title }) => {
                   let Icon;
                   switch (path) {
@@ -127,6 +136,11 @@ export default function RootLayout() {
                     </NavigationMenuItem>
                   );
                 })}
+              {state.user && (
+                <NavigationMenuItem>
+                  <Button onClick={logout}>Log out</Button>
+                </NavigationMenuItem>
+              )}
             </NavigationMenuList>
           </NavigationMenu>
           <Menu className="hidden" />

@@ -1,49 +1,35 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 
-interface SignupInput {
+interface LoginInput {
   email: string;
   password: string;
-  display_name: string;
-  avatar_url?: File;
 }
 
-export const useSignup = () => {
+export const useLogin = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { dispatch } = useAuthContext();
 
-  const signup = async ({
-    email,
-    password,
-    display_name,
-    avatar_url,
-  }: SignupInput) => {
+  const login = async ({ email, password }: LoginInput) => {
     setLoading(true);
     setError(null);
 
     try {
-      const formData = new FormData();
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("display_name", display_name);
-      if (avatar_url) {
-        formData.append("avatar", avatar_url);
-      }
-
-      const response = await fetch(`${BASE_URL}/api/auth/signup`, {
+      const response = await fetch(`${BASE_URL}/api/auth/login`, {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       });
 
       const json = await response.json();
 
       if (!response.ok) {
-        throw new Error(json.error || "Signup failed");
-      } else  {
-        console.log(json)
+        throw new Error(json.error || "Login failed");
       }
 
       // Save the user to local storage
@@ -59,5 +45,5 @@ export const useSignup = () => {
     }
   };
 
-  return { signup, error, loading, setError };
+  return { error, setError, loading, login };
 };

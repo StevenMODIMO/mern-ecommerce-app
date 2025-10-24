@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSignup } from "@/hooks/useSignup";
 
 import {
@@ -13,7 +13,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import AccountCompletion from "@/components/AccountCompletion";
 
 export default function Signup() {
   const [display_name, setDisplayName] = useState("");
@@ -22,7 +21,7 @@ export default function Signup() {
   const [avatar, setAvatar] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
 
-  const { signup, error, loading, setError, completeForm } = useSignup();
+  const { signup, error, loading, setError } = useSignup();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,15 +35,12 @@ export default function Signup() {
     setPassword("");
     setDisplayName("");
     setAvatar(null);
+    setPreview("");
   };
 
   return (
     <div>
-      <Card
-        className={`border-none shadow-xs sm:w-[60%] sm:mx-auto lg:w-[30%] ${
-          completeForm && "hidden"
-        }`}
-      >
+      <Card className="border-none shadow-xs sm:w-[60%] sm:mx-auto lg:w-[30%]">
         <CardHeader>
           <CardTitle>Sign Up</CardTitle>
           <CardDescription>Create a new account</CardDescription>
@@ -121,7 +117,6 @@ export default function Signup() {
         {error && <span className="text-center text-red-500">{error}</span>}
         {loading && <span>{loading}</span>}
       </Card>
-      {completeForm && <AccountCompletion />}
     </div>
   );
 }
