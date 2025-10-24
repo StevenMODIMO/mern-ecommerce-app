@@ -66,7 +66,11 @@ export default function Login() {
             </div>
             <CardFooter>
               <Button type="submit" className="w-full">
-                Log in
+                {!loading ? (
+                  <span>Log in</span>
+                ) : (
+                  <span className="border-4 border-t-transparent p-2 rounded-full animate-spin"></span>
+                )}
               </Button>
             </CardFooter>
           </form>

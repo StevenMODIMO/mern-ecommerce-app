@@ -109,7 +109,11 @@ export default function Signup() {
             </div>
             <CardFooter>
               <Button type="submit" className="w-full">
-                Sign Up
+                {!loading ? (
+                  <span>Sign Up</span>
+                ) : (
+                  <span className="border-4 border-t-transparent p-2 rounded-full animate-spin"></span>
+                )}
               </Button>
             </CardFooter>
           </form>
