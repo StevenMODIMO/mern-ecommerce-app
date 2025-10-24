@@ -9,6 +9,7 @@ import Login from "./routes/Login";
 import Signup from "./routes/Signup";
 import Cart from "./routes/Cart";
 import Dashboard from "./routes/Dashboard";
+import CompleteAccount from "./routes/CompleteAccount";
 
 /**Layouts */
 import RootLayout from "./layouts/RootLayout";
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "cart",
         Component: Cart,
+      },
+      {
+        path: "account-setup",
+        Component: CompleteAccount,
       },
     ],
   },

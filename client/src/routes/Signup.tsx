@@ -75,7 +75,7 @@ export default function Signup() {
                 type="file"
                 id="avatar"
                 placeholder="Enter your username"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 name="avatar"
                 onChange={(e) => {
                   if (e.target.files && e.target.files[0]) {
@@ -91,7 +91,7 @@ export default function Signup() {
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -102,7 +102,7 @@ export default function Signup() {
                 type="password"
                 id="password"
                 placeholder="Enter your password"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -113,7 +113,7 @@ export default function Signup() {
                 type="text"
                 id="username"
                 placeholder="Enter your username"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 value={display_name}
                 onChange={(e) => setDisplayName(e.target.value)}
               />

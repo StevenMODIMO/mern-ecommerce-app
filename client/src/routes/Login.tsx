@@ -59,7 +59,7 @@ export default function Login() {
                 type="email"
                 id="email"
                 placeholder="Enter your email"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -70,7 +70,7 @@ export default function Login() {
                 type="password"
                 id="password"
                 placeholder="Enter your password"
-                className="mt-1"
+                className="mt-1 text-[#737373]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />

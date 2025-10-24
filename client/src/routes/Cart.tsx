@@ -9,6 +9,8 @@ export default function Cart() {
   useEffect(() => {
     if (!state.user) {
       navigate("/login");
+    } else if (!state.user?.account_completed) {
+      navigate("/account-setup");
     }
   }, [state.user]);
   return <div>Cart</div>;
