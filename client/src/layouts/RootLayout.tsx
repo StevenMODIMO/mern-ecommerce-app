@@ -14,6 +14,7 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   MapPinHouse,
   Menu,
@@ -31,6 +32,7 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 export default function RootLayout() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -45,6 +47,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const getCountry = async () => {
+      setLoading(true);
       const response = await fetch(
         `https://ipinfo.io/json?token=${IPINFO_TOKEN}`
       );
@@ -52,6 +55,7 @@ export default function RootLayout() {
       if (response.ok) {
         setCountry(json.country);
         setCity(json.city);
+        setLoading(false);
       }
     };
     getCountry();
@@ -67,10 +71,14 @@ export default function RootLayout() {
         <Card className="p-2 rounded-none shadow-none">
           <CardHeader className="flex items-center gap-2 sm:justify-center">
             <MapPinHouse className="w-4 h-4" />
-            <CardDescription>
-              Deliver to {city},{country}{" "}
-              <span className={getCountryFlagClass(country)}></span>
-            </CardDescription>
+            {loading ? (
+              <Skeleton className="w-64 h-3" />
+            ) : (
+              <CardDescription>
+                Deliver to {city},{country}{" "}
+                <span className={getCountryFlagClass(country)}></span>
+              </CardDescription>
+            )}
           </CardHeader>
         </Card>
         <nav className="flex justify-around md:justify-between items-center shadow-xs py-2 md:px-6">

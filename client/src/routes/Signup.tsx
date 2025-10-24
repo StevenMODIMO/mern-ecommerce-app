@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useSignup } from "@/hooks/useSignup";
+import { useNavigate } from "react-router";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 import {
   Card,
@@ -22,6 +24,15 @@ export default function Signup() {
   const [preview, setPreview] = useState("");
 
   const { signup, error, loading, setError } = useSignup();
+
+  const { state } = useAuthContext();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (state.user) {
+      navigate("/dashboard");
+    }
+  }, [state.user]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
