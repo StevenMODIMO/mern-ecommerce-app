@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useNavigate } from "react-router";
 
@@ -21,16 +21,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { Button } from "@/components/ui/button";
+
+import { useAccountSetup } from "@/hooks/useAccountSetup";
+
 export default function CompleteAccount() {
+  const [role, setRole] = useState("");
   const { state } = useAuthContext();
   const navigate = useNavigate();
+  const { complete } = useAccountSetup();
+
+  const email = state.user?.email || "";
+
+  const handleSubmit = async () => {
+    await complete({ role });
+  };
+
   useEffect(() => {
     if (!state.user) {
       navigate("/login");
-    } else if (state.user?.account_completed) {
+      return;
+    }
+    if (state.user.account_completed) {
       navigate("/dashboard");
     }
-  }, [state.user]);
+  }, [state.user?.account_completed]);
+
   return (
     <div>
       <Card className="md:w-[60%] md:mx-auto lg:w-[50%]">
@@ -45,7 +61,11 @@ export default function CompleteAccount() {
           </CardDescription>
         </CardHeader>
         <CardContent className="w-fit mx-auto">
-          <Select>
+          <Select
+            defaultValue="buyer"
+            value={role}
+            onValueChange={(e) => setRole(e)}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select Role" />
             </SelectTrigger>
@@ -58,6 +78,15 @@ export default function CompleteAccount() {
             </SelectContent>
           </Select>
         </CardContent>
+        <CardFooter>
+          <Button
+            onClick={handleSubmit}
+            className="w-fit mx-auto px-4 py-2 rounded disabled:opacity-50"
+            disabled={!role}
+          >
+            Continue
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );

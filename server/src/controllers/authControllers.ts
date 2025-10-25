@@ -43,8 +43,7 @@ const signupUser = async (req: Request, res: Response) => {
 
     if (exists) {
       if (!exists.account_completed) {
-        // Don't upload a new avatar, just return user for account completion
-        return res.status(200).json({ incomplete: true, user: exists });
+        return res.status(200).json({ user: exists });
       } else {
         throw new Error("Email is already in use");
       }
