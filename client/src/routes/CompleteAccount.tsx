@@ -11,6 +11,16 @@ import {
   CardContent,
 } from "@/components/ui/card";
 
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 export default function CompleteAccount() {
   const { state } = useAuthContext();
   const navigate = useNavigate();
@@ -34,6 +44,20 @@ export default function CompleteAccount() {
             the role that best fits your needs to proceed.
           </CardDescription>
         </CardHeader>
+        <CardContent className="w-fit mx-auto">
+          <Select>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectLabel>User Role</SelectLabel>
+                <SelectItem value="buyer">Buyer</SelectItem>
+                <SelectItem value="seller">Seller</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </CardContent>
       </Card>
     </div>
   );
