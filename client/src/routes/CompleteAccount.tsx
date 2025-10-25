@@ -31,8 +31,6 @@ export default function CompleteAccount() {
   const navigate = useNavigate();
   const { complete } = useAccountSetup();
 
-  const email = state.user?.email || "";
-
   const handleSubmit = async () => {
     await complete({ role });
   };
@@ -40,17 +38,17 @@ export default function CompleteAccount() {
   useEffect(() => {
     if (!state.user) {
       navigate("/login");
-      return;
     }
-    if (state.user.account_completed) {
+    if (state.user?.account_completed) {
       navigate("/dashboard");
     }
-  }, [state.user?.account_completed]);
+  }, []);
 
   return (
     <div>
       <Card className="md:w-[60%] md:mx-auto lg:w-[50%]">
         <CardHeader>
+          <CardTitle className="text-center font-normal">Hi ? {state.user?.display_name}</CardTitle>
           <CardTitle className="text-[#737373] text-xl sm:text-center md:text-start lg:text-center lg:text-2xl">
             Please take a moment to set up your account.
           </CardTitle>

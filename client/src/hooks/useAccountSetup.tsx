@@ -8,7 +8,7 @@ interface CompleteInput {
 export const useAccountSetup = () => {
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const navigate = useNavigate();
-  const { state } = useAuthContext();
+  const { state, dispatch } = useAuthContext();
 
   const email = state.user?.email;
 
@@ -24,12 +24,13 @@ export const useAccountSetup = () => {
 
       const json = await response.json();
 
-      if (response.ok) {
-        localStorage.setItem("user", JSON.stringify(json));
-        navigate("/dashboard");
-      } else {
-        console.log(json);
+      if (!response.ok) {
+        throw new Error(json.error || "Account completion failed.");
       }
+
+      localStorage.setItem("user", JSON.stringify(json));
+      dispatch({ type: "LOGIN", payload: json }); 
+      navigate("/dashboard");
     } catch (error: any) {
       console.log(error);
     }

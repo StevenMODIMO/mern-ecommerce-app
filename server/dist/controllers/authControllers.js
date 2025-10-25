@@ -55,9 +55,9 @@ const signupUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     try {
         const exists = yield authModel_1.default.findOne({ email });
         if (exists) {
+            const token = createToken(exists._id);
             if (!exists.account_completed) {
-                // Don't upload a new avatar, just return user for account completion
-                return res.status(200).json({ incomplete: true, user: exists });
+                return res.status(200).json(Object.assign(Object.assign({}, exists.toObject()), { token }));
             }
             else {
                 throw new Error("Email is already in use");
@@ -94,9 +94,7 @@ const completeAccountCreation = (req, res) => __awaiter(void 0, void 0, void 0, 
         if (!updatedUser) {
             return res.status(404).json({ error: "User not found" });
         }
-        res
-            .status(200)
-            .json({ message: "Account completed", user: updatedUser.toObject() });
+        res.status(200).json(Object.assign({}, updatedUser.toObject()));
     }
     catch (error) {
         res.status(500).json({ error: error.message });
@@ -108,9 +106,8 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const existing_user = yield authModel_1.default.login(email, password);
         if (!existing_user.account_completed) {
-            return res
-                .status(200)
-                .json(Object.assign({ accountIncomplete: true }, existing_user.toObject()));
+            const token = createToken(existing_user._id);
+            return res.status(200).json(Object.assign(Object.assign({}, existing_user.toObject()), { token }));
         }
         const user = yield authModel_1.default.login(email, password);
         const token = createToken(user._id);

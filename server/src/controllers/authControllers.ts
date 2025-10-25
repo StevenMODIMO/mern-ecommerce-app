@@ -42,8 +42,9 @@ const signupUser = async (req: Request, res: Response) => {
     const exists = await Auth.findOne({ email });
 
     if (exists) {
+      const token = createToken(exists._id);
       if (!exists.account_completed) {
-        return res.status(200).json({ user: exists });
+        return res.status(200).json({ ...exists.toObject(), token });
       } else {
         throw new Error("Email is already in use");
       }
@@ -94,9 +95,7 @@ const completeAccountCreation = async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res
-      .status(200)
-      .json({ message: "Account completed", user: updatedUser.toObject() });
+    res.status(200).json({ ...updatedUser.toObject() });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -108,9 +107,8 @@ const loginUser = async (req: Request, res: Response) => {
     const existing_user = await Auth.login(email, password);
 
     if (!existing_user.account_completed) {
-      return res
-        .status(200)
-        .json({ accountIncomplete: true, ...existing_user.toObject() });
+      const token = createToken(existing_user._id);
+      return res.status(200).json({ ...existing_user.toObject(), token });
     }
     const user = await Auth.login(email, password);
     const token = createToken(user._id);
