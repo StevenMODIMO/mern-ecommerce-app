@@ -25,10 +25,10 @@ export default function CompleteAccount() {
     <div>
       <Card className="md:w-[60%] md:mx-auto lg:w-[50%]">
         <CardHeader>
-          <CardTitle className="text-[#737373] text-xl sm:text-center md:text-start lg:text-2xl">
+          <CardTitle className="text-[#737373] text-xl sm:text-center md:text-start lg:text-center lg:text-2xl">
             Please take a moment to set up your account.
           </CardTitle>
-          <CardDescription className="sm:text-center md:text-start">
+          <CardDescription className="sm:text-center md:text-start lg:text-center">
             You have two options to set up your account: you can choose to be a{" "}
             <strong>Buyer</strong> or a <strong>Seller</strong>. Please select
             the role that best fits your needs to proceed.
