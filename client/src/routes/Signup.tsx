@@ -11,10 +11,11 @@ import {
   CardFooter,
   CardContent,
 } from "@/components/ui/card";
-
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { AlertCircleIcon } from "lucide-react";
 
 export default function Signup() {
   const [display_name, setDisplayName] = useState("");
@@ -129,8 +130,12 @@ export default function Signup() {
             </CardFooter>
           </form>
         </CardContent>
-        {error && <span className="text-center text-red-500">{error}</span>}
-        {loading && <span>{loading}</span>}
+        {error && (
+          <Alert className="mx-auto w-fit" variant="destructive">
+            <AlertCircleIcon />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
       </Card>
     </div>
   );

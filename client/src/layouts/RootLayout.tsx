@@ -15,6 +15,7 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   MapPinHouse,
   Menu,
@@ -146,11 +147,33 @@ export default function RootLayout() {
                 })}
               {state.user && (
                 <NavigationMenuItem>
-                  <Button onClick={logout}>Log out</Button>
+                  <Button onClick={logout} className="p-2">
+                    Log out
+                  </Button>
+                </NavigationMenuItem>
+              )}
+              {state.user && (
+                <NavigationMenuItem>
+                  <Avatar>
+                    <AvatarImage
+                      src={state.user.avatar_url}
+                      alt={state.user.display_name}
+                    />
+                    <AvatarFallback>
+                      {state.user.display_name[0]}
+                      {state.user.display_name[1]}
+                    </AvatarFallback>
+                  </Avatar>
+                  {/* <img
+                    src={state.user?.avatar_url}
+                    alt={state.user?.display_name || ""}
+                    className="w-12 h-12 rounded-full shadow-2xl sm:w-14 sm:h-14"
+                  /> */}
                 </NavigationMenuItem>
               )}
             </NavigationMenuList>
           </NavigationMenu>
+
           <Menu className="hidden" />
         </nav>
       </div>

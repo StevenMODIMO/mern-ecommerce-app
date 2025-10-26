@@ -11,10 +11,11 @@ import {
   CardFooter,
   CardContent,
 } from "@/components/ui/card";
-
+import { AlertCircleIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { Alert, AlertTitle } from "@/components/ui/alert";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,10 +26,14 @@ export default function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (state.user) {
+    if (!state.user) return;
+
+    if (state.user.role === "buyer") {
+      navigate("/products");
+    } else if (state.user.role === "seller") {
       navigate("/dashboard");
     }
-  }, [state.user]);
+  }, [state.user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -86,8 +91,12 @@ export default function Login() {
             </CardFooter>
           </form>
         </CardContent>
-        {error && <span className="text-center text-red-500">{error}</span>}
-        {loading && <span>{loading}</span>}
+        {error && (
+          <Alert className="mx-auto w-fit" variant="destructive">
+            <AlertCircleIcon />
+            <AlertTitle>{error}</AlertTitle>
+          </Alert>
+        )}
       </Card>
     </div>
   );

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-export default function Dashboard() {
+export default function Products() {
   const { state } = useAuthContext();
   const navigate = useNavigate();
 
@@ -17,18 +17,18 @@ export default function Dashboard() {
       return;
     }
 
-    if (state.user.role !== "seller") {
-      navigate("/products");
+    if (state.user.role !== "buyer") {
+      navigate("/dashboard"); // or another route for sellers
     }
   }, [state.user, navigate]);
 
   if (
     !state.user ||
     !state.user.account_completed ||
-    state.user.role !== "seller"
+    state.user.role !== "buyer"
   ) {
     return null;
   }
 
-  return <div>Dashboard</div>;
+  return <div>Products</div>;
 }
