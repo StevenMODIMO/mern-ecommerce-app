@@ -160,14 +160,9 @@ export default function RootLayout() {
                       alt={state.user.display_name}
                     />
                     <AvatarFallback>
-                      {state.user.display_name[0]}
+                      {state.user?.display_name[0]}
                     </AvatarFallback>
                   </Avatar>
-                  {/* <img
-                    src={state.user?.avatar_url}
-                    alt={state.user?.display_name || ""}
-                    className="w-12 h-12 rounded-full shadow-2xl sm:w-14 sm:h-14"
-                  /> */}
                 </NavigationMenuItem>
               )}
             </NavigationMenuList>
