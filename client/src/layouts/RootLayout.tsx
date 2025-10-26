@@ -160,7 +160,7 @@ export default function RootLayout() {
                       alt={state.user.display_name}
                     />
                     <AvatarFallback>
-                      {state.user?.display_name[0]}
+                      {state.user?.display_name?.[0] ?? "U"}
                     </AvatarFallback>
                   </Avatar>
                 </NavigationMenuItem>
