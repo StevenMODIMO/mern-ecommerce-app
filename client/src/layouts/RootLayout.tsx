@@ -161,7 +161,6 @@ export default function RootLayout() {
                     />
                     <AvatarFallback>
                       {state.user.display_name[0]}
-                      {state.user.display_name[1]}
                     </AvatarFallback>
                   </Avatar>
                   {/* <img
