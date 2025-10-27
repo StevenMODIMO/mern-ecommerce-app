@@ -11,6 +11,9 @@ import Cart from "./routes/Cart";
 import Dashboard from "./routes/Dashboard";
 import CompleteAccount from "./routes/CompleteAccount";
 import Products from "./routes/Products";
+import Orders from "./routes/Orders";
+import Invoices from "./routes/Invoices";
+import Wishlist from "./routes/Wishlist";
 
 /**Layouts */
 import RootLayout from "./layouts/RootLayout";
@@ -19,6 +22,7 @@ const router = createBrowserRouter([
   {
     Component: RootLayout,
     children: [
+      // PUBLIC ROUTES
       {
         path: "/",
         index: true,
@@ -32,22 +36,36 @@ const router = createBrowserRouter([
         path: "login",
         Component: Login,
       },
+      // ACCOUNT COMPLETION ROUTE IF USER NOT YET COMPLETED THEIR ACCOUNT
+      {
+        path: "account-setup",
+        Component: CompleteAccount,
+      },
+      // SELLER ROUTES
       {
         path: "dashboard",
         Component: Dashboard,
       },
       {
+        path: "invoices",
+        Component: Invoices,
+      },
+      // BUYER ROUTES
+      {
         path: "cart",
         Component: Cart,
       },
       {
-        path: "account-setup",
-        Component: CompleteAccount,
-      },
-      // BUYER ROUTES
-      {
         path: "products",
         Component: Products,
+      },
+      {
+        path: "orders",
+        Component: Orders,
+      },
+      {
+        path: "wishlist",
+        Component: Wishlist,
       },
     ],
   },

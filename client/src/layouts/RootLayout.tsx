@@ -25,10 +25,21 @@ import {
   ShoppingCart,
   ChartNoAxesCombined,
   Handbag,
+  Store,
+  Logs,
+  ReceiptText,
+  Heart,
 } from "lucide-react";
 import { navLinks } from "@/lib/navlinks";
-
 import { useAuthContext } from "@/hooks/useAuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 
 export default function RootLayout() {
   const [country, setCountry] = useState("");
@@ -91,11 +102,24 @@ export default function RootLayout() {
             <NavigationMenuList className="flex">
               {navLinks
                 .filter(({ path }) => {
-                  if (state.user) {
-                    return ["/dashboard", "/cart"].includes(path);
-                  } else {
+                  if (!state.user) {
                     return ["/", "/login", "/signup"].includes(path);
                   }
+
+                  if (state.user.role === "seller") {
+                    return ["/dashboard", "/invoices"].includes(path);
+                  }
+
+                  if (state.user.role === "buyer") {
+                    return [
+                      "/cart",
+                      "/products",
+                      "/orders",
+                      "/wishlist",
+                    ].includes(path);
+                  }
+
+                  return false;
                 })
                 .map(({ id, path, title }) => {
                   let Icon;
@@ -114,6 +138,18 @@ export default function RootLayout() {
                       break;
                     case "/dashboard":
                       Icon = ChartNoAxesCombined;
+                      break;
+                    case "/products":
+                      Icon = Store;
+                      break;
+                    case "/orders":
+                      Icon = Logs;
+                      break;
+                    case "/invoices":
+                      Icon = ReceiptText;
+                      break;
+                    case "/wishlist":
+                      Icon = Heart;
                       break;
                     default:
                       Icon = Menu; // fallback
@@ -145,14 +181,15 @@ export default function RootLayout() {
                     </NavigationMenuItem>
                   );
                 })}
-              {state.user && (
+
+              {/* {state.user && (
                 <NavigationMenuItem>
                   <Button onClick={logout} className="p-2">
                     Log out
                   </Button>
                 </NavigationMenuItem>
-              )}
-              {state.user && (
+              )} */}
+              {/* {state.user && (
                 <NavigationMenuItem>
                   <Avatar>
                     <AvatarImage
@@ -164,10 +201,40 @@ export default function RootLayout() {
                     </AvatarFallback>
                   </Avatar>
                 </NavigationMenuItem>
-              )}
+              )} */}
             </NavigationMenuList>
           </NavigationMenu>
-
+          {state.user && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className="p-0 rounded-full focus-visible:outline-none"
+                >
+                  <Avatar>
+                    <AvatarImage
+                      src={state.user?.avatar_url}
+                      alt={state.user?.display_name}
+                    />
+                    <AvatarFallback>
+                      {state.user?.display_name?.[0] ?? "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="start">
+                <DropdownMenuLabel>
+                  {state.user?.display_name}
+                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuItem asChild>
+                    <NavLink to="/account-setup">Account Settings</NavLink>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <Menu className="hidden" />
         </nav>
       </div>

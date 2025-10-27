@@ -12,9 +12,7 @@ const createToken = (_id: string) => {
 const getAllUsers = async (req: Request, res: Response) => {
   try {
     const users = await Auth.find();
-    return res
-      .status(200)
-      .json({ ...users, message: "Users returned successfully" });
+    return res.status(200).json({ ...users });
   } catch (error: any) {
     res.status(400).json(error);
   }
