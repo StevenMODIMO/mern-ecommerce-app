@@ -89,7 +89,14 @@ export default function RootLayout() {
               <Skeleton className="w-64 h-3" />
             ) : (
               <CardDescription>
-                Deliver to {city},{country}{" "}
+                {state.user?.role === "buyer" ? (
+                  <span>Deliver to</span>
+                ) : state.user?.role === "seller" ? (
+                  <span>Selling from</span>
+                ) : (
+                  <span>Visiting from</span>
+                )}{" "}
+                {city},{country}{" "}
                 <span className={getCountryFlagClass(country)}></span>
               </CardDescription>
             )}
@@ -167,13 +174,13 @@ export default function RootLayout() {
                             <Icon
                               className={`${
                                 pathname === path &&
-                                "text-[#f0b100] lg:text-[#737373]"
+                                "text-[#f0b100]"
                               }`}
                             />
                             <span
                               className={`hidden md:block ${
-                                pathname === path && "text-[#737373]"
-                              }`}
+                                pathname === path && "text-[#f0b100]"
+                              } text-[#737373]`}
                             >
                               {title}
                             </span>
