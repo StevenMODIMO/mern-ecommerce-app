@@ -24,9 +24,7 @@ const createToken = (_id) => {
 const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield authModel_1.default.find();
-        return res
-            .status(200)
-            .json(Object.assign(Object.assign({}, users), { message: "Users returned successfully" }));
+        return res.status(200).json(Object.assign({}, users));
     }
     catch (error) {
         res.status(400).json(error);

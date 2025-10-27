@@ -39,7 +39,9 @@ import {
   DropdownMenuLabel,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
 
 export default function RootLayout() {
   const [country, setCountry] = useState("");
@@ -181,6 +183,69 @@ export default function RootLayout() {
                     </NavigationMenuItem>
                   );
                 })}
+              {state.user && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger>
+                    <Avatar>
+                      <AvatarImage
+                        src={state.user?.avatar_url}
+                        alt={state.user?.display_name}
+                      />
+                      <AvatarFallback>
+                        {state.user?.display_name?.[0] ?? "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-fit">
+                    <DropdownMenuLabel>Account Info</DropdownMenuLabel>
+                    <DropdownMenuGroup>
+                      <DropdownMenuItem className="hover:bg-transparent cursor-default pointer-events-none">
+                        <Avatar>
+                          <AvatarImage
+                            src={state.user?.avatar_url}
+                            alt={state.user?.display_name}
+                          />
+                          <AvatarFallback>
+                            {state.user?.display_name?.[0] ?? "U"}
+                          </AvatarFallback>
+                        </Avatar>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <div className="font-bold">
+                          {state.user.display_name}
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>{state.user.email}</DropdownMenuItem>
+                      <DropdownMenuItem>
+                        <div className="text-xs font-light">
+                          {state.user._id}
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem className="hover:bg-transparent">
+                        <div className="font-bold">
+                          <Badge
+                            className={`${
+                              state.user.role === "seller" && "bg-green-500"
+                            }`}
+                          >
+                            {state.user.role === "buyer"
+                              ? "BUYER"
+                              : state.user.role === "seller"
+                              ? "SELLER"
+                              : "NOT_SET"}
+                          </Badge>
+                        </div>
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="hover:bg-transparent">
+                        <Button onClick={logout} className="p-2">
+                          Logout
+                        </Button>
+                      </DropdownMenuItem>
+                    </DropdownMenuGroup>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
 
               {/* {state.user && (
                 <NavigationMenuItem>
@@ -204,37 +269,7 @@ export default function RootLayout() {
               )} */}
             </NavigationMenuList>
           </NavigationMenu>
-          {state.user && (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="p-0 rounded-full focus-visible:outline-none"
-                >
-                  <Avatar>
-                    <AvatarImage
-                      src={state.user?.avatar_url}
-                      alt={state.user?.display_name}
-                    />
-                    <AvatarFallback>
-                      {state.user?.display_name?.[0] ?? "U"}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="start">
-                <DropdownMenuLabel>
-                  {state.user?.display_name}
-                </DropdownMenuLabel>
-                <DropdownMenuGroup>
-                  <DropdownMenuItem asChild>
-                    <NavLink to="/account-setup">Account Settings</NavLink>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          )}
+
           <Menu className="hidden" />
         </nav>
       </div>
