@@ -30,5 +30,5 @@ export default function Dashboard() {
     return null;
   }
 
-  return <div>Dashboard</div>;
+  return <div>Seller's Dashboard</div>;
 }

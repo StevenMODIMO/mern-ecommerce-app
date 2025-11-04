@@ -17,6 +17,7 @@ import Wishlist from "./routes/Wishlist";
 
 /**Layouts */
 import RootLayout from "./layouts/RootLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 
 const router = createBrowserRouter([
   {
@@ -43,8 +44,14 @@ const router = createBrowserRouter([
       },
       // SELLER ROUTES
       {
-        path: "dashboard",
-        Component: Dashboard,
+        Component: DashboardLayout,
+        children: [
+          {
+            path: "/dashboard",
+            index: true,
+            Component: Dashboard,
+          },
+        ],
       },
       {
         path: "invoices",
