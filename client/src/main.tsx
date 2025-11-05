@@ -18,6 +18,7 @@ import Wishlist from "./routes/Wishlist";
 /**Layouts */
 import RootLayout from "./layouts/RootLayout";
 import DashboardLayout from "./layouts/DashboardLayout";
+import UserLayout from "./layouts/UserLayout";
 
 const router = createBrowserRouter([
   {
@@ -51,28 +52,34 @@ const router = createBrowserRouter([
             index: true,
             Component: Dashboard,
           },
+          {
+            path: "invoices",
+            Component: Invoices,
+          },
         ],
-      },
-      {
-        path: "invoices",
-        Component: Invoices,
       },
       // BUYER ROUTES
       {
-        path: "cart",
-        Component: Cart,
-      },
-      {
-        path: "products",
-        Component: Products,
-      },
-      {
-        path: "orders",
-        Component: Orders,
-      },
-      {
-        path: "wishlist",
-        Component: Wishlist,
+        Component: UserLayout,
+        children: [
+          {
+            path: "products",
+            index: true,
+            Component: Products,
+          },
+          {
+            path: "cart",
+            Component: Cart,
+          },
+          {
+            path: "orders",
+            Component: Orders,
+          },
+          {
+            path: "wishlist",
+            Component: Wishlist,
+          },
+        ],
       },
     ],
   },
