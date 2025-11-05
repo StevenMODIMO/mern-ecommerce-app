@@ -28,3 +28,4 @@ businessSchema.statics.createBusiness = function (name, address, merchant_email,
             throw Error("All fields must be filled.");
     });
 };
+exports.default = mongoose_1.default.model("Business", businessSchema);
