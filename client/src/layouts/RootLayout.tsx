@@ -105,7 +105,7 @@ export default function RootLayout() {
         <nav className="flex justify-around md:justify-between items-center shadow-xs py-2 md:px-6">
           <NavLink className="flex items-center gap-1" to="/">
             <Handbag className="text-[#737373] w-6 h-6" />
-            <h1 className="text-sm">Mern Store</h1>
+            <h1 className="text-sm font-semibold md:text-lg">Mern Store</h1>
           </NavLink>
           <NavigationMenu>
             <NavigationMenuList className="flex">
