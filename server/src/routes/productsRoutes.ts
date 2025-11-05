@@ -125,6 +125,163 @@ router.post("/new", upload.single("image"), addNewProduct);
 
 /**
  * @swagger
+ * /api/products:
+ *   get:
+ *     summary: Retrieve all products from the store.
+ *     description: Returns all products added by various users along with seller details.
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: Products returned successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: Product ID in MongoDB.
+ *                     example: 690bac8228ced89e04cccc44
+ *                   image_url:
+ *                     type: string
+ *                     description: URL to the product image.
+ *                     example: https://t0mrrn6uzcxdc7gp.public.blob.vercel-storage.com/cdn.mern-store/products/istockphoto-1370712717-612x612.jpg
+ *                   name:
+ *                     type: string
+ *                     description: Name of the product.
+ *                     example: Suzuki Jimmny
+ *                   price:
+ *                     type: number
+ *                     description: Price of the product.
+ *                     example: 200
+ *                   quantity:
+ *                     type: number
+ *                     description: Available quantity.
+ *                     example: 10
+ *                   seller:
+ *                     type: object
+ *                     description: Seller details.
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 68fe7937a94dc39ad0a56db1
+ *                       display_name:
+ *                         type: string
+ *                         example: Biko Steven
+ *                       email:
+ *                         type: string
+ *                         example: bikosteven2001@gmail.com
+ *                       avatar_url:
+ *                         type: string
+ *                         example: https://t0mrrn6uzcxdc7gp.public.blob.vercel-storage.com/cdn.mern-store/81316521.jpg
+ *                       account_completed:
+ *                         type: boolean
+ *                         example: true
+ *                       role:
+ *                         type: string
+ *                         example: seller
+ *                   seller_name:
+ *                     type: string
+ *                     description: Cached name of the seller.
+ *                     example: Biko Steven
+ *                   rates:
+ *                     type: array
+ *                     description: List of product rating objects.
+ *                     items:
+ *                       type: object
+ *                     example: []
+ *                   createdAt:
+ *                     type: string
+ *                     format: date-time
+ *                     example: 2025-11-05T19:58:58.753Z
+ *                   updatedAt:
+ *                     type: string
+ *                     format: date-time
+ *                     example: 2025-11-05T19:58:58.753Z
+ *                   __v:
+ *                     type: number
+ *                     example: 0
+ */
+
+router.get("/", getAllProducts);
+
+/**
+ * @swagger
+ * /api/products/{id}:
+ *   get:
+ *     summary: Retrieve a single product by ID.
+ *     description: Returns details of a specific product including seller information.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique ID of the product.
+ *     responses:
+ *       200:
+ *         description: Product returned successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   description: Product ID in MongoDB.
+ *                   example: 690bac8228ced89e04cccc44
+ *                 image_url:
+ *                   type: string
+ *                   description: URL to the product image.
+ *                   example: https://t0mrrn6uzcxdc7gp.public.blob.vercel-storage.com/cdn.mern-store/products/istockphoto-1370712717-612x612.jpg
+ *                 name:
+ *                   type: string
+ *                   description: Name of the product.
+ *                   example: Suzuki Jimmny
+ *                 price:
+ *                   type: number
+ *                   description: Price of the product.
+ *                   example: 200
+ *                 quantity:
+ *                   type: number
+ *                   description: Available quantity.
+ *                   example: 10
+ *                 seller:
+ *                   type: string
+ *                   description: MongoDB ID reference to the seller.
+ *                   example: 68fe7937a94dc39ad0a56db1
+ *                 seller_name:
+ *                   type: string
+ *                   description: Cached name of the seller.
+ *                   example: Biko Steven
+ *                 rates:
+ *                   type: array
+ *                   description: List of product rating objects.
+ *                   items:
+ *                     type: object
+ *                   example: []
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-11-05T19:58:58.753Z
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-11-05T19:58:58.753Z
+ *                 __v:
+ *                   type: number
+ *                   example: 0
+ *       404:
+ *         description: Product not found.
+ */
+
+router.get("/:product_id", getSingleProduct);
+
+/**
+ * @swagger
  * /api/products/{seller_id}:
  *   get:
  *     summary: Retrieve all products for a specific seller

@@ -50,7 +50,7 @@ const addNewProduct = async (req: Request, res: Response) => {
 
 const getAllProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("seller");
     res.status(200).json(products);
   } catch (error: any) {
     res.status(400).json(error);
@@ -58,10 +58,10 @@ const getAllProducts = async (req: Request, res: Response) => {
 };
 
 const getSingleProduct = async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const { product_id } = req.params;
 
   try {
-    const product = await Product.findOne({ _id: id });
+    const product = await Product.findOne({ _id: product_id });
     res.status(200).json(product);
   } catch (error: any) {
     res.status(400).json(error);
@@ -73,7 +73,7 @@ const getSellerProducts = async (req: Request, res: Response) => {
 
   try {
     const products = await Product.find({
-      "seller_details.seller_id": seller_id,
+      seller: seller_id,
     });
     res.status(200).json(products);
   } catch (error: any) {

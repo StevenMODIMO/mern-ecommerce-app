@@ -54,7 +54,7 @@ const addNewProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.addNewProduct = addNewProduct;
 const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const products = yield productModel_1.default.find();
+        const products = yield productModel_1.default.find().populate("seller");
         res.status(200).json(products);
     }
     catch (error) {
@@ -63,9 +63,9 @@ const getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.getAllProducts = getAllProducts;
 const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const { product_id } = req.params;
     try {
-        const product = yield productModel_1.default.findOne({ _id: id });
+        const product = yield productModel_1.default.findOne({ _id: product_id });
         res.status(200).json(product);
     }
     catch (error) {
@@ -77,7 +77,7 @@ const getSellerProducts = (req, res) => __awaiter(void 0, void 0, void 0, functi
     const { seller_id } = req.params;
     try {
         const products = yield productModel_1.default.find({
-            "seller_details.seller_id": seller_id,
+            seller: seller_id,
         });
         res.status(200).json(products);
     }
