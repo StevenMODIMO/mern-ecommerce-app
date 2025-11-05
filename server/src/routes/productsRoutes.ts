@@ -28,6 +28,103 @@ const router = Router();
 
 /**
  * @swagger
+ * /api/products/new:
+ *   post:
+ *     summary: Add new product to the store
+ *     description: Sellers can add new products to the store and set various fields.
+ *     tags: [Products]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - image
+ *               - price
+ *               - quantity
+ *               - seller
+ *               - seller_name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Gaming Console
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: product image to be displated alongside product details
+ *               price:
+ *                 type: number
+ *                 example: 200
+ *               quantity:
+ *                 type: number
+ *                 example: 10
+ *               seller:
+ *                 type: string
+ *                 example: 66fcd3d97b12a2034a0fbc23
+ *               seller_name:
+ *                 type: string
+ *                 example: John Doe
+ *                 description: Seller's name as set during account creation
+ *     responses:
+ *       201:
+ *         description: Product added successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 66fcd3d97b12a2034a0fbc23
+ *                 name:
+ *                   type: string
+ *                   example: Gaming Console
+ *                 image:
+ *                   type: string
+ *                   format: binary
+ *                   description: product image to be displated alongside product details
+ *                 price:
+ *                   type: number
+ *                   example: 200
+ *                 quantity:
+ *                   type: number
+ *                   example: 10
+ *                 seller:
+ *                   type: string
+ *                   example: 66fcd3d97b12a2034a0fbc23
+ *                 seller_name:
+ *                   type: string
+ *                   example: John Doe
+ *                   description: Seller's name as set during account creation
+ *       400:
+ *         description: Missing or Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: All fields must be filled.
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Unexpected Server Error
+ *
+ */
+
+router.post("/new", upload.single("image"), addNewProduct);
+
+/**
+ * @swagger
  * /api/products/{seller_id}:
  *   get:
  *     summary: Retrieve all products for a specific seller

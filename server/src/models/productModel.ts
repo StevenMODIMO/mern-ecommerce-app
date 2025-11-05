@@ -2,10 +2,6 @@ import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
   {
-    seller_details: {
-      seller_name: String,
-      seller_id: String,
-    },
     image_url: String,
     name: String,
     price: Number,
@@ -18,6 +14,11 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
+    seller: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Auth",
+    },
+    seller_name: String,
   },
   { timestamps: true }
 );

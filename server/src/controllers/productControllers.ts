@@ -4,12 +4,22 @@ import { type Request, type Response } from "express";
 import { put } from "@vercel/blob";
 
 const addNewProduct = async (req: Request, res: Response) => {
-  const { seller_details, name, price, quantity } = req.body;
+  const { name, price, quantity, seller, seller_name } = req.body;
   const image = req.file;
   let image_url;
 
   try {
     const imageContent = image && image.buffer;
+    if (
+      !imageContent ||
+      !name ||
+      !price ||
+      !quantity ||
+      !seller ||
+      !seller_name
+    ) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
     if (image) {
       const { url } = await put(
         `cdn.mern-store/products/${image?.originalname}`,
@@ -24,11 +34,12 @@ const addNewProduct = async (req: Request, res: Response) => {
     }
 
     const newProduct = await Product.create({
-      seller_details: JSON.parse(seller_details),
       image_url,
       name,
       price,
       quantity,
+      seller,
+      seller_name,
     });
 
     res.status(201).json(newProduct);
