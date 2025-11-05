@@ -4,7 +4,7 @@ const app = express();
 import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes";
-import appRoutes from "./routes/appRoutes";
+import productRoutes from "./routes/productsRoutes";
 import path from "path";
 import { setupSwagger } from "./swagger";
 
@@ -21,12 +21,8 @@ app.get("/", (req, res) => {
   res.redirect("/api-docs");
 });
 
-app.get("/images/:filename", async (req, res) => {
-  const imagePath = path.join(__dirname, "images", req.params.filename);
-  res.sendFile(imagePath);
-});
 app.use("/api/auth", authRoutes);
-app.use("/api/app", appRoutes);
+app.use("/api/products", productRoutes);
 
 mongoose.connect(process.env.MONGO_URI as string).then(() => {
   app.listen(process.env.PORT, () =>

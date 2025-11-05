@@ -22,3 +22,5 @@ businessSchema.statics.createBusiness = async function (
   if (!name || !address || description || !phone)
     throw Error("All fields must be filled.");
 };
+
+export default mongoose.model("Business", businessSchema);

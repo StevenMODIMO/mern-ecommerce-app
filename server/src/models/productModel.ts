@@ -1,44 +1,25 @@
 import mongoose from "mongoose";
 
-const productSchema = new mongoose.Schema({
-  product_id: {
-    type: String,
-  },
-  from: {
-    type: String,
-  },
-  imagePath: {
-    type: String,
-  },
-  product_name: {
-    type: String,
-  },
-  description: {
-    type: String,
-  },
-  price: {
-    type: Number,
-  },
-  quantity: {
-    type: Number,
-  },
-  currency: {
-    type: String,
-  },
-  rates: [
-    {
-      rate: {
-        type: Number,
-        default: 0,
-      },
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-      },
+const productSchema = new mongoose.Schema(
+  {
+    seller_details: {
+      seller_name: String,
+      seller_id: String,
     },
-  ],
-  category: {
-    type: String,
+    image_url: String,
+    name: String,
+    price: Number,
+    quantity: Number,
+    rates: [
+      {
+        rate: Number,
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+        },
+      },
+    ],
   },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model("Product", productSchema);

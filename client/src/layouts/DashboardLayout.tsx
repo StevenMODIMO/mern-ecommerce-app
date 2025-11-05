@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { ChartBarIcon, User2 } from "lucide-react";
+import { ChartBarIcon, User2, Mail, MessageCircleDashed } from "lucide-react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function DashboardLayout() {
