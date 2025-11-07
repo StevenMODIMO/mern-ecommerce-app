@@ -19,10 +19,11 @@ const options = {
             description: "API documentation for the Mern Store backend",
         },
         servers: [
-            { url: "http://localhost:3000", description: "Local Development server" },
             {
-                url: "https://mern-store-backend-kjd1.onrender.com",
-                description: "Production server",
+                url: env === "development"
+                    ? "http://localhost:3000"
+                    : "https://mern-store-backend-kjd1.onrender.com",
+                description: env === "development" ? "Development server" : "Products server",
             },
         ],
         components: {
