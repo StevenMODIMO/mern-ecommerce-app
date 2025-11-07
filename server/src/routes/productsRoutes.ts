@@ -1,9 +1,3 @@
-/**
- * @swagger
- * tags:
- *   name: Products
- *   description: This API provides functionalities to manage products in the e-commerce application for users with role of Seller.
- */
 import {
   addNewProduct,
   getAllProducts,
@@ -24,8 +18,8 @@ const router = Router();
  * @swagger
  * tags:
  *   name: Products
- *   description:
- */
+ *   description: THIS API PROVIDES FUNCTIONALITIES TO MANAGE PRODUCTS IN THE E-COMMERCE STORE FOR USERS WITH ROLE OF SELLER.
+ */ 
 
 /**
  * @swagger

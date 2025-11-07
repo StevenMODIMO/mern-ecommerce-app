@@ -3,12 +3,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-/**
- * @swagger
- * tags:
- *   name: Products
- *   description: This API provides functionalities to manage products in the e-commerce application for users with role of Seller.
- */
 const productControllers_1 = require("../controllers/productControllers");
 const express_1 = require("express");
 const multer_1 = __importDefault(require("multer"));
@@ -19,7 +13,7 @@ const router = (0, express_1.Router)();
  * @swagger
  * tags:
  *   name: Products
- *   description:
+ *   description: THIS API PROVIDES FUNCTIONALITIES TO MANAGE PRODUCTS IN THE E-COMMERCE STORE FOR USERS WITH ROLE OF SELLER.
  */
 /**
  * @swagger

@@ -5,7 +5,7 @@ import cors from "cors";
 import mongoose from "mongoose";
 import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productsRoutes";
-import path from "path";
+import cartRoutes from "./routes/cartRoutes";
 import { setupSwagger } from "./swagger";
 
 app.use(cors());
@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 mongoose.connect(process.env.MONGO_URI as string).then(() => {
   app.listen(process.env.PORT, () =>

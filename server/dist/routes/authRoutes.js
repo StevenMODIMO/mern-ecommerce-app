@@ -46,7 +46,7 @@ const router = (0, express_1.Router)();
  * @swagger
  * tags:
  *   name: Users
- *   description: Authentication and user management
+ *   description: AUTHENTICATION, AUTHORIZATION AND USER MANAGEMENT.
  */
 /**
  * @swagger
