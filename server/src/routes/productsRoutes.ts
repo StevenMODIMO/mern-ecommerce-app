@@ -347,13 +347,73 @@ router.get("/:seller_id", getSellerProducts);
  *         schema:
  *           type: string
  *           example: 66fcd3d97b12a2034a0fbc23
- *     responses:
- *       200:
- *         description: Product updated successfully
- *         content:
- *           application/json:
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
  *           schema:
  *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Gaming Console Pro
+ *               price:
+ *                 type: number
+ *                 example: 250
+ *               quantity:
+ *                 type: number
+ *                 example: 8
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *                 description: Optional product image to replace the existing one.
+ *     responses:
+ *       200:
+ *         description: Product updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 690d9bc8f0534e402435fc1f
+ *                 image_url:
+ *                   type: string
+ *                   example: https://t0mrrn6uzcxdc7gp.public.blob.vercel-storage.com/cdn.mern-store/products/istockphoto-1273404833-612x612.jpg
+ *                 name:
+ *                   type: string
+ *                   example: Gaming Console
+ *                 price:
+ *                   type: number
+ *                   example: 200
+ *                 quantity:
+ *                   type: number
+ *                   example: 10
+ *                 seller:
+ *                   type: string
+ *                   example: 68fe7937a94dc39ad0a56db1
+ *                 seller_name:
+ *                   type: string
+ *                   example: Biko Steven
+ *                 rates:
+ *                   type: array
+ *                   items: {}
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-11-07T07:12:08.785Z
+ *                 updatedAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: 2025-11-07T07:12:08.785Z
+ *                 __v:
+ *                   type: number
+ *                   example: 0
+ *       400:
+ *         description: Invalid request or missing fields.
+ *       404:
+ *         description: Product not found.
  */
 
 router.put(

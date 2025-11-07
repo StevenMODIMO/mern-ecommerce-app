@@ -2,16 +2,6 @@ import mongoose, { Model, Document } from "mongoose";
 import { compare, genSalt, hash } from "bcrypt";
 import { isStrongPassword, isEmail } from "validator";
 
-// interface ICartItem {
-//   from?: string;
-//   imagePath?: string;
-//   product_name?: string;
-//   description?: string;
-//   price?: number;
-//   currency?: string;
-//   quantity?: number;
-// }
-
 interface IUser extends Document {
   display_name?: string;
   email: string;
