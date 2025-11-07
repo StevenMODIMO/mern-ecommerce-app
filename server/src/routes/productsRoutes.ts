@@ -10,6 +10,7 @@ import {
   getSingleProduct,
   getSellerProducts,
   updateProductDetails,
+  deleteProduct,
 } from "../controllers/productControllers";
 import express, { Router } from "express";
 import multer from "multer";
@@ -220,6 +221,7 @@ router.get("/", getAllProducts);
  *         required: true
  *         schema:
  *           type: string
+ *           example: 690d9a53b41c329473743715
  *         description: The unique ID of the product.
  *     responses:
  *       200:
@@ -330,5 +332,84 @@ router.get("/:product_id", getSingleProduct);
  */
 
 router.get("/:seller_id", getSellerProducts);
+
+/**
+ * @swagger
+ * /api/products/update-product/{product_id}:
+ *   put:
+ *     summary: Sellers can update various details of their products.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         required: true
+ *         description: Unique product identifier.
+ *         schema:
+ *           type: string
+ *           example: 66fcd3d97b12a2034a0fbc23
+ *     responses:
+ *       200:
+ *         description: Product updated successfully
+ *         content:
+ *           application/json:
+ *           schema:
+ *             type: object
+ */
+
+router.put(
+  "/update-product/:product_id",
+  upload.single("image"),
+  updateProductDetails
+);
+
+/**
+ * @swagger
+ * /api/products/delete-product/{product_id}:
+ *   delete:
+ *     summary: Delete products from the store.
+ *     description: Sellers can delete products they no longer sell or are out of order.
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         required: true
+ *         description: Unique identifier for the products to be deleted
+ *         schema:
+ *           type: string
+ *           example: 66fcd3d97b12a2034a0fbc23
+ *     responses:
+ *       200:
+ *         description: Product deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Product with id {product_id} has been deleted successfully.
+ *       400:
+ *         description: Product deletion failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Product with id {product_id} was not found
+ *       500:
+ *         description: Unexpected server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal Server Error
+ */
+
+router.delete("/delete-product/:product_id", deleteProduct);
 
 export default router;

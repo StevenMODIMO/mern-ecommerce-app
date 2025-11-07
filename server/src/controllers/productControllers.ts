@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import Product from "../models/productModel";
 import { type Request, type Response } from "express";
-import { put } from "@vercel/blob";
+import { put, del } from "@vercel/blob";
 
 const addNewProduct = async (req: Request, res: Response) => {
   const { name, price, quantity, seller, seller_name } = req.body;
@@ -81,7 +81,42 @@ const getSellerProducts = async (req: Request, res: Response) => {
   }
 };
 
-const updateProductDetails = async (req: Request, res: Response) => {};
+const updateProductDetails = async (req: Request, res: Response) => {
+  const { product_id } = req.params;
+  const { name, price, quantity } = req.body;
+  const image = req.file;
+  let image_url;
+
+  try {
+    const product = await Product.findOne({ _id: product_id });
+    res.status(200).json(product);
+  } catch (error: any) {
+    res.status(400).json(error);
+  }
+};
+
+const deleteProduct = async (req: Request, res: Response) => {
+  const { product_id } = req.params;
+
+  try {
+    const product = await Product.findOne({ _id: product_id });
+    if (!product) {
+      return res
+        .status(400)
+        .json({ error: `Product with id: ${product_id} was not found` });
+    }
+    const urlToDelete = product.image_url;
+    if (urlToDelete) {
+      await del(urlToDelete);
+    }
+    await Product.findOneAndDelete({ _id: product_id });
+    res.status(200).json({
+      message: `Product with id: ${product_id} has been deleted successfully.`,
+    });
+  } catch (error: any) {
+    res.status(400).json(error);
+  }
+};
 
 export {
   addNewProduct,
@@ -89,4 +124,5 @@ export {
   getSingleProduct,
   getSellerProducts,
   updateProductDetails,
+  deleteProduct,
 };

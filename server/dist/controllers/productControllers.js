@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProductDetails = exports.getSellerProducts = exports.getSingleProduct = exports.getAllProducts = exports.addNewProduct = void 0;
+exports.deleteProduct = exports.updateProductDetails = exports.getSellerProducts = exports.getSingleProduct = exports.getAllProducts = exports.addNewProduct = void 0;
 const productModel_1 = __importDefault(require("../models/productModel"));
 const blob_1 = require("@vercel/blob");
 const addNewProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -86,5 +86,40 @@ const getSellerProducts = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.getSellerProducts = getSellerProducts;
-const updateProductDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () { });
+const updateProductDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { product_id } = req.params;
+    const { name, price, quantity } = req.body;
+    const image = req.file;
+    let image_url;
+    try {
+        const product = yield productModel_1.default.findOne({ _id: product_id });
+        res.status(200).json(product);
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
 exports.updateProductDetails = updateProductDetails;
+const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { product_id } = req.params;
+    try {
+        const product = yield productModel_1.default.findOne({ _id: product_id });
+        if (!product) {
+            return res
+                .status(400)
+                .json({ error: `Product with id: ${product_id} was not found` });
+        }
+        const urlToDelete = product.image_url;
+        if (urlToDelete) {
+            yield (0, blob_1.del)(urlToDelete);
+        }
+        yield productModel_1.default.findOneAndDelete({ _id: product_id });
+        res.status(200).json({
+            message: `Product with id: ${product_id} has been deleted successfully.`,
+        });
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
+exports.deleteProduct = deleteProduct;
