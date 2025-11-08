@@ -11,6 +11,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const productsRoutes_1 = __importDefault(require("./routes/productsRoutes"));
 const cartRoutes_1 = __importDefault(require("./routes/cartRoutes"));
+const wishListRoutes_1 = __importDefault(require("./routes/wishListRoutes"));
 const swagger_1 = require("./swagger");
 app.use((0, cors_1.default)());
 app.use((req, res, next) => {
@@ -24,6 +25,7 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes_1.default);
 app.use("/api/products", productsRoutes_1.default);
 app.use("/api/cart", cartRoutes_1.default);
+app.use("/api/wishlist", wishListRoutes_1.default);
 mongoose_1.default.connect(process.env.MONGO_URI).then(() => {
     app.listen(process.env.PORT, () => console.log(`http://localhost:${process.env.PORT}`));
 });
