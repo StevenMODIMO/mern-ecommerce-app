@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCartItemsByUser = exports.addProductToCart = void 0;
+exports.removeItemFromCart = exports.updateCart = exports.getCartItemsByUser = exports.addProductToCart = void 0;
 const cartModel_1 = __importDefault(require("../models/cartModel"));
 const addProductToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { product_id, buyer_id, quantity } = req.body;
@@ -47,3 +47,30 @@ const getCartItemsByUser = (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 });
 exports.getCartItemsByUser = getCartItemsByUser;
+const updateCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { product_id } = req.params;
+    const { quantity } = req.body;
+    try {
+        const updatedCartItem = yield cartModel_1.default.findOneAndUpdate({ product_id }, { $set: { quantity } }, { new: true });
+        res.status(200).json(updatedCartItem);
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
+exports.updateCart = updateCart;
+const removeItemFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { product_id } = req.params;
+    try {
+        const product = yield cartModel_1.default.findOne({ product_id });
+        if (!product) {
+            return res.status(400).json({ error: "Product not found in cart" });
+        }
+        yield cartModel_1.default.findOneAndDelete({ product_id });
+        res.status(200).json({ message: "Product removed from cart" });
+    }
+    catch (error) {
+        res.status(400).json(error);
+    }
+});
+exports.removeItemFromCart = removeItemFromCart;

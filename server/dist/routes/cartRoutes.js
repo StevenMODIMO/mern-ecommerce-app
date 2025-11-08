@@ -163,4 +163,100 @@ router.post("/add-to-cart", express_1.default.json(), cartControllers_1.addProdu
  *         description: Server error
  */
 router.get("/cart-items/:buyer_id", cartControllers_1.getCartItemsByUser);
+/**
+ * @swagger
+ * /api/cart/update-cart/{product_id}:
+ *   put:
+ *     summary: Update quantity of a product in the cart
+ *     description: Update the quantity of a specific product in the user's cart.
+ *     tags: [Store]
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         required: true
+ *         description: The ID of the product to update
+ *         schema:
+ *           type: string
+ *         example: 674edc84d65f23b44a1b29de
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - quantity
+ *             properties:
+ *               quantity:
+ *                 type: number
+ *                 description: The new quantity for the product
+ *                 example: 3
+ *     responses:
+ *       200:
+ *         description: Cart item updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 6754a8c1ef21f482c47f3b27
+ *                 product_id:
+ *                   type: string
+ *                   example: 674edc84d65f23b44a1b29de
+ *                 buyer_id:
+ *                   type: string
+ *                   example: 68fe8b73f31097ea6b513157
+ *                 quantity:
+ *                   type: number
+ *                   example: 3
+ *                 createdAt:
+ *                   type: string
+ *                   example: 2025-11-07T19:22:14.123Z
+ *                 updatedAt:
+ *                   type: string
+ *                   example: 2025-11-07T19:30:10.456Z
+ *       400:
+ *         description: Invalid request or error updating cart
+ */
+router.put("/update-cart/:product_id", express_1.default.json(), cartControllers_1.updateCart);
+/**
+ * @swagger
+ * /api/cart/remove-item/{product_id}:
+ *   delete:
+ *     summary: Remove a product from the cart
+ *     description: Deletes a specific product from the buyer's cart using its product ID.
+ *     tags: [Store]
+ *     parameters:
+ *       - in: path
+ *         name: product_id
+ *         required: true
+ *         description: The ID of the product to remove from the cart
+ *         schema:
+ *           type: string
+ *           example: 674edc84d65f23b44a1b29de
+ *     responses:
+ *       200:
+ *         description: Product removed from cart successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Product removed from cart
+ *       400:
+ *         description: Invalid request or product not found in cart
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Product not found in cart
+ */
+router.delete("/remove-item/:product_id", cartControllers_1.removeItemFromCart);
 exports.default = router;
