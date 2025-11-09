@@ -7,6 +7,7 @@ import authRoutes from "./routes/authRoutes";
 import productRoutes from "./routes/productsRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import wishListRoutes from "./routes/wishListRoutes";
+import orderRoutes from "./routes/orderRoutes";
 import { setupSwagger } from "./swagger";
 
 app.use(cors());
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishListRoutes);
+app.use("/api/orders", orderRoutes);
 
 mongoose.connect(process.env.MONGO_URI as string).then(() => {
   app.listen(process.env.PORT, () =>
