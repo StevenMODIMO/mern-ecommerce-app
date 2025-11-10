@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSellerOrders = exports.cancelOrder = exports.getSingleOrder = exports.getBuyerOrders = exports.placeOrder = void 0;
+exports.updateOrderStatus = exports.getSellerOrders = exports.cancelOrder = exports.getSingleOrder = exports.getBuyerOrders = exports.placeOrder = void 0;
 const ordersModel_1 = __importDefault(require("../models/ordersModel"));
 const cartModel_1 = __importDefault(require("../models/cartModel"));
 // ----------------- BUYER CONTROLLERS -----------------
@@ -28,9 +28,11 @@ const placeOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             shipping_address,
             payment_status: "pending",
         });
-        // Optionally remove products from cart
         const productIds = products.map((p) => p.product);
-        yield cartModel_1.default.updateOne({ buyer }, { $pull: { products: { product: { $in: productIds } } } });
+        yield cartModel_1.default.deleteMany({
+            buyer_id: buyer,
+            product_id: { $in: productIds },
+        });
         res.status(201).json(newOrder);
     }
     catch (error) {
@@ -70,10 +72,31 @@ exports.getSingleOrder = getSingleOrder;
 const cancelOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { orderId, productId } = req.params;
-        // Update the specific product within the array
+        // 1️⃣ Find the order containing this product
+        const order = yield ordersModel_1.default.findOne({
+            _id: orderId,
+            "products.product": productId,
+        });
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+        // 2️⃣ Find the specific product within the order
+        const productInOrder = order.products.find((p) => p.product.toString() === productId);
+        // 3️⃣ If already cancelled, stop here
+        if ((productInOrder === null || productInOrder === void 0 ? void 0 : productInOrder.order_status) === "cancelled") {
+            return res.status(400).json({
+                error: "This order has already been cancelled.",
+            });
+        }
+        if ((productInOrder === null || productInOrder === void 0 ? void 0 : productInOrder.order_status) === "completed") {
+            return res.status(400).json({
+                error: "This order has already been cancelled.",
+            });
+        }
+        // 4️⃣ Proceed to cancel only if it’s not shipped or completed
         const updatedOrder = yield ordersModel_1.default.findOneAndUpdate({
             _id: orderId,
-            "products._id": productId,
+            "products.product": productId,
             "products.order_status": { $nin: ["shipped", "completed"] },
         }, {
             $set: { "products.$.order_status": "cancelled" },
@@ -83,9 +106,10 @@ const cancelOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 error: "Order or cancellable product not found",
             });
         }
-        res
-            .status(200)
-            .json({ message: "Product cancelled successfully", order: updatedOrder });
+        res.status(200).json({
+            message: "Product cancelled successfully",
+            order: updatedOrder,
+        });
     }
     catch (error) {
         res.status(500).json({ error: error.message });
@@ -107,3 +131,49 @@ const getSellerOrders = (req, res) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.getSellerOrders = getSellerOrders;
+const updateOrderStatus = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { orderId, productId } = req.params;
+        const { newStatus } = req.body;
+        const validStatuses = ["pending", "processing", "shipped"];
+        if (!validStatuses.includes(newStatus)) {
+            return res.status(400).json({ error: "Invalid status value" });
+        }
+        const order = yield ordersModel_1.default.findOne({
+            _id: orderId,
+            "products.product": productId,
+        });
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+        // 2️⃣ Find the specific product within the order
+        const productInOrder = order.products.find((p) => p.product.toString() === productId);
+        // 3️⃣ If already cancelled, stop here
+        if ((productInOrder === null || productInOrder === void 0 ? void 0 : productInOrder.order_status) === "cancelled") {
+            return res.status(400).json({
+                error: "This order has already been cancelled.",
+            });
+        }
+        if ((productInOrder === null || productInOrder === void 0 ? void 0 : productInOrder.order_status) === "completed") {
+            return res.status(400).json({
+                error: "This order has already been completed.",
+            });
+        }
+        const updatedOrder = yield ordersModel_1.default.findOneAndUpdate({
+            _id: orderId,
+            "products.product": productId,
+        }, {
+            $set: { "products.$.order_status": newStatus },
+        }, { new: true });
+        if (!updatedOrder) {
+            return res.status(404).json({ error: "Order or product not found" });
+        }
+        res
+            .status(200)
+            .json({ message: "Order status updated", order: updatedOrder });
+    }
+    catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+exports.updateOrderStatus = updateOrderStatus;

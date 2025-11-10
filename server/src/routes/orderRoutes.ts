@@ -4,6 +4,7 @@ import {
   getSingleOrder,
   cancelOrder,
   getSellerOrders,
+  updateOrderStatus,
 } from "../controllers/orderControllers";
 import express, { Router } from "express";
 
@@ -155,5 +156,64 @@ router.patch("/cancel/:orderId/:productId", cancelOrder);
  *         description: List of orders containing seller's products
  */
 router.get("/seller/:sellerId", getSellerOrders);
+
+/**
+ * @swagger
+ * /api/orders/update-status/{orderId}/{productId}:
+ *   patch:
+ *     summary: Update the status of a product in an order
+ *     description: Allows a seller to update the status of a product (pending → processing → shipped). Cancelled or completed products cannot be updated.
+ *     tags: [Orders]
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the order
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the product within the order
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - newStatus
+ *             properties:
+ *               newStatus:
+ *                 type: string
+ *                 enum: [pending, processing, shipped]
+ *                 description: The new status to set for the product
+ *     responses:
+ *       200:
+ *         description: Product status updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 order:
+ *                   $ref: '#/components/schemas/Order'
+ *       400:
+ *         description: Invalid status or product cannot be updated (cancelled/completed)
+ *       404:
+ *         description: Order or product not found
+ *       500:
+ *         description: Server error
+ */
+
+router.patch(
+  "/update-status/:orderId/:productId",
+  express.json(),
+  updateOrderStatus
+);
 
 export default router;

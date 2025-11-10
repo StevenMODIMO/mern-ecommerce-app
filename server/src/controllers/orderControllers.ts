@@ -22,12 +22,11 @@ const placeOrder = async (req: Request, res: Response) => {
       payment_status: "pending",
     });
 
-    // Optionally remove products from cart
     const productIds = products.map((p: any) => p.product);
-    await Cart.updateOne(
-      { buyer },
-      { $pull: { products: { product: { $in: productIds } } } }
-    );
+    await Cart.deleteMany({
+      buyer_id: buyer,
+      product_id: { $in: productIds },
+    });
 
     res.status(201).json(newOrder);
   } catch (error: any) {
@@ -65,11 +64,39 @@ const cancelOrder = async (req: Request, res: Response) => {
   try {
     const { orderId, productId } = req.params;
 
-    // Update the specific product within the array
+    // 1️⃣ Find the order containing this product
+    const order = await Orders.findOne({
+      _id: orderId,
+      "products.product": productId,
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // 2️⃣ Find the specific product within the order
+    const productInOrder = order.products.find(
+      (p: any) => p.product.toString() === productId
+    );
+
+    // 3️⃣ If already cancelled, stop here
+    if (productInOrder?.order_status === "cancelled") {
+      return res.status(400).json({
+        error: "This order has already been cancelled.",
+      });
+    }
+
+    if (productInOrder?.order_status === "completed") {
+      return res.status(400).json({
+        error: "This order has already been cancelled.",
+      });
+    }
+
+    // 4️⃣ Proceed to cancel only if it’s not shipped or completed
     const updatedOrder = await Orders.findOneAndUpdate(
       {
         _id: orderId,
-        "products._id": productId,
+        "products.product": productId,
         "products.order_status": { $nin: ["shipped", "completed"] },
       },
       {
@@ -84,9 +111,10 @@ const cancelOrder = async (req: Request, res: Response) => {
       });
     }
 
-    res
-      .status(200)
-      .json({ message: "Product cancelled successfully", order: updatedOrder });
+    res.status(200).json({
+      message: "Product cancelled successfully",
+      order: updatedOrder,
+    });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }
@@ -107,10 +135,71 @@ const getSellerOrders = async (req: Request, res: Response) => {
   }
 };
 
+const updateOrderStatus = async (req: Request, res: Response) => {
+  try {
+    const { orderId, productId } = req.params;
+    const { newStatus } = req.body;
+
+    const validStatuses = ["pending", "processing", "shipped"];
+    if (!validStatuses.includes(newStatus)) {
+      return res.status(400).json({ error: "Invalid status value" });
+    }
+
+    const order = await Orders.findOne({
+      _id: orderId,
+      "products.product": productId,
+    });
+
+    if (!order) {
+      return res.status(404).json({ error: "Order not found" });
+    }
+
+    // 2️⃣ Find the specific product within the order
+    const productInOrder = order.products.find(
+      (p: any) => p.product.toString() === productId
+    );
+
+    // 3️⃣ If already cancelled, stop here
+    if (productInOrder?.order_status === "cancelled") {
+      return res.status(400).json({
+        error: "This order has already been cancelled.",
+      });
+    }
+
+    if (productInOrder?.order_status === "completed") {
+      return res.status(400).json({
+        error: "This order has already been completed.",
+      });
+    }
+
+    const updatedOrder = await Orders.findOneAndUpdate(
+      {
+        _id: orderId,
+        "products.product": productId,
+      },
+      {
+        $set: { "products.$.order_status": newStatus },
+      },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ error: "Order or product not found" });
+    }
+
+    res
+      .status(200)
+      .json({ message: "Order status updated", order: updatedOrder });
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 export {
   placeOrder,
   getBuyerOrders,
   getSingleOrder,
   cancelOrder,
   getSellerOrders,
+  updateOrderStatus,
 };
