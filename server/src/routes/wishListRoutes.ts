@@ -11,7 +11,7 @@ const router = Router();
  * @swagger
  * tags:
  *   name: Wishlist
- *   description: Buyer wishlist management
+ *   description: BUYER WISHLIST MANAGEMENT
  */
 
 /**
