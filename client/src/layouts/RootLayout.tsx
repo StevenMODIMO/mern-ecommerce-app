@@ -60,19 +60,39 @@ export default function RootLayout() {
   const IPINFO_TOKEN = import.meta.env.VITE_IPINFO_TOKEN;
 
   useEffect(() => {
+    let retryInterval: ReturnType<typeof setInterval> | null = null;
+
     const getCountry = async () => {
-      setLoading(true);
-      const response = await fetch(
-        `https://ipinfo.io/json?token=${IPINFO_TOKEN}`
-      );
-      const json = await response.json();
-      if (response.ok) {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://ipinfo.io/json?token=${IPINFO_TOKEN}`
+        );
+        if (!response.ok) throw new Error("Network error");
+
+        const json = await response.json();
         setCountry(json.country);
         setCity(json.city);
         setLoading(false);
+
+        // clear retry if success
+        if (retryInterval) clearInterval(retryInterval);
+      } catch (err: any) {
+        console.error("Retrying due to error:", err.message);
+
+        // start retry if not already running
+        if (!retryInterval) {
+          retryInterval = setInterval(getCountry, 5000); // retry every 5 seconds
+        }
       }
     };
+
     getCountry();
+
+    // cleanup when component unmounts
+    return () => {
+      if (retryInterval) clearInterval(retryInterval);
+    };
   }, []);
 
   const getCountryFlagClass = (country: string) => {
@@ -173,8 +193,7 @@ export default function RootLayout() {
                           <div className="md:flex md:items-center gap-2">
                             <Icon
                               className={`${
-                                pathname === path &&
-                                "text-[#f0b100]"
+                                pathname === path && "text-[#f0b100]"
                               }`}
                             />
                             <span
