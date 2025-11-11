@@ -5,6 +5,7 @@ import {
   cancelOrder,
   getSellerOrders,
   updateOrderStatus,
+  createPaymentIntent,
 } from "../controllers/orderControllers";
 import express, { Router } from "express";
 
@@ -215,5 +216,56 @@ router.patch(
   express.json(),
   updateOrderStatus
 );
+
+/**
+ * @swagger
+ * tags:
+ *   name: Payments
+ *   description: Stripe payment processing and management
+ */
+
+/**
+ * @swagger
+ * /api/orders/create-payment-intent/{orderId}:
+ *   post:
+ *     summary: Create a Stripe Payment Intent
+ *     description: Initializes a payment process for an existing order by creating a Stripe Payment Intent. Returns a client secret used by the frontend to complete payment.
+ *     tags: [Payments]
+ *     parameters:
+ *       - in: path
+ *         name: orderId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique ID of the order to be paid for.
+ *     responses:
+ *       200:
+ *         description: Stripe Payment Intent created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: Stripe Payment Intent ID.
+ *                 client_secret:
+ *                   type: string
+ *                   description: Secret key used by the frontend to confirm payment.
+ *                 amount:
+ *                   type: number
+ *                   description: Amount charged in smallest currency unit (e.g., cents).
+ *                 currency:
+ *                   type: string
+ *                   example: usd
+ *       400:
+ *         description: Invalid order ID or payment initialization failed.
+ *       404:
+ *         description: Order not found.
+ *       500:
+ *         description: Internal server error.
+ */
+
+router.post("/create-payment-intent/:orderId", createPaymentIntent);
 
 export default router;

@@ -1,6 +1,14 @@
+import dotenv from "dotenv";
 import { type Request, type Response } from "express";
 import Orders from "../models/ordersModel";
 import Cart from "../models/cartModel";
+import Stripe from "stripe";
+
+dotenv.config();
+
+const STRIPE_SECRET = process.env.STRIPE_SECRET_KEY as string;
+
+const stripe = new Stripe(STRIPE_SECRET, { apiVersion: "2025-10-29.clover" });
 
 // ----------------- BUYER CONTROLLERS -----------------
 
@@ -195,6 +203,27 @@ const updateOrderStatus = async (req: Request, res: Response) => {
   }
 };
 
+const createPaymentIntent = async (req: Request, res: Response) => {
+  const { orderId } = req.params;
+
+  try {
+    const order = await Orders.findOne({
+      _id: orderId,
+    });
+    if (!order) {
+      return res.status(400).json({ error: "Order not found" });
+    }
+    const amount = order?.total_amount as number;
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount,
+      currency: "usd",
+    });
+    res.status(200).json(paymentIntent);
+  } catch (error: any) {
+    res.status(400).json(error);
+  }
+};
+
 export {
   placeOrder,
   getBuyerOrders,
@@ -202,4 +231,5 @@ export {
   cancelOrder,
   getSellerOrders,
   updateOrderStatus,
+  createPaymentIntent,
 };

@@ -28,22 +28,6 @@ const userSchema = new mongoose.Schema<IUser>({
   avatar_url: String,
   account_completed: { type: Boolean, default: false },
   role: { type: String, default: "not-set" },
-  // role: {
-  //   type: String,
-  //   enum: ["buyer", "seller", "merchant"],
-  //   default: "buyer",
-  // },
-  // cart: [
-  //   {
-  //     from: String,
-  //     imagePath: String,
-  //     product_name: String,
-  //     description: String,
-  //     price: Number,
-  //     currency: String,
-  //     quantity: Number,
-  //   },
-  // ],
 });
 
 userSchema.statics.signup = async function (
