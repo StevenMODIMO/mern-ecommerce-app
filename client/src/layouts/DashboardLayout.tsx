@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { ChartBarIcon, User2, Mail, MessageCircleDashed } from "lucide-react";
+import { User2 } from "lucide-react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function DashboardLayout() {
@@ -14,8 +14,6 @@ export default function DashboardLayout() {
           Welcome! <span className="">{user?.display_name}</span>
         </h1>
       </header>
-      {/* <ChartBarIcon className="w-5 h-5" />
-      <h1>Seller's Dashboard Layout</h1> */}
       <Outlet />
     </div>
   );
