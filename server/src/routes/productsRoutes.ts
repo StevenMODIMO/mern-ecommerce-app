@@ -204,7 +204,7 @@ router.get("/", getAllProducts);
 
 /**
  * @swagger
- * /api/products/{id}:
+ * /api/products/single-product/{id}:
  *   get:
  *     summary: Retrieve a single product by ID.
  *     description: Returns details of a specific product including seller information.
@@ -274,11 +274,11 @@ router.get("/", getAllProducts);
  *         description: Product not found.
  */
 
-router.get("/:product_id", getSingleProduct);
+router.get("/single-product/:product_id", getSingleProduct);
 
 /**
  * @swagger
- * /api/products/{seller_id}:
+ * /api/products/seller/{seller_id}:
  *   get:
  *     summary: Retrieve all products for a specific seller
  *     description: Returns a list of products belonging to the specified seller.
@@ -325,7 +325,7 @@ router.get("/:product_id", getSingleProduct);
  *                     example: 12
  */
 
-router.get("/:seller_id", getSellerProducts);
+router.get("/seller/:seller_id", getSellerProducts);
 
 /**
  * @swagger

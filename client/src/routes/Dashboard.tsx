@@ -46,7 +46,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Tabs defaultValue="products" className="md:w-[50%] mt-6">
+      <Tabs defaultValue="products" className=" mt-6">
         <TabsList className="w-full lg:w-fit">
           <TabsTrigger
             className="data-[state=active]:text-[#737373] focus-visible:ring-0 focus-visible:outline-none border-0"
