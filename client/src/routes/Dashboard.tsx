@@ -12,6 +12,7 @@ import {
 import ProductListings from "@/components/seller/ProductListings";
 import NewProduct from "@/components/seller/NewProduct";
 import Orders from "@/components/seller/Orders";
+import Invoices from "@/components/seller/Invoices";
 
 import { Table, CirclePlus, Logs, ReceiptText } from "lucide-react";
 
@@ -45,23 +46,35 @@ export default function Dashboard() {
 
   return (
     <div>
-      <Tabs defaultValue="products" className="">
-        <TabsList className="w-full">
-          <TabsTrigger value="products">
+      <Tabs defaultValue="products" className="md:w-[50%] mt-6">
+        <TabsList className="w-full lg:w-fit">
+          <TabsTrigger
+            className="data-[state=active]:text-[#737373] focus-visible:ring-0 focus-visible:outline-none border-0"
+            value="products"
+          >
             <Table />
-            <span className="hidden lg:block">Products</span>
+            <span className="hidden sm:block">Products</span>
           </TabsTrigger>
-          <TabsTrigger value="new-product">
+          <TabsTrigger
+            className="data-[state=active]:text-[#737373] focus-visible:ring-0 focus-visible:outline-none border-0"
+            value="new-product"
+          >
             <CirclePlus />
-            <span className="hidden lg:block">Add</span>
+            <span className="hidden sm:block">Add</span>
           </TabsTrigger>
-          <TabsTrigger value="orders">
+          <TabsTrigger
+            className="data-[state=active]:text-[#737373] focus-visible:ring-0 focus-visible:outline-none border-0"
+            value="orders"
+          >
             <Logs />
-            <span className="hidden lg:block">Orders</span>
+            <span className="hidden sm:block">Orders</span>
           </TabsTrigger>
-          <TabsTrigger value="invoices">
+          <TabsTrigger
+            className="data-[state=active]:text-[#737373] focus-visible:ring-0 focus-visible:outline-none border-0"
+            value="invoices"
+          >
             <ReceiptText />
-            <span className="hidden lg:block">Invoices</span>
+            <span className="hidden sm:block">Invoices</span>
           </TabsTrigger>
         </TabsList>
         <TabsContent value="products">
@@ -72,6 +85,9 @@ export default function Dashboard() {
         </TabsContent>
         <TabsContent value="orders">
           <Orders />
+        </TabsContent>
+        <TabsContent value="invoices">
+          <Invoices />
         </TabsContent>
       </Tabs>
     </div>

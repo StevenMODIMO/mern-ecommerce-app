@@ -75,7 +75,6 @@ export default function Signup() {
               <Input
                 type="file"
                 id="avatar"
-                placeholder="Enter your username"
                 className="mt-1 text-[#737373]"
                 name="avatar"
                 onChange={(e) => {

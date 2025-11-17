@@ -12,7 +12,7 @@ import Dashboard from "./routes/Dashboard";
 import CompleteAccount from "./routes/CompleteAccount";
 import Products from "./routes/Products";
 import Orders from "./routes/Orders";
-import Invoices from "./routes/Invoices";
+import Invoices from "./components/seller/Invoices";
 import Wishlist from "./routes/Wishlist";
 
 /**Layouts */

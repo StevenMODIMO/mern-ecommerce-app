@@ -136,7 +136,7 @@ export default function RootLayout() {
                   }
 
                   if (state.user.role === "seller") {
-                    return ["/dashboard", "/invoices"].includes(path);
+                    return ["/dashboard"].includes(path);
                   }
 
                   if (state.user.role === "buyer") {
@@ -173,9 +173,6 @@ export default function RootLayout() {
                       break;
                     case "/orders":
                       Icon = Logs;
-                      break;
-                    case "/invoices":
-                      Icon = ReceiptText;
                       break;
                     case "/wishlist":
                       Icon = Heart;

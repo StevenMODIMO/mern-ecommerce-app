@@ -41,11 +41,6 @@ export const navLinks: NavLinks[] = [
     title: "Orders",
   },
   {
-    id: 8,
-    path: "/invoices",
-    title: "Invoices",
-  },
-  {
     id: 9,
     path: "/wishlist",
     title: "Wishlist",
